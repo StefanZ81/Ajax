@@ -32,7 +32,7 @@ jobs:
       - name: Dependencies installeren
         run: pip install requests
 
-     - name: Ajax-data ophalen en tabel bijwerken
+      - name: Ajax-data ophalen en tabel bijwerken
         env:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
         run: python scripts/ajax_data_sync.py
