@@ -60,6 +60,8 @@ def _sync_now() -> int:
     if not wedstrijden:
         return 0
 
+    import queries  # lokale import om circulaire imports met app.py te vermijden
+
     with get_connection() as conn:
         for m in wedstrijden:
             conn.execute(
@@ -96,5 +98,6 @@ def _sync_now() -> int:
                 # NB: 'oefenwedstrijd' bewust NIET in deze upsert — dat is een
                 # handmatige vlag van de beheerder, geen data uit API-Football.
             )
+            if m["status"] == "afgelopen":
+                queries.bereken_en_bewaar_punten(m["id"])
     return len(wedstrijden)
-
