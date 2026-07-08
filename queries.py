@@ -10,6 +10,7 @@ import uuid
 from datetime import datetime, timezone
 
 from db import get_connection
+from scoring import bereken_punten
 
 
 def _parse_dt(s: str | None):
@@ -186,6 +187,68 @@ def get_klassement() -> list[dict]:
         return [dict(r) for r in rows]
 
 
+def add_manual_match(seizoen: str, competitie: str, ronde: str, thuis: str, uit: str, kickoff_iso: str, oefenwedstrijd: bool) -> None:
+    # Handmatige wedstrijden krijgen een negatief id, zodat ze nooit kunnen
+    # botsen met een echt fixture-id van football-data.org (die zijn altijd
+    # positief). github_sync.py raakt id's die niet in de GitHub-tabel staan
+    # nooit aan, dus deze rij is hierna veilig voor altijd.
+    with get_connection() as conn:
+        laagste = conn.execute("SELECT MIN(id) AS m FROM matches").fetchone()
+        nieuw_id = (laagste["m"] - 1) if laagste and laagste["m"] is not None and laagste["m"] < 0 else -1
+        conn.execute(
+            """
+            INSERT INTO matches (id, seizoen, competitie, ronde, thuis, uit, kickoff, status, oefenwedstrijd)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'gepland', ?)
+            """,
+            (nieuw_id, seizoen, competitie, ronde or None, thuis, uit, kickoff_iso, int(oefenwedstrijd)),
+        )
+
+
+def bereken_en_bewaar_punten(match_id: int) -> int:
+    """Rekent de punten van alle deelnemers voor deze wedstrijd door en slaat ze op.
+    Wordt aangeroepen zodra een wedstrijd de status 'afgelopen' krijgt — zowel
+    via github_sync.py (automatische Eredivisie-uitslagen) als via set_match_match_result()
+    hierboven (handmatig ingevoerde Europese wedstrijden)."""
+    match = get_match(match_id)
+    if not match or not match["status"] == "afgelopen" or match["uitslag_eind_thuis"] is None:
+        return 0
+
+    rules = get_rules(match["seizoen"])
+    uitslag = {
+        "rust": {"thuis": match["uitslag_rust_thuis"], "uit": match["uitslag_rust_uit"]},
+        "eind": {"thuis": match["uitslag_eind_thuis"], "uit": match["uitslag_eind_uit"]},
+    }
+
+    with get_connection() as conn:
+        voorspellingen = conn.execute(
+            "SELECT id, rust_thuis, rust_uit, eind_thuis, eind_uit, joker FROM predictions WHERE match_id = ?",
+            (match_id,),
+        ).fetchall()
+        for v in voorspellingen:
+            voorspelling = {
+                "rust": {"thuis": v["rust_thuis"], "uit": v["rust_uit"]},
+                "eind": {"thuis": v["eind_thuis"], "uit": v["eind_uit"]},
+                "joker": bool(v["joker"]),
+            }
+            punten, _ = bereken_punten(voorspelling, uitslag, rules)
+            conn.execute("UPDATE predictions SET punten = ? WHERE id = ?", (punten, v["id"]))
+    return len(voorspellingen)
+
+
+def set_match_result(match_id: int, rust: tuple[int, int], eind: tuple[int, int]) -> None:
+    with get_connection() as conn:
+        conn.execute(
+            """
+            UPDATE matches SET status = 'afgelopen',
+                uitslag_rust_thuis = ?, uitslag_rust_uit = ?,
+                uitslag_eind_thuis = ?, uitslag_eind_uit = ?
+            WHERE id = ?
+            """,
+            (rust[0], rust[1], eind[0], eind[1], match_id),
+        )
+    bereken_en_bewaar_punten(match_id)
+
+
 def get_standings_widget(seizoen: str) -> list[dict]:
     with get_connection() as conn:
         rows = conn.execute(
@@ -198,4 +261,3 @@ def get_standings_widget(seizoen: str) -> list[dict]:
             (seizoen, seizoen, seizoen),
         ).fetchall()
         return [dict(r) for r in rows]
-
