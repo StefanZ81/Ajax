@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="widget">
-  <div class="widget-title">🏆 Ajax in de Eredivisie · widget-preview</div>
+  <div class="widget-title">🏆 Ajax in de Eredivisie</div>
   {% for r in standings %}
   <div class="widget-row">
     <span style="{{ 'font-weight:700;' if r.team == 'Ajax' else 'opacity:.85;' }}">{{ r.positie }}. {{ r.team }}{{ ' ●' if r.team == 'Ajax' else '' }}</span>
@@ -14,7 +14,7 @@
 </div>
 
 <div class="widget">
-  <div class="widget-title">📅 Programma Ajax · widget-preview</div>
+  <div class="widget-title">📅 Programma Ajax</div>
   {% for m in upcoming %}
   <div class="widget-row">
     <span>{{ m.thuis }} – {{ m.uit }}</span>
@@ -49,4 +49,3 @@
 </a>
 {% endfor %}
 {% endblock %}
-
