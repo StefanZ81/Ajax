@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p style="font-weight:700;">{{ huidige_gebruiker.naam }}</p>
+  <p style="color:var(--grey); font-size:13px;">{{ huidige_gebruiker.email }} · {{ huidige_gebruiker.rol|capitalize }}</p>
+  <div style="background:#F7F7F9; border-radius:12px; padding:12px; font-size:13px; margin-top:12px;">
+    🔔 Je ontvangt 24 uur voor elke Ajax-wedstrijd een e-mail met een directe link om je voorspelling in te vullen.
+  </div>
+</div>
+{% endblock %}

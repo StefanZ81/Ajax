@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">🔄 Programma &amp; uitslagen</p>
+  <p style="font-size:12px; color:var(--grey);">
+    Wordt automatisch bijgewerkt bij elk paginabezoek (max. 1×/minuut) vanuit:<br>
+    <code style="font-size:11px; word-break:break-all;">{{ github_data_url }}</code>
+  </p>
+  <form method="post" action="{{ url_for('beheerder_sync_nu') }}">
+    <button type="submit" class="secundair">Nu handmatig verversen</button>
+  </form>
+</div>
+
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">👥 Aanmeldingen ({{ aanvragen|length }})</p>
+  {% for p in aanvragen %}
+  <div class="rij">
+    <span><b>{{ p.naam }}</b><br><span style="font-size:12px; color:var(--grey);">{{ p.email }}</span></span>
+    <span style="display:flex; gap:6px;">
+      <form method="post" action="{{ url_for('beheerder_aanvraag', participant_id=p.id, besluit='goedgekeurd') }}">
+        <button type="submit" style="width:auto; padding:6px 10px; background:var(--green);">✓</button>
+      </form>
+      <form method="post" action="{{ url_for('beheerder_aanvraag', participant_id=p.id, besluit='geweigerd') }}">
+        <button type="submit" style="width:auto; padding:6px 10px; background:var(--red-dark);">✕</button>
+      </form>
+    </span>
+  </div>
+  {% else %}
+  <p style="font-size:13px; color:var(--grey);">Geen openstaande aanvragen.</p>
+  {% endfor %}
+</div>
+
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">⚙️ Spelregels</p>
+  <form method="post" action="{{ url_for('beheerder_regels') }}">
+    <div class="veld"><label>Juiste ruststand (punten)</label><input type="number" name="halftime_punten" value="{{ rules.halftime_punten }}"></div>
+    <div class="veld"><label>Juiste eindstand (punten)</label><input type="number" name="fulltime_punten" value="{{ rules.fulltime_punten }}"></div>
+    <div class="veld"><label>Juiste winnaar/gelijkspel (punten)</label><input type="number" name="outcome_punten" value="{{ rules.outcome_punten }}"></div>
+    <div class="veld"><label>Kosten joker (punten)</label><input type="number" name="joker_kosten" value="{{ rules.joker_kosten }}"></div>
+    <div class="veld"><label>Vermenigvuldiging joker (×)</label><input type="number" name="joker_vermenigvuldiger" value="{{ rules.joker_vermenigvuldiger }}"></div>
+    <button type="submit">Spelregels opslaan</button>
+  </form>
+</div>
+
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">Deelnemers &amp; rollen</p>
+  {% for p in deelnemers %}
+  <div class="rij">
+    <span><b>{{ p.naam }}</b> <span class="pill {{ 'gold' if p.rol == 'beheerder' else '' }}">{{ p.rol }}</span></span>
+    {% if p.status == 'goedgekeurd' %}
+      {% if p.rol == 'deelnemer' %}
+      <form method="post" action="{{ url_for('beheerder_promoveer', participant_id=p.id) }}">
+        <button type="submit" class="secundair" style="width:auto; padding:6px 10px; font-size:12px;">Maak beheerder</button>
+      </form>
+      {% elif p.id != huidige_gebruiker.id %}
+      <form method="post" action="{{ url_for('beheerder_degradeer', participant_id=p.id) }}">
+        <button type="submit" class="secundair" style="width:auto; padding:6px 10px; font-size:12px;">Maak deelnemer</button>
+      </form>
+      {% endif %}
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<p style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.05em;">Wedstrijden — altijd volledig inzichtelijk</p>
+{% for m in matches %}
+<a class="match-link" href="{{ url_for('wedstrijd', match_id=m.id) }}">
+  <div class="card accent">
+    <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
+    <div class="match-sub">{{ m.kickoff.strftime('%a %d %b · %H:%M') }} · {{ m.competitie }}</div>
+  </div>
+</a>
+{% endfor %}
+{% endblock %}

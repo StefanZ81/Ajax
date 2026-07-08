@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>J-Poule</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  {% if huidige_gebruiker %}
+  <header class="top">
+    <img src="{{ url_for('static', filename='ajax_logo.png') }}" alt="Ajax" class="crest-logo">
+    <div>
+      <h1>J-POULE</h1>
+      <p>Ajax voetbalpoule · seizoen {{ seizoen }}</p>
+    </div>
+    <a class="logout" href="{{ url_for('logout') }}">Uitloggen</a>
+  </header>
+  {% endif %}
+
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for categorie, bericht in messages %}
+        <div class="flash {{ categorie }}">{{ bericht }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  {% if huidige_gebruiker %}
+  <nav class="tabs">
+    <a href="{{ url_for('programma') }}" class="{{ 'actief' if request.endpoint == 'programma' else '' }}">Programma</a>
+    <a href="{{ url_for('klassement') }}" class="{{ 'actief' if request.endpoint == 'klassement' else '' }}">Klassement</a>
+    <a href="{{ url_for('seizoen_voorspelling') }}" class="{{ 'actief' if request.endpoint == 'seizoen_voorspelling' else '' }}">Seizoen</a>
+    <a href="{{ url_for('profiel') }}" class="{{ 'actief' if request.endpoint == 'profiel' else '' }}">Profiel</a>
+    {% if huidige_gebruiker.rol == 'beheerder' %}
+    <a href="{{ url_for('beheerder') }}" class="{{ 'actief' if request.endpoint == 'beheerder' else '' }}">Beheer</a>
+    {% endif %}
+  </nav>
+  {% endif %}
+</body>
+</html>
