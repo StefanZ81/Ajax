@@ -8,9 +8,12 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 from db import get_connection
 from scoring import bereken_punten
+
+AMSTERDAM = ZoneInfo("Europe/Amsterdam")
 
 
 def _parse_dt(s: str | None):
@@ -19,9 +22,16 @@ def _parse_dt(s: str | None):
     return datetime.fromisoformat(s)
 
 
+def _parse_dt_lokaal(s: str | None):
+    """Voor weergave: UTC (zoals opgeslagen) omgezet naar Nederlandse tijd,
+    met automatische zomer-/wintertijd via de ingebouwde tijdzonedatabase."""
+    dt = _parse_dt(s)
+    return dt.astimezone(AMSTERDAM) if dt else None
+
+
 def _match_row(row: dict) -> dict:
     row = dict(row)
-    row["kickoff"] = _parse_dt(row["kickoff"])
+    row["kickoff"] = _parse_dt_lokaal(row["kickoff"])
     row["oefenwedstrijd"] = bool(row["oefenwedstrijd"])
     return row
 
