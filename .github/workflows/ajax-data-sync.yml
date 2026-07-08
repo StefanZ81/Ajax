@@ -1,0 +1,47 @@
+name: Ajax-data synchroniseren
+
+# Draait elke 5 minuten (kortste praktische interval bij GitHub Actions),
+# en is ook handmatig te starten via "Run workflow".
+#
+# LET OP — twee bekende GitHub-beperkingen om rekening mee te houden:
+#  1. Scheduled workflows zijn "best effort": GitHub garandeert niet dat ze
+#     precies op tijd draaien, vooral niet bij drukte. Vandaar de marge van
+#     5 minuten rond elk probe-moment in ajax_data_sync.py.
+#  2. GitHub schakelt scheduled workflows automatisch uit na 60 dagen
+#     zonder enige repository-activiteit (commits/PR's). Zolang je actief
+#     aan de site werkt is dat geen probleem; in de rustige zomerstop kan
+#     het zijn dat je de workflow handmatig weer moet aanzetten.
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # nodig om data/ajax_schedule.json terug te committen
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Dependencies installeren
+        run: pip install requests
+
+      - name: Ajax-data ophalen en tabel bijwerken
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+        run: python scripts/ajax_data_sync.py
+
+      - name: Wijzigingen committen (alleen als er echt iets veranderde)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ajax_schedule.json
+          git diff --staged --quiet || git commit -m "Ajax-data bijgewerkt [skip ci]"
+          git push
+

@@ -1,0 +1,30 @@
+name: Deploy naar PythonAnywhere
+
+# LET OP: momenteel UITGESCHAKELD als automatische trigger. Twee redenen:
+#   1. Dit vereist SSH-toegang, die er niet is op het gratis PythonAnywhere-plan
+#      (zie DEPLOY_GRATIS_PLAN.md) — de secrets hieronder staan niet ingesteld.
+#   2. ajax-data-sync.yml commit nu regelmatig naar main; met een push-trigger
+#      zou dat deze workflow onnodig vaak (en tot mislukken gedoemd) starten.
+# Zodra je ooit naar een betaald plan gaat: zet de push-trigger hieronder
+# weer aan en vul de SSH-secrets in (zie README_PYTHONANYWHERE.md).
+on:
+  # push:
+  #   branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH naar PythonAnywhere en deploy_update.sh uitvoeren
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.PA_SSH_HOST }}
+          username: ${{ secrets.PA_USERNAME }}
+          key: ${{ secrets.PA_SSH_PRIVATE_KEY }}
+          script: |
+            export PA_USERNAME="${{ secrets.PA_USERNAME }}"
+            export PA_HOST="${{ secrets.PA_API_HOST }}"
+            export PYTHONANYWHERE_API_TOKEN="${{ secrets.PA_API_TOKEN }}"
+            bash ~/j-poule-web/deploy_update.sh
+

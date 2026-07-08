@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">🏆 Klassement J-Poule</p>
+  {% for rij in klassement %}
+  <div class="rij">
+    <span><b style="color: {{ 'var(--red)' if loop.index == 1 else 'var(--grey)' }};">{{ loop.index }}</b>&nbsp;&nbsp;{{ rij.naam }}</span>
+    <span class="score">{{ rij.totaal_punten }} pt</span>
+  </div>
+  {% else %}
+  <p style="font-size:13px; color:var(--grey);">Nog geen punten dit seizoen.</p>
+  {% endfor %}
+</div>
+{% endblock %}
+

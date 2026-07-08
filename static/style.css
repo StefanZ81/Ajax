@@ -86,3 +86,4 @@ button.secundair { background: #F0F0F3; color: var(--ink); }
 .tabs-toggle { display: flex; gap: 4px; background: #F0F0F3; border-radius: 999px; padding: 4px; margin-bottom: 16px; }
 .tabs-toggle a { flex: 1; text-align: center; padding: 8px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--grey); }
 .tabs-toggle a.actief { background: var(--ink); color: #fff; }
+
