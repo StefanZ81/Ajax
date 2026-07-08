@@ -1,24 +1,34 @@
 """
 scripts/ajax_data_sync.py
 ------------------------------------------------------------------
-Draait in GitHub Actions (zie .github/workflows/ajax-data-sync.yml),
-NIET op PythonAnywhere — dit ontwijkt precies de outbound-internet-
-beperking van het gratis PythonAnywhere-plan, want GitHub Actions
-heeft onbeperkt internet.
+Draait in GitHub Actions (zie .github/workflows/ajax-data-sync.yml).
+Haalt Ajax' Eredivisie-programma en -uitslagen op bij football-data.org
+(permanent gratis tier — zie https://www.football-data.org/coverage).
+
+LET OP — bewuste beperking van deze opzet:
+football-data.org's gratis tier bevat de Eredivisie, maar GEEN Europa
+League of Conference League. Dit script haalt dus alleen Eredivisie-
+wedstrijden van Ajax op. Europese wedstrijden (dit seizoen Conference
+League) moeten de beheerder er los bij zetten — zie DEPLOY_GRATIS_PLAN.md,
+stap 5, voor het commando daarvoor. Dat gebeurt hierdoor niet automatisch
+overschreven, want dit script raakt alleen wedstrijden met
+competitie == "Eredivisie" aan (zie save()/merge-logica onderaan).
 
 Wat het doet, elke keer dat het draait:
-  1. Eén keer per dag: volledige ververing van het Ajax-programma
-     (Eredivisie + Europese toernooien, met dezelfde 1-september-
-     grens als eerder om voorrondes/play-offs uit te sluiten).
-  2. Tijdens een wedstrijd: gerichte extra opvraging van precies
-     die ene wedstrijd, rond T+50 min (ruststand) en T+115 min
-     (eindstand) na aftrap — niet vaker, om de API-quota te sparen.
+  1. Eén keer per dag: volledige ververing van Ajax' Eredivisie-programma.
+  2. Tijdens een wedstrijd: gerichte extra opvraging van precies díe
+     wedstrijd, rond T+50 min (ruststand) en T+115 min (eindstand) na
+     aftrap — niet vaker, om binnen de 10 verzoeken/minuut te blijven.
 
-Schrijft alles naar data/ajax_schedule.json — dit bestand wordt
-VOLLEDIG OVERSCHREVEN bij elke run (geen historie, alleen de
-actuele stand van zaken), en door de workflow teruggecommit naar
-de repo. De website leest dit bestand via:
-    https://raw.githubusercontent.com/<jouw-org>/<jouw-repo>/main/data/ajax_schedule.json
+Schrijft naar data/ajax_schedule.json — dit bestand wordt bij elke
+dagelijkse ververing VOLLEDIG OVERSCHREVEN (geen historie, alleen de
+actuele stand van zaken). Bevat uitsluitend Eredivisie-wedstrijden.
+Europese wedstrijden voegt de beheerder rechtstreeks toe via het
+formulier in het beheerscherm van de website (zie app.py/queries.py) —
+die komen dus nooit in dit bestand te staan, en dit script hoeft er
+dan ook geen rekening mee te houden: github_sync.py aan de andere kant
+werkt alleen de wedstrijd-id's bij die in deze JSON staan, en raakt
+nooit rijen aan die er niet in voorkomen.
 ------------------------------------------------------------------
 """
 
@@ -26,23 +36,15 @@ from __future__ import annotations
 
 import json
 import os
-import re
 from datetime import datetime, timedelta, timezone
 
 import requests
 
-API_BASE = "https://v3.football.api-sports.io"
-API_KEY = os.environ["API_FOOTBALL_KEY"]
-
-# Eenmalig opgezocht via GET /teams?search=Ajax (team uit country "Netherlands").
-AJAX_TEAM_ID = int(os.environ.get("AJAX_TEAM_ID", "194"))
+API_BASE = "https://api.football-data.org/v4"
+API_KEY = os.environ["FOOTBALL_DATA_API_KEY"]
+COMPETITIE_CODE = "DED"  # Eredivisie — enige Ajax-competitie in de gratis tier
 
 OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "data/ajax_schedule.json")
-
-LIVE_CODES = {"1H", "HT", "2H", "ET", "BT", "P", "SUSP", "INT"}
-AFGELOPEN_CODES = {"FT", "AET", "PEN"}
-EUROPESE_TOERNOOIEN = {"UEFA Champions League", "UEFA Europa League", "UEFA Conference League"}
-VOORRONDES_EINDIGEN_MAAND = 9  # vanaf 1 september telt een Europese wedstrijd pas mee
 
 # Precies deze twee momenten na aftrap worden extra bevraagd (zie opdracht):
 PROBE_MOMENTEN = [
@@ -52,23 +54,20 @@ PROBE_MOMENTEN = [
 PROBE_MARGE = timedelta(minutes=5)  # cron draait elke 5 min, dus dit dekt het venster af
 
 
-# ---------------- API-Football ----------------
+# ---------------- football-data.org ----------------
 
-def api_football(path: str) -> list[dict]:
-    res = requests.get(f"{API_BASE}{path}", headers={"x-apisports-key": API_KEY}, timeout=15)
+def football_data(path: str) -> dict:
+    res = requests.get(f"{API_BASE}{path}", headers={"X-Auth-Token": API_KEY}, timeout=15)
     res.raise_for_status()
-    data = res.json()
-    if data.get("errors"):
-        raise RuntimeError(f"API-Football gaf een fout terug: {data['errors']}")
-    return data["response"]
+    return res.json()
 
 
-def _map_status(code: str) -> str:
-    if code in LIVE_CODES:
+def _map_status(status: str) -> str:
+    if status in ("IN_PLAY", "PAUSED"):
         return "live"
-    if code in AFGELOPEN_CODES:
+    if status in ("FINISHED", "AWARDED"):
         return "afgelopen"
-    return "gepland"
+    return "gepland"  # SCHEDULED, TIMED, SUSPENDED, POSTPONED
 
 
 def _normaliseer_score(s: dict | None) -> dict | None:
@@ -82,46 +81,34 @@ def _seizoen_label(kickoff: datetime) -> str:
     return f"{start_jaar}/{start_jaar + 1}"
 
 
-def map_fixture(f: dict) -> dict:
-    kickoff = datetime.fromisoformat(f["fixture"]["date"])
+def map_match(m: dict) -> dict:
+    kickoff = datetime.fromisoformat(m["utcDate"].replace("Z", "+00:00"))
     return {
-        "id": f["fixture"]["id"],
+        "id": m["id"],
         "seizoen": _seizoen_label(kickoff),
-        "competitie": f["league"]["name"],
-        "ronde": f["league"]["round"],
-        "thuis": f["teams"]["home"]["name"],
-        "uit": f["teams"]["away"]["name"],
+        "competitie": "Eredivisie",
+        "ronde": f"Speelronde {m['matchday']}" if m.get("matchday") else None,
+        "thuis": m["homeTeam"]["name"],
+        "uit": m["awayTeam"]["name"],
         "kickoff": kickoff.isoformat(),
-        "status": _map_status(f["fixture"]["status"]["short"]),
-        "rust": _normaliseer_score(f["score"]["halftime"]),
-        "eind": _normaliseer_score(f["score"]["fulltime"]),
+        "status": _map_status(m["status"]),
+        "rust": _normaliseer_score(m["score"].get("halfTime")),
+        "eind": _normaliseer_score(m["score"].get("fullTime")),
     }
 
 
-def is_relevante_competitie(match: dict) -> bool:
-    if match["competitie"] == "Eredivisie":
-        return True
-    if match["competitie"] not in EUROPESE_TOERNOOIEN:
-        return False
-
-    kickoff = datetime.fromisoformat(match["kickoff"])
-    seizoen_start_jaar = kickoff.year if kickoff.month >= 7 else kickoff.year - 1
-    grens = datetime(seizoen_start_jaar, VOORRONDES_EINDIGEN_MAAND, 1, tzinfo=kickoff.tzinfo)
-    if kickoff < grens:
-        return False
-
-    is_kwalificatie = re.search(r"qualif|preliminary|voorronde|play-?off", match.get("ronde") or "", re.IGNORECASE)
-    return not is_kwalificatie
+def is_ajax_wedstrijd(m: dict) -> bool:
+    return "Ajax" in m["homeTeam"]["name"] or "Ajax" in m["awayTeam"]["name"]
 
 
 # ---------------- Dagelijkse volledige ververing ----------------
 
 def daily_full_refresh() -> list[dict]:
     nu = datetime.now(timezone.utc)
-    seizoen = nu.year if nu.month >= 7 else nu.year - 1
-    response = api_football(f"/fixtures?team={AJAX_TEAM_ID}&season={seizoen}")
-    matches = [m for m in (map_fixture(f) for f in response) if is_relevante_competitie(m)]
-    print(f"[daily_full_refresh] {len(matches)} relevante wedstrijden opgehaald.")
+    seizoen_jaar = nu.year if nu.month >= 7 else nu.year - 1
+    data = football_data(f"/competitions/{COMPETITIE_CODE}/matches?season={seizoen_jaar}")
+    matches = [map_match(m) for m in data["matches"] if is_ajax_wedstrijd(m)]
+    print(f"[daily_full_refresh] {len(matches)} Eredivisie-wedstrijden van Ajax opgehaald.")
     return matches
 
 
@@ -142,10 +129,12 @@ def wedstrijden_binnen_probe_venster(matches: list[dict]) -> list[tuple[int, str
 
 
 def probe_fixture(fixture_id: int) -> dict | None:
-    response = api_football(f"/fixtures?id={fixture_id}")
-    if not response:
+    try:
+        data = football_data(f"/matches/{fixture_id}")
+    except requests.HTTPError as e:
+        print(f"[probe_fixture] mislukt voor {fixture_id}: {e}")
         return None
-    return map_fixture(response[0])
+    return map_match(data)
 
 
 # ---------------- Lezen/schrijven van de JSON-tabel ----------------
@@ -202,4 +191,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
