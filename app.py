@@ -116,9 +116,10 @@ def programma():
     )
 
 
-@app.route("/wedstrijd/<int:match_id>", methods=["GET", "POST"])
+@app.route("/wedstrijd/<match_id>", methods=["GET", "POST"])
 @login_required
 def wedstrijd(match_id):
+    match_id = int(match_id)
     github_sync.sync_if_needed()
     gebruiker = current_user()
     match = queries.get_match(match_id)
@@ -200,6 +201,41 @@ def beheerder():
     )
 
 
+@app.route("/beheerder/wedstrijd-toevoegen", methods=["POST"])
+@admin_required
+def beheerder_wedstrijd_toevoegen():
+    seizoen = queries.get_active_season()
+    try:
+        kickoff = datetime.fromisoformat(request.form["kickoff"]).replace(tzinfo=timezone.utc).isoformat()
+        queries.add_manual_match(
+            seizoen=seizoen,
+            competitie=request.form["competitie"],
+            ronde=request.form.get("ronde", "").strip(),
+            thuis=request.form["thuis"].strip(),
+            uit=request.form["uit"].strip(),
+            kickoff_iso=kickoff,
+            oefenwedstrijd="oefenwedstrijd" in request.form,
+        )
+        flash("Wedstrijd toegevoegd.", "info")
+    except (KeyError, ValueError) as e:
+        flash(f"Kon wedstrijd niet toevoegen: {e}", "fout")
+    return redirect(url_for("beheerder"))
+
+
+@app.route("/beheerder/uitslag/<match_id>", methods=["POST"])
+@admin_required
+def beheerder_uitslag(match_id):
+    try:
+        match_id = int(match_id)
+        rust = (int(request.form["rust_thuis"]), int(request.form["rust_uit"]))
+        eind = (int(request.form["eind_thuis"]), int(request.form["eind_uit"]))
+        queries.set_match_result(match_id, rust, eind)
+        flash("Uitslag opgeslagen en punten doorgerekend.", "info")
+    except (KeyError, ValueError) as e:
+        flash(f"Kon uitslag niet opslaan: {e}", "fout")
+    return redirect(url_for("beheerder"))
+
+
 @app.route("/beheerder/sync-nu", methods=["POST"])
 @admin_required
 def beheerder_sync_nu():
@@ -259,4 +295,3 @@ def beheerder_regels():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
