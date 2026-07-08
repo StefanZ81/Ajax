@@ -18,6 +18,7 @@ from __future__ import annotations
 import os
 from datetime import datetime, timezone
 from functools import wraps
+from zoneinfo import ZoneInfo
 
 from flask import Flask, abort, flash, redirect, render_template, request, session, url_for
 
@@ -28,6 +29,7 @@ from scoring import bereken_punten
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.environ.get("SESSION_SECRET", "dev-only-niet-in-productie"))
+AMSTERDAM = ZoneInfo("Europe/Amsterdam")
 
 
 # ---------------- Auth-helpers ----------------
@@ -206,7 +208,7 @@ def beheerder():
 def beheerder_wedstrijd_toevoegen():
     seizoen = queries.get_active_season()
     try:
-        kickoff = datetime.fromisoformat(request.form["kickoff"]).replace(tzinfo=timezone.utc).isoformat()
+        kickoff = datetime.fromisoformat(request.form["kickoff"]).replace(tzinfo=AMSTERDAM).astimezone(timezone.utc).isoformat()
         queries.add_manual_match(
             seizoen=seizoen,
             competitie=request.form["competitie"],
