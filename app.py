@@ -31,6 +31,35 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.environ.get("SESSION_SECRET", "dev-only-niet-in-productie"))
 AMSTERDAM = ZoneInfo("Europe/Amsterdam")
 
+# ---------------- Nederlandse datumopmaak ----------------
+# Bewust NIET via locale.setlocale(): die vereist dat de server een
+# nl_NL-taalpakket heeft geïnstalleerd, wat op gedeelde hosting (zoals
+# PythonAnywhere) niet gegarandeerd is. Deze aanpak werkt altijd.
+
+_DAGEN_KORT = ["ma", "di", "wo", "do", "vr", "za", "zo"]
+_DAGEN_VOL = ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag"]
+_MAANDEN_KORT = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"]
+_MAANDEN_VOL = ["januari", "februari", "maart", "april", "mei", "juni", "juli",
+                "augustus", "september", "oktober", "november", "december"]
+
+
+def nl_datum_kort(dt):
+    """bv. 'zo 09 aug · 16:30' — voor wedstrijdenlijsten en widgets."""
+    if not dt:
+        return ""
+    return f"{_DAGEN_KORT[dt.weekday()]} {dt.day:02d} {_MAANDEN_KORT[dt.month - 1]} · {dt.strftime('%H:%M')}"
+
+
+def nl_datum_lang(dt):
+    """bv. 'zondag 9 augustus 2026 · 16:30' — voor de wedstrijd-detailpagina."""
+    if not dt:
+        return ""
+    return f"{_DAGEN_VOL[dt.weekday()]} {dt.day} {_MAANDEN_VOL[dt.month - 1]} {dt.year} · {dt.strftime('%H:%M')}"
+
+
+app.jinja_env.filters["nl_kort"] = nl_datum_kort
+app.jinja_env.filters["nl_lang"] = nl_datum_lang
+
 
 # ---------------- Auth-helpers ----------------
 
