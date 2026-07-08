@@ -18,7 +18,7 @@
   {% for m in upcoming %}
   <div class="widget-row">
     <span>{{ m.thuis }} – {{ m.uit }}</span>
-    <span style="opacity:.85;">{{ m.kickoff.strftime('%a %d %b · %H:%M') }}</span>
+    <span style="opacity:.85;">{{ m.kickoff | nl_kort }}</span>
   </div>
   {% else %}
   <div style="font-size:13px; opacity:.8;">Geen aankomende wedstrijden.</div>
@@ -36,7 +36,7 @@
     <div class="match-top">
       <div>
         <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
-        <div class="match-sub">{{ m.kickoff.strftime('%a %d %b · %H:%M') }}</div>
+        <div class="match-sub">{{ m.kickoff | nl_kort }}</div>
       </div>
       {% if m.status == 'afgelopen' %}
       <div style="text-align:right;">
