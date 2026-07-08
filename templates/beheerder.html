@@ -97,7 +97,7 @@
 {% for m in matches %}
 <div class="card accent">
   <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
-  <div class="match-sub">{{ m.kickoff.strftime('%a %d %b · %H:%M') }} · {{ m.competitie }}{% if m.oefenwedstrijd %} · oefenwedstrijd{% endif %}</div>
+  <div class="match-sub">{{ m.kickoff | nl_kort }} · {{ m.competitie }}{% if m.oefenwedstrijd %} · oefenwedstrijd{% endif %}</div>
   {% if m.status == 'afgelopen' %}
     <div class="score" style="margin-top:6px;">{{ m.uitslag_eind_thuis }}-{{ m.uitslag_eind_uit }}</div>
     <div style="font-size:11px; color:var(--grey);">rust {{ m.uitslag_rust_thuis }}-{{ m.uitslag_rust_uit }}</div>
