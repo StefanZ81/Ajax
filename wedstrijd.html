@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<p><a href="{{ url_for('programma') }}" style="color:var(--red); font-size:13px; text-decoration:none;">&larr; Terug naar overzicht</a></p>
+<h2 style="margin-bottom:2px;">{{ match.thuis }} – {{ match.uit }}</h2>
+<p style="color:var(--grey); font-size:13px; margin-top:0;">{{ match.kickoff.strftime('%A %d %B %Y · %H:%M') }} · {{ match.competitie }}</p>
+
+{% if kan_nog_voorspellen %}
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">Jouw voorspelling</p>
+  <form method="post">
+    <div class="veld">
+      <label>Ruststand</label>
+      <div class="score-inputs">
+        <input type="number" name="rust_thuis" min="0" max="9" value="{{ mijn_voorspelling.rust_thuis if mijn_voorspelling else 0 }}" required>
+        <span>–</span>
+        <input type="number" name="rust_uit" min="0" max="9" value="{{ mijn_voorspelling.rust_uit if mijn_voorspelling else 0 }}" required>
+      </div>
+    </div>
+    <div class="veld">
+      <label>Eindstand</label>
+      <div class="score-inputs">
+        <input type="number" name="eind_thuis" min="0" max="15" value="{{ mijn_voorspelling.eind_thuis if mijn_voorspelling else 0 }}" required>
+        <span>–</span>
+        <input type="number" name="eind_uit" min="0" max="15" value="{{ mijn_voorspelling.eind_uit if mijn_voorspelling else 0 }}" required>
+      </div>
+    </div>
+    <div class="veld">
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+        <input type="checkbox" name="joker" style="width:auto;" {{ 'checked' if mijn_voorspelling and mijn_voorspelling.joker }}>
+        ★ Joker inzetten (kost 1 punt, levert dubbele punten op)
+      </label>
+    </div>
+    <button type="submit">Voorspelling opslaan</button>
+  </form>
+</div>
+{% else %}
+<p style="color:var(--grey); font-size:13px;">Voorspellen kan niet meer — de wedstrijd is begonnen.</p>
+{% endif %}
+
+{% if mag_voorspellingen_zien %}
+<div class="card">
+  <p style="font-weight:700; font-size:14px;">Overzicht — alle voorspellingen</p>
+  {% for v in voorspellingen %}
+  <div class="rij">
+    <span><b>{{ v.naam }}</b>{{ ' ★' if v.joker }}</span>
+    <span style="text-align:right;">
+      <span style="font-size:11px; color:var(--grey);">rust {{ v.rust_thuis }}-{{ v.rust_uit }}</span>
+      <span class="score">{{ v.eind_thuis }}-{{ v.eind_uit }}</span>
+      {% if v.punten is not none %}<div style="color:var(--red); font-weight:700; font-size:12px;">{{ v.punten }} pt</div>{% endif %}
+    </span>
+  </div>
+  {% else %}
+  <p style="font-size:13px; color:var(--grey);">Nog geen voorspellingen.</p>
+  {% endfor %}
+</div>
+{% else %}
+<p style="font-size:13px; color:var(--grey);">🔒 Voorspellingen van andere deelnemers zijn zichtbaar zodra de wedstrijd is begonnen.</p>
+{% endif %}
+{% endblock %}

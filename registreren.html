@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align:center; margin: 32px 0;">
+  <img src="{{ url_for('static', filename='ajax_logo.png') }}" alt="Ajax" style="width:64px; height:64px; margin: 0 auto 12px; display:block;">
+  <h1 style="margin:0;">J-POULE</h1>
+</div>
+
+<div class="tabs-toggle">
+  <a href="{{ url_for('login') }}">Inloggen</a>
+  <a href="{{ url_for('registreren') }}" class="actief">Aanmelden</a>
+</div>
+
+<div class="card">
+  <form method="post">
+    <div class="veld">
+      <label>Naam</label>
+      <input type="text" name="naam" required>
+    </div>
+    <div class="veld">
+      <label>E-mailadres</label>
+      <input type="email" name="email" required>
+    </div>
+    <div class="veld">
+      <label>Wachtwoord</label>
+      <input type="password" name="wachtwoord" required>
+      <p style="font-size:11px; color:var(--grey); margin-top:4px;">Minimaal 10 tekens, met een hoofdletter en een cijfer.</p>
+    </div>
+    <button type="submit">Aanvraag versturen</button>
+  </form>
+</div>
+
+<p style="font-size:11px; color:var(--grey); text-align:center;">
+  Je krijgt toegang zodra de beheerder je aanvraag goedkeurt.
+</p>
+{% endblock %}

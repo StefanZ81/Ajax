@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="widget">
+  <div class="widget-title">🏆 Ajax in de Eredivisie · widget-preview</div>
+  {% for r in standings %}
+  <div class="widget-row">
+    <span style="{{ 'font-weight:700;' if r.team == 'Ajax' else 'opacity:.85;' }}">{{ r.positie }}. {{ r.team }}{{ ' ●' if r.team == 'Ajax' else '' }}</span>
+    <span>{{ r.punten }} pt</span>
+  </div>
+  {% else %}
+  <div style="font-size:13px; opacity:.8;">Stand nog niet gesynchroniseerd.</div>
+  {% endfor %}
+</div>
+
+<div class="widget">
+  <div class="widget-title">📅 Programma Ajax · widget-preview</div>
+  {% for m in upcoming %}
+  <div class="widget-row">
+    <span>{{ m.thuis }} – {{ m.uit }}</span>
+    <span style="opacity:.85;">{{ m.kickoff.strftime('%a %d %b · %H:%M') }}</span>
+  </div>
+  {% else %}
+  <div style="font-size:13px; opacity:.8;">Geen aankomende wedstrijden.</div>
+  {% endfor %}
+</div>
+
+{% for m in matches %}
+<a class="match-link" href="{{ url_for('wedstrijd', match_id=m.id) }}">
+  <div class="card accent">
+    <div>
+      <span class="pill">{{ m.competitie }}</span>
+      {% if m.oefenwedstrijd %}<span class="pill gold">Oefenwedstrijd</span>{% endif %}
+      {% if m.status == 'afgelopen' %}<span class="pill green">Gespeeld</span>{% endif %}
+    </div>
+    <div class="match-top">
+      <div>
+        <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
+        <div class="match-sub">{{ m.kickoff.strftime('%a %d %b · %H:%M') }}</div>
+      </div>
+      {% if m.status == 'afgelopen' %}
+      <div style="text-align:right;">
+        <div class="score">{{ m.uitslag_eind_thuis }}-{{ m.uitslag_eind_uit }}</div>
+        <div style="font-size:11px; color:var(--grey);">rust {{ m.uitslag_rust_thuis }}-{{ m.uitslag_rust_uit }}</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</a>
+{% endfor %}
+{% endblock %}
