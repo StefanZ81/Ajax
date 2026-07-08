@@ -169,7 +169,7 @@ def save(matches: list[dict]) -> None:
 
 
 def moet_daily_refresh(bestaand: dict | None) -> bool:
-    if not bestaand:
+    if not bestaand or not bestaand.get("bijgewerkt_op"):
         return True
     laatst = datetime.fromisoformat(bestaand["bijgewerkt_op"])
     return laatst.date() != datetime.now(timezone.utc).date()
