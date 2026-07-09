@@ -307,8 +307,8 @@ def get_standings_widget(seizoen: str) -> list[dict]:
         rows = conn.execute(
             """
             SELECT * FROM standings WHERE seizoen = ? AND positie BETWEEN
-                MAX(1, (SELECT positie FROM standings WHERE seizoen = ? AND team = 'Ajax') - 1)
-                AND (SELECT positie FROM standings WHERE seizoen = ? AND team = 'Ajax') + 1
+                MAX(1, (SELECT positie FROM standings WHERE seizoen = ? AND team LIKE '%Ajax%') - 1)
+                AND (SELECT positie FROM standings WHERE seizoen = ? AND team LIKE '%Ajax%') + 1
             ORDER BY positie
             """,
             (seizoen, seizoen, seizoen),
