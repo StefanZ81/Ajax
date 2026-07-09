@@ -8,7 +8,7 @@
 
 <div class="tabs-toggle">
   <a href="{{ url_for('login') }}" class="actief">Inloggen</a>
-  <a href="{{ url_for('registreren') }}">Aanmelden</a>
+  {% if not registratie_gesloten %}<a href="{{ url_for('registreren') }}">Aanmelden</a>{% endif %}
 </div>
 
 <div class="card">
@@ -29,4 +29,3 @@
   🔒 Je wachtwoord wordt versleuteld opgeslagen en is nooit leesbaar — ook niet voor de beheerder.
 </p>
 {% endblock %}
-
