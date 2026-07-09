@@ -9,26 +9,18 @@ LET OP — bewuste beperking van deze opzet:
 football-data.org's gratis tier bevat de Eredivisie, maar GEEN Europa
 League of Conference League. Dit script haalt dus alleen Eredivisie-
 wedstrijden van Ajax op. Europese wedstrijden (dit seizoen Conference
-League) moeten de beheerder er los bij zetten — zie DEPLOY_GRATIS_PLAN.md,
-stap 5, voor het commando daarvoor. Dat gebeurt hierdoor niet automatisch
-overschreven, want dit script raakt alleen wedstrijden met
-competitie == "Eredivisie" aan (zie save()/merge-logica onderaan).
+League) moeten de beheerder er los bij zetten via het beheerscherm.
 
 Wat het doet, elke keer dat het draait:
-  1. Eén keer per dag: volledige ververing van Ajax' Eredivisie-programma.
+  1. Eén keer per dag: volledige ververing van Ajax' Eredivisie-programma
+     én de Eredivisiestand.
   2. Tijdens een wedstrijd: gerichte extra opvraging van precies díe
      wedstrijd, rond T+50 min (ruststand) en T+115 min (eindstand) na
      aftrap — niet vaker, om binnen de 10 verzoeken/minuut te blijven.
 
 Schrijft naar data/ajax_schedule.json — dit bestand wordt bij elke
 dagelijkse ververing VOLLEDIG OVERSCHREVEN (geen historie, alleen de
-actuele stand van zaken). Bevat uitsluitend Eredivisie-wedstrijden.
-Europese wedstrijden voegt de beheerder rechtstreeks toe via het
-formulier in het beheerscherm van de website (zie app.py/queries.py) —
-die komen dus nooit in dit bestand te staan, en dit script hoeft er
-dan ook geen rekening mee te houden: github_sync.py aan de andere kant
-werkt alleen de wedstrijd-id's bij die in deze JSON staan, en raakt
-nooit rijen aan die er niet in voorkomen.
+actuele stand van zaken).
 ------------------------------------------------------------------
 """
 
