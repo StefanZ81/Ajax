@@ -129,6 +129,7 @@ CREATE TABLE standings (
 CREATE TABLE app_settings (
     singleton       INTEGER PRIMARY KEY DEFAULT 1 CHECK (singleton = 1),
     seizoen_actief  TEXT NOT NULL,
+    registratie_sluit_na_wedstrijd INTEGER NOT NULL DEFAULT 2,
     bijgewerkt_op   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
@@ -165,4 +166,3 @@ LEFT JOIN season_predictions sp
 WHERE p.rol = 'deelnemer' AND p.status = 'goedgekeurd'
 GROUP BY p.id, p.naam
 ORDER BY totaal_punten DESC;
-
