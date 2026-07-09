@@ -313,4 +313,11 @@ def get_standings_widget(seizoen: str) -> list[dict]:
             """,
             (seizoen, seizoen, seizoen),
         ).fetchall()
-        return [dict(r) for r in rows]
+    resultaat = [dict(r) for r in rows]
+    # Vóór de competitiestart staan bij football-data.org alle teams nog gelijk
+    # (bv. iedereen op positie 1, 0 punten) — dat levert hier veel meer dan 3
+    # rijen op. Dat is geen zinvolle "1 boven/onder Ajax"-stand, dus dan liever
+    # niets tonen (de widget valt dan terug op "Stand nog niet gesynchroniseerd").
+    if len(resultaat) > 3:
+        return []
+    return resultaat
