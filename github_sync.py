@@ -57,10 +57,22 @@ def _sync_now() -> int:
     resp.raise_for_status()
     payload = resp.json()
     wedstrijden = payload.get("wedstrijden") or []
-    if not wedstrijden:
-        return 0
+    stand = payload.get("stand") or []
 
     import queries  # lokale import om circulaire imports met app.py te vermijden
+
+    if stand:
+        seizoen = queries.get_active_season()
+        with get_connection() as conn:
+            conn.execute("DELETE FROM standings WHERE seizoen = ?", (seizoen,))
+            for rij in stand:
+                conn.execute(
+                    "INSERT INTO standings (seizoen, positie, team, punten) VALUES (?, ?, ?, ?)",
+                    (seizoen, rij["positie"], rij["team"], rij["punten"]),
+                )
+
+    if not wedstrijden:
+        return 0
 
     with get_connection() as conn:
         for m in wedstrijden:
