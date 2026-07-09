@@ -23,9 +23,12 @@ from zoneinfo import ZoneInfo
 from flask import Flask, abort, flash, redirect, render_template, request, session, url_for
 
 import auth
+import db
 import github_sync
 import queries
 from scoring import bereken_punten
+
+db.run_migrations()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.environ.get("SESSION_SECRET", "dev-only-niet-in-productie"))
@@ -95,7 +98,12 @@ def admin_required(f):
 
 @app.context_processor
 def inject_user():
-    return {"huidige_gebruiker": current_user(), "seizoen": queries.get_active_season()}
+    seizoen = queries.get_active_season()
+    return {
+        "huidige_gebruiker": current_user(),
+        "seizoen": seizoen,
+        "registratie_gesloten": queries.registratie_gesloten(seizoen),
+    }
 
 
 # ---------------- Auth-routes ----------------
@@ -114,6 +122,8 @@ def login():
 
 @app.route("/registreren", methods=["GET", "POST"])
 def registreren():
+    if queries.registratie_gesloten(queries.get_active_season()):
+        return render_template("registreren_gesloten.html")
     if request.method == "POST":
         try:
             auth.register_participant(request.form["naam"], request.form["email"], request.form["wachtwoord"])
@@ -229,6 +239,7 @@ def beheerder():
         rules=queries.get_rules(seizoen),
         matches=queries.get_matches(seizoen),
         github_data_url=github_sync.GITHUB_DATA_URL,
+        registratie_sluit_na_wedstrijd=queries.get_registratie_sluit_na_wedstrijd(),
     )
 
 
@@ -267,6 +278,20 @@ def beheerder_uitslag(match_id):
     return redirect(url_for("beheerder"))
 
 
+@app.route("/beheerder/registratie-instelling", methods=["POST"])
+@admin_required
+def beheerder_registratie_instelling():
+    try:
+        n = int(request.form["registratie_sluit_na_wedstrijd"])
+        if n < 1:
+            raise ValueError("moet minimaal 1 zijn")
+        queries.set_registratie_sluit_na_wedstrijd(n)
+        flash("Registratie-instelling opgeslagen.", "info")
+    except (KeyError, ValueError) as e:
+        flash(f"Ongeldige waarde: {e}", "fout")
+    return redirect(url_for("beheerder"))
+
+
 @app.route("/beheerder/sync-nu", methods=["POST"])
 @admin_required
 def beheerder_sync_nu():
@@ -280,7 +305,12 @@ def beheerder_sync_nu():
 def beheerder_aanvraag(participant_id, besluit):
     if besluit not in ("goedgekeurd", "geweigerd"):
         abort(400)
-    queries.set_participant_status(participant_id, besluit)
+    if besluit == "geweigerd":
+        # Geen data van geweigerde aanmeldingen bewaren: direct volledig verwijderen
+        # in plaats van alleen de status te wijzigen.
+        queries.delete_participant(participant_id)
+    else:
+        queries.set_participant_status(participant_id, besluit)
     return redirect(url_for("beheerder"))
 
 
