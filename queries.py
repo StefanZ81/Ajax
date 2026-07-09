@@ -144,6 +144,17 @@ def set_participant_status(participant_id: str, status: str) -> None:
         conn.execute("UPDATE participants SET status = ? WHERE id = ?", (status, participant_id))
 
 
+def delete_participant(participant_id: str) -> None:
+    """Verwijdert een deelnemer volledig — gebruikt bij het weigeren van een
+    aanmelding, zodat er geen data van geweigerde aanmeldingen bewaard blijft.
+    PRAGMA foreign_keys staat aan (zie db.py), dus eventuele gekoppelde rijen
+    (voorspellingen, reminders) worden via ON DELETE CASCADE automatisch mee
+    opgeruimd — voor een geweigerde aanmelding zijn die er normaliter nooit,
+    want inloggen kon nog niet, maar dit is een extra vangnet."""
+    with get_connection() as conn:
+        conn.execute("DELETE FROM participants WHERE id = ?", (participant_id,))
+
+
 def get_season_prediction(participant_id: str, seizoen: str) -> dict | None:
     with get_connection() as conn:
         row = conn.execute(
@@ -174,6 +185,38 @@ def upsert_season_prediction(participant_id: str, seizoen: str, na17: tuple[int,
                 "na34_positie": na34[0], "na34_punten": na34[1],
             },
         )
+
+
+def get_registratie_sluit_na_wedstrijd() -> int:
+    with get_connection() as conn:
+        row = conn.execute("SELECT registratie_sluit_na_wedstrijd FROM app_settings LIMIT 1").fetchone()
+        return row["registratie_sluit_na_wedstrijd"] if row else 2
+
+
+def set_registratie_sluit_na_wedstrijd(n: int) -> None:
+    with get_connection() as conn:
+        conn.execute("UPDATE app_settings SET registratie_sluit_na_wedstrijd = ?", (n,))
+
+
+def registratie_gesloten(seizoen: str) -> bool:
+    """Registratie sluit bij de aftrap van de N-de Eredivisie-wedstrijd
+    (oefenwedstrijden tellen niet mee), waarbij N instelbaar is door de
+    beheerder (standaard 2). Zolang die N-de wedstrijd nog niet bekend is
+    (schema nog niet volledig gesynchroniseerd), blijft registratie open —
+    we sluiten nooit per ongeluk te vroeg bij onvolledige data."""
+    n = get_registratie_sluit_na_wedstrijd()
+    with get_connection() as conn:
+        row = conn.execute(
+            """
+            SELECT kickoff FROM matches
+            WHERE seizoen = ? AND competitie = 'Eredivisie' AND oefenwedstrijd = 0
+            ORDER BY kickoff LIMIT 1 OFFSET ?
+            """,
+            (seizoen, n - 1),
+        ).fetchone()
+    if not row:
+        return False
+    return datetime.now(timezone.utc) >= _parse_dt(row["kickoff"])
 
 
 def eerste_competitiewedstrijd_gestart(seizoen: str) -> bool:
