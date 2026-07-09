@@ -181,7 +181,7 @@ def moet_daily_refresh(bestaand: dict | None) -> bool:
 def main() -> None:
     bestaand = load_existing()
     matches = bestaand["wedstrijden"] if bestaand else []
-    stand = bestaand["stand"] if bestaand else []
+    stand = bestaand.get("stand", []) if bestaand else []
 
     if moet_daily_refresh(bestaand):
         matches = daily_full_refresh()
