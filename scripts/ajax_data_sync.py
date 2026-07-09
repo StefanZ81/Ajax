@@ -137,6 +137,17 @@ def probe_fixture(fixture_id: int) -> dict | None:
     return map_match(data)
 
 
+def fetch_standings() -> list[dict]:
+    data = football_data(f"/competitions/{COMPETITIE_CODE}/standings")
+    for groep in data.get("standings", []):
+        if groep.get("type") == "TOTAL":
+            return [
+                {"positie": rij["position"], "team": rij["team"]["name"], "punten": rij["points"]}
+                for rij in groep["table"]
+            ]
+    return []
+
+
 # ---------------- Lezen/schrijven van de JSON-tabel ----------------
 
 def load_existing() -> dict | None:
@@ -146,15 +157,16 @@ def load_existing() -> dict | None:
         return json.load(f)
 
 
-def save(matches: list[dict]) -> None:
+def save(matches: list[dict], stand: list[dict] | None = None) -> None:
     payload = {
         "bijgewerkt_op": datetime.now(timezone.utc).isoformat(),
         "wedstrijden": sorted(matches, key=lambda m: m["kickoff"]),
+        "stand": stand if stand is not None else [],
     }
     os.makedirs(os.path.dirname(OUTPUT_PATH) or ".", exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
-    print(f"[save] {len(matches)} wedstrijden weggeschreven naar {OUTPUT_PATH}.")
+    print(f"[save] {len(matches)} wedstrijden en {len(payload['stand'])} standen-rijen weggeschreven naar {OUTPUT_PATH}.")
 
 
 def moet_daily_refresh(bestaand: dict | None) -> bool:
@@ -169,10 +181,12 @@ def moet_daily_refresh(bestaand: dict | None) -> bool:
 def main() -> None:
     bestaand = load_existing()
     matches = bestaand["wedstrijden"] if bestaand else []
+    stand = bestaand["stand"] if bestaand else []
 
     if moet_daily_refresh(bestaand):
         matches = daily_full_refresh()
-        save(matches)
+        stand = fetch_standings()
+        save(matches, stand)
 
     te_proben = wedstrijden_binnen_probe_venster(matches)
     if not te_proben:
@@ -186,7 +200,7 @@ def main() -> None:
         if bijgewerkt:
             by_id[fixture_id] = bijgewerkt
 
-    save(list(by_id.values()))
+    save(list(by_id.values()), stand)
 
 
 if __name__ == "__main__":
