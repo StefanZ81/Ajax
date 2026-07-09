@@ -123,7 +123,7 @@ CREATE TABLE standings (
     punten          INTEGER NOT NULL,
     bijgewerkt_op   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
-    PRIMARY KEY (seizoen, positie)
+    PRIMARY KEY (seizoen, team)
 );
 
 CREATE TABLE app_settings (
