@@ -45,3 +45,23 @@ def init_db(schema_path: str | None = None) -> None:
     with get_connection() as conn:
         conn.executescript(script)
 
+
+def run_migrations() -> None:
+    """Kleine, achterwaarts-compatibele schemawijzigingen op een bestaande database.
+    Wordt bij elke app-start aangeroepen (zie app.py) — elke ALTER TABLE is
+    los geprobeerd en genegeerd als de kolom al bestaat, zodat dit veilig
+    herhaald kan worden zonder bestaande data te raken."""
+    migraties = [
+        "ALTER TABLE app_settings ADD COLUMN registratie_sluit_na_wedstrijd INTEGER NOT NULL DEFAULT 2",
+    ]
+    with get_connection() as conn:
+        for sql in migraties:
+            try:
+                conn.execute(sql)
+            except sqlite3.OperationalError as e:
+                if "duplicate column name" not in str(e):
+                    raise
+        # Opschoning: geen data van geweigerde aanmeldingen bewaren (kan van
+        # vóór deze regel al in de database staan). Veilig herhaalbaar: als
+        # er niets (meer) is met status 'geweigerd', verwijdert dit simpelweg 0 rijen.
+        conn.execute("DELETE FROM participants WHERE status = 'geweigerd'")
