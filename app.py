@@ -15,15 +15,17 @@ Op PythonAnywhere: zie README_PYTHONANYWHERE.md.
 
 from __future__ import annotations
 
+import io
 import os
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 from zoneinfo import ZoneInfo
 
-from flask import Flask, abort, flash, redirect, render_template, request, session, url_for
+from flask import Flask, abort, flash, redirect, render_template, request, send_file, session, url_for
 
 import auth
 import db
+import export
 import github_sync
 import mail
 import nieuws_sync
@@ -394,6 +396,20 @@ def beheerder_reset_link():
     # in een kopieerbaar veld getoond worden i.p.v. in een vluchtige flash-tekst.
     session["reset_link_reveal"] = {"email": email, "link": reset_link}
     return redirect(url_for("beheerder"))
+
+
+@app.route("/beheerder/export-excel")
+@admin_required
+def beheerder_export_excel():
+    seizoen = queries.get_active_season()
+    data = export.bouw_export(seizoen)
+    bestandsnaam = f"jpoule-puntenopbouw-{seizoen.replace('/', '-')}.xlsx"
+    return send_file(
+        io.BytesIO(data),
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True,
+        download_name=bestandsnaam,
+    )
 
 
 @app.route("/beheerder/sync-nu", methods=["POST"])
