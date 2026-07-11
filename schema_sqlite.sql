@@ -121,6 +121,7 @@ CREATE TABLE standings (
     positie         INTEGER NOT NULL,
     team            TEXT NOT NULL,
     punten          INTEGER NOT NULL,
+    gespeeld        INTEGER NOT NULL DEFAULT 0,
     bijgewerkt_op   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
     PRIMARY KEY (seizoen, team)
