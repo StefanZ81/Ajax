@@ -84,3 +84,27 @@ def run_migrations() -> None:
         # vóór deze regel al in de database staan). Veilig herhaalbaar: als
         # er niets (meer) is met status 'geweigerd', verwijdert dit simpelweg 0 rijen.
         conn.execute("DELETE FROM participants WHERE status = 'geweigerd'")
+
+        # De klassement-view sloot eerder de beheerder-rol uit; dat is nu
+        # bewust losgelaten (de beheerder mag zelf ook meespelen en meetellen).
+        # Een view heeft geen eigen data, dus herbouwen is risicoloos.
+        conn.execute("DROP VIEW IF EXISTS klassement")
+        conn.execute("""
+            CREATE VIEW klassement AS
+            SELECT
+                p.id    AS participant_id,
+                p.naam,
+                COALESCE(SUM(pr.punten), 0)
+                    + COALESCE(MAX(sp.punten_na17), 0)
+                    + COALESCE(MAX(sp.punten_na34), 0) AS totaal_punten
+            FROM participants p
+            LEFT JOIN matches m
+                ON m.seizoen = (SELECT seizoen_actief FROM app_settings)
+            LEFT JOIN predictions pr
+                ON pr.participant_id = p.id AND pr.match_id = m.id AND pr.punten IS NOT NULL
+            LEFT JOIN season_predictions sp
+                ON sp.participant_id = p.id AND sp.seizoen = (SELECT seizoen_actief FROM app_settings)
+            WHERE p.status = 'goedgekeurd'
+            GROUP BY p.id, p.naam
+            ORDER BY totaal_punten DESC
+        """)
