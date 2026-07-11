@@ -175,6 +175,103 @@ def delete_participant(participant_id: str) -> None:
         conn.execute("DELETE FROM participants WHERE id = ?", (participant_id,))
 
 
+SEIZOENSPUNTEN_PER_ONDERDEEL = 5  # juiste positie = 5 punten, juiste puntenaantal = 5 punten
+
+
+def auto_vul_seizoensuitkomst(seizoen: str) -> None:
+    """Wordt na elke standen-sync aangeroepen. Zodra ALLE teams minimaal 17
+    resp. 34 wedstrijden hebben gespeeld ÉN dat checkpoint nog niet is
+    vastgelegd, wordt Ajax' actuele positie/punten overgenomen als
+    seizoensuitkomst en doorgerekend.
+
+    Bewust gebaseerd op het MINIMUM aantal gespeelde wedstrijden over ALLE
+    teams heen, niet alleen op Ajax' eigen aantal: de Eredivisie-speelronden
+    worden niet altijd door alle teams tegelijk afgerond (uitgestelde
+    wedstrijden, midweeks inhaalprogramma door Europees voetbal). Zolang
+    niet elk team evenveel wedstrijden heeft gespeeld, is de tabelpositie
+    nog niet stabiel — die kan nog verschuiven zodra de achterblijvers hun
+    inhaalwedstrijd spelen. Ajax' eigen puntenaantal staat overigens al wel
+    vast na Ajax' 17e wedstrijd; alleen de positie is het onzekere deel.
+
+    Overschrijft nooit een al vastgelegd checkpoint (ook niet als de
+    beheerder het handmatig heeft ingevuld/gecorrigeerd) — dus veilig om na
+    elke sync te draaien."""
+    with get_connection() as conn:
+        ajax = conn.execute(
+            "SELECT positie, punten FROM standings WHERE seizoen = ? AND team LIKE '%Ajax%'",
+            (seizoen,),
+        ).fetchone()
+        minimum_gespeeld = conn.execute(
+            "SELECT MIN(gespeeld) AS m FROM standings WHERE seizoen = ?",
+            (seizoen,),
+        ).fetchone()
+    if not ajax or not minimum_gespeeld or minimum_gespeeld["m"] is None:
+        return
+    alle_teams_gespeeld = minimum_gespeeld["m"]
+
+    resultaat = get_season_result(seizoen) or {}
+    if alle_teams_gespeeld >= 17 and resultaat.get("na17_positie") is None:
+        set_season_result(seizoen, "na17", ajax["positie"], ajax["punten"])
+    if alle_teams_gespeeld >= 34 and resultaat.get("na34_positie") is None:
+        set_season_result(seizoen, "na34", ajax["positie"], ajax["punten"])
+
+
+def get_season_result(seizoen: str) -> dict | None:
+    with get_connection() as conn:
+        row = conn.execute("SELECT * FROM season_results WHERE seizoen = ?", (seizoen,)).fetchone()
+        return dict(row) if row else None
+
+
+def set_season_result(seizoen: str, checkpoint: str, positie: int, punten: int) -> None:
+    """checkpoint is 'na17' of 'na34'. Slaat de daadwerkelijke Ajax-positie/
+    punten op dat moment op, en rekent daarna meteen de seizoenspunten van
+    alle deelnemers voor dat checkpoint opnieuw door."""
+    assert checkpoint in ("na17", "na34")
+    with get_connection() as conn:
+        conn.execute(
+            f"""
+            INSERT INTO season_results (seizoen, {checkpoint}_positie, {checkpoint}_punten)
+            VALUES (?, ?, ?)
+            ON CONFLICT (seizoen) DO UPDATE SET
+                {checkpoint}_positie = excluded.{checkpoint}_positie,
+                {checkpoint}_punten = excluded.{checkpoint}_punten,
+                bijgewerkt_op = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+            """,
+            (seizoen, positie, punten),
+        )
+    bereken_seizoenspunten(seizoen, checkpoint)
+
+
+def bereken_seizoenspunten(seizoen: str, checkpoint: str) -> int:
+    """Vergelijkt voor elke deelnemer de voorspelling met de daadwerkelijke
+    uitkomst voor dit checkpoint, en slaat de punten op (5 voor juiste
+    positie, 5 voor juist puntenaantal, onafhankelijk van elkaar)."""
+    assert checkpoint in ("na17", "na34")
+    resultaat = get_season_result(seizoen)
+    if not resultaat or resultaat[f"{checkpoint}_positie"] is None:
+        return 0
+
+    werkelijke_positie = resultaat[f"{checkpoint}_positie"]
+    werkelijke_punten = resultaat[f"{checkpoint}_punten"]
+
+    with get_connection() as conn:
+        voorspellingen = conn.execute(
+            f"SELECT id, {checkpoint}_positie, {checkpoint}_punten FROM season_predictions WHERE seizoen = ?",
+            (seizoen,),
+        ).fetchall()
+        for v in voorspellingen:
+            behaald = 0
+            if v[f"{checkpoint}_positie"] == werkelijke_positie:
+                behaald += SEIZOENSPUNTEN_PER_ONDERDEEL
+            if v[f"{checkpoint}_punten"] == werkelijke_punten:
+                behaald += SEIZOENSPUNTEN_PER_ONDERDEEL
+            conn.execute(
+                f"UPDATE season_predictions SET punten_{checkpoint} = ? WHERE id = ?",
+                (behaald, v["id"]),
+            )
+    return len(voorspellingen)
+
+
 def get_season_prediction(participant_id: str, seizoen: str) -> dict | None:
     with get_connection() as conn:
         row = conn.execute(
