@@ -25,6 +25,7 @@ from flask import Flask, abort, flash, redirect, render_template, request, sessi
 import auth
 import db
 import github_sync
+import mail
 import queries
 from scoring import bereken_punten
 
@@ -132,6 +133,40 @@ def registreren():
         except auth.ValidationError as e:
             flash(str(e), "fout")
     return render_template("registreren.html")
+
+
+@app.route("/wachtwoord-vergeten", methods=["GET", "POST"])
+def wachtwoord_vergeten():
+    if request.method == "POST":
+        email = request.form.get("email", "")
+        token = auth.request_password_reset(email)
+        if token:
+            reset_link = url_for("wachtwoord_resetten", token=token, _external=True)
+            deelnemer = auth.find_participant_by_email(email)
+            try:
+                subject, html = mail.wachtwoord_reset_email(deelnemer["naam"], reset_link)
+                mail.send_email(deelnemer["email"], subject, html)
+            except Exception as e:
+                # Nooit laten merken of het versturen lukte — dat zou alsnog
+                # verraden of het e-mailadres bestaat. Wel loggen voor onszelf.
+                print(f"[wachtwoord_vergeten] versturen mislukt (mogelijk gratis-plan-beperking): {e}")
+        # Altijd exact dezelfde melding, ongeacht of het e-mailadres bekend was
+        # of het versturen lukte — anders is dit zelf een user-enumeration-lek.
+        flash("Als dit e-mailadres bij ons bekend is, ontvang je een e-mail met een link om je wachtwoord opnieuw in te stellen.", "info")
+        return redirect(url_for("login"))
+    return render_template("wachtwoord_vergeten.html")
+
+
+@app.route("/wachtwoord-resetten/<token>", methods=["GET", "POST"])
+def wachtwoord_resetten(token):
+    if request.method == "POST":
+        try:
+            auth.reset_password_with_token(token, request.form.get("wachtwoord", ""))
+            flash("Je wachtwoord is gewijzigd. Je kunt nu inloggen.", "info")
+            return redirect(url_for("login"))
+        except auth.ValidationError as e:
+            flash(str(e), "fout")
+    return render_template("wachtwoord_resetten.html", token=token)
 
 
 @app.route("/logout")
