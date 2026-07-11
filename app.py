@@ -16,7 +16,7 @@ Op PythonAnywhere: zie README_PYTHONANYWHERE.md.
 from __future__ import annotations
 
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from functools import wraps
 from zoneinfo import ZoneInfo
 
@@ -177,6 +177,31 @@ def logout():
 
 # ---------------- Deelnemer-routes ----------------
 
+def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict], list[dict]]:
+    """Verdeelt de wedstrijden van het seizoen in drie categorieën:
+    - actuele: de netgespeelde wedstrijd (indien <72u geleden) bovenaan,
+      gevolgd door de eerstvolgende nog te spelen (of lopende) wedstrijd.
+      Maximaal 2 wedstrijden.
+    - gepland: alle overige, nog niet gespeelde wedstrijden.
+    - eerder_gespeeld: alle afgelopen wedstrijden die niet (meer) in
+      'actuele' staan, nieuwste eerst.
+    """
+    nu = datetime.now(timezone.utc)
+    niet_afgelopen = sorted((m for m in matches if m["status"] != "afgelopen"), key=lambda m: m["kickoff"])
+    afgelopen = sorted((m for m in matches if m["status"] == "afgelopen"), key=lambda m: m["kickoff"], reverse=True)
+
+    eerstvolgende = niet_afgelopen[0] if niet_afgelopen else None
+    net_gespeeld = None
+    if afgelopen and (nu - afgelopen[0]["kickoff"]) <= timedelta(hours=72):
+        net_gespeeld = afgelopen[0]
+
+    actuele = [m for m in (net_gespeeld, eerstvolgende) if m is not None]
+    gepland = niet_afgelopen[1:]
+    eerder_gespeeld = [m for m in afgelopen if not net_gespeeld or m["id"] != net_gespeeld["id"]]
+
+    return actuele, gepland, eerder_gespeeld
+
+
 @app.route("/")
 @login_required
 def programma():
@@ -184,9 +209,12 @@ def programma():
     gebruiker = current_user()
     seizoen = queries.get_active_season()
     matches = queries.get_matches(seizoen)
+    actuele, gepland, eerder_gespeeld = categoriseer_wedstrijden(matches)
     return render_template(
         "programma.html",
-        matches=matches,
+        actuele=actuele,
+        gepland=gepland,
+        eerder_gespeeld=eerder_gespeeld,
         standings=queries.get_standings_widget(seizoen),
         upcoming=[m for m in matches if m["status"] != "afgelopen"][:3],
     )
