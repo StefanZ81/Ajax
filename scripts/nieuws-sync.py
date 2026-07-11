@@ -1,52 +1,67 @@
 """
-nieuws_sync.py
+scripts/nieuws_sync.py
 ------------------------------------------------------------------
-Haalt data/nieuws.json op vanaf GitHub (via raw.githubusercontent.com,
-dat op de gratis PythonAnywhere-whitelist staat — zelfde principe als
-github_sync.py voor het wedstrijdprogramma). Wordt gebruikt door de
-nieuwsticker die op elke pagina bovenin staat (zie base.html).
-
-Houdt de laatste ophaal in het geheugen (per proces), ververst hooguit
-elke NIEUWS_MIN_INTERVAL_S seconden — een ticker hoeft niet op elk
-paginabezoek een nieuwe HTTP-call te doen.
-
-Faalt het ophalen (GitHub onbereikbaar, whitelist-issue, etc.), dan
-toont de ticker gewoon de laatst bekende artikelen (of niets, bij de
-allereerste keer) — nooit een harde fout voor de bezoeker.
+Draait in GitHub Actions (zie .github/workflows/nieuws-sync.yml).
+Haalt de Ajax-RSS-feed van Voetbalprimeur.nl op en schrijft de laatste
+5 artikelen weg naar data/nieuws.json — dat bestand wordt bij elke run
+VOLLEDIG OVERSCHREVEN (geen historie), en door de workflow teruggecommit
+naar de repo. De website leest dit bestand via raw.githubusercontent.com,
+zelfde principe als data/ajax_schedule.json.
 ------------------------------------------------------------------
 """
 
 from __future__ import annotations
 
+import json
 import os
-import time
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 import requests
 
-GITHUB_OWNER = os.environ.get("GITHUB_OWNER", "<jouwgebruikersnaam>")
-GITHUB_REPO = os.environ.get("GITHUB_REPO", "j-poule-web")
-GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main")
-NIEUWS_DATA_URL = os.environ.get(
-    "NIEUWS_DATA_URL",
-    f"https://raw.githubusercontent.com/{GITHUB_OWNER}/{GITHUB_REPO}/{GITHUB_BRANCH}/data/nieuws.json",
-)
-NIEUWS_MIN_INTERVAL_S = int(os.environ.get("NIEUWS_SYNC_MIN_INTERVAL_S", "300"))  # 5 minuten
-
-_cache: list[dict] = []
-_laatste_poging = 0.0
+FEED_URL = "https://www.voetbalprimeur.nl/feed/news.xml?tag=ajax"
+OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "data/nieuws.json")
+AANTAL_ARTIKELEN = 5
 
 
-def get_nieuws() -> list[dict]:
-    global _laatste_poging, _cache
-    nu = time.time()
-    if (nu - _laatste_poging) < NIEUWS_MIN_INTERVAL_S:
-        return _cache
-    _laatste_poging = nu
-    try:
-        resp = requests.get(NIEUWS_DATA_URL, timeout=8)
-        resp.raise_for_status()
-        payload = resp.json()
-        _cache = payload.get("artikelen") or []
-    except Exception as e:
-        print(f"[nieuws_sync] ophalen mislukt, toon laatst bekende artikelen: {e}")
-    return _cache
+def haal_artikelen_op() -> list[dict]:
+    res = requests.get(FEED_URL, timeout=15, headers={"User-Agent": "J-Poule/1.0 (+https://github.com)"})
+    res.raise_for_status()
+    root = ET.fromstring(res.content)
+
+    artikelen = []
+    for item in root.findall("./channel/item")[:AANTAL_ARTIKELEN]:
+        titel = (item.findtext("title") or "").strip()
+        link = (item.findtext("link") or "").strip()
+        pub_date_raw = item.findtext("pubDate")
+
+        try:
+            gepubliceerd_op = parsedate_to_datetime(pub_date_raw).astimezone(timezone.utc).isoformat() if pub_date_raw else None
+        except (TypeError, ValueError):
+            gepubliceerd_op = None
+
+        if titel and link:
+            artikelen.append({"titel": titel, "link": link, "gepubliceerd_op": gepubliceerd_op})
+
+    return artikelen
+
+
+def save(artikelen: list[dict]) -> None:
+    payload = {
+        "bijgewerkt_op": datetime.now(timezone.utc).isoformat(),
+        "artikelen": artikelen,
+    }
+    os.makedirs(os.path.dirname(OUTPUT_PATH) or ".", exist_ok=True)
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+    print(f"[save] {len(artikelen)} artikelen weggeschreven naar {OUTPUT_PATH}.")
+
+
+def main() -> None:
+    artikelen = haal_artikelen_op()
+    save(artikelen)
+
+
+if __name__ == "__main__":
+    main()
