@@ -110,6 +110,15 @@ def _sync_now() -> int:
                 # NB: 'oefenwedstrijd' bewust NIET in deze upsert — dat is een
                 # handmatige vlag van de beheerder, geen data uit API-Football.
             )
-            if m["status"] == "afgelopen":
-                queries.bereken_en_bewaar_punten(m["id"])
+
+    # Puntenberekening BEWUST buiten het bovenstaande 'with get_connection()'-blok:
+    # bereken_en_bewaar_punten() opent zelf ook een verbinding om te schrijven.
+    # Twee gelijktijdig open schrijfverbindingen op SQLite (de bovenstaande,
+    # nog niet gecommit, én deze) leiden tot "database is locked" — dus eerst
+    # volledig committen, dan pas de punten doorrekenen.
+    voor_punten = [m["id"] for m in wedstrijden if m["status"] == "afgelopen"]
+    if voor_punten:
+        for match_id in voor_punten:
+            queries.bereken_en_bewaar_punten(match_id)
+
     return len(wedstrijden)
