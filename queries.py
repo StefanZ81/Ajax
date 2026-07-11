@@ -63,7 +63,7 @@ def get_predictions_for_match(match_id: int) -> list[dict]:
             SELECT pr.*, p.naam
             FROM predictions pr
             JOIN participants p ON p.id = pr.participant_id
-            WHERE pr.match_id = ? AND p.status = 'goedgekeurd' AND p.rol = 'deelnemer'
+            WHERE pr.match_id = ? AND p.status = 'goedgekeurd'
             ORDER BY p.naam
             """,
             (match_id,),
