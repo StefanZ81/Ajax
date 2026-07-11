@@ -1,4 +1,30 @@
 {% extends "base.html" %}
+
+{% macro wedstrijd_kaart(m) %}
+<a class="match-link" href="{{ url_for('wedstrijd', match_id=m.id) }}">
+  <div class="card accent">
+    <div>
+      <span class="pill">{{ m.competitie }}</span>
+      {% if m.oefenwedstrijd %}<span class="pill gold">Oefenwedstrijd</span>{% endif %}
+      {% if m.status == 'afgelopen' %}<span class="pill green">Gespeeld</span>{% endif %}
+      {% if m.status == 'live' %}<span class="pill">Live</span>{% endif %}
+    </div>
+    <div class="match-top">
+      <div>
+        <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
+        <div class="match-sub">{{ m.kickoff | nl_kort }}</div>
+      </div>
+      {% if m.status == 'afgelopen' %}
+      <div style="text-align:right;">
+        <div class="score">{{ m.uitslag_eind_thuis }}-{{ m.uitslag_eind_uit }}</div>
+        <div style="font-size:11px; color:var(--grey);">rust {{ m.uitslag_rust_thuis }}-{{ m.uitslag_rust_uit }}</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</a>
+{% endmacro %}
+
 {% block content %}
 
 <div class="widget">
@@ -25,27 +51,25 @@
   {% endfor %}
 </div>
 
-{% for m in matches %}
-<a class="match-link" href="{{ url_for('wedstrijd', match_id=m.id) }}">
-  <div class="card accent">
-    <div>
-      <span class="pill">{{ m.competitie }}</span>
-      {% if m.oefenwedstrijd %}<span class="pill gold">Oefenwedstrijd</span>{% endif %}
-      {% if m.status == 'afgelopen' %}<span class="pill green">Gespeeld</span>{% endif %}
-    </div>
-    <div class="match-top">
-      <div>
-        <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
-        <div class="match-sub">{{ m.kickoff | nl_kort }}</div>
-      </div>
-      {% if m.status == 'afgelopen' %}
-      <div style="text-align:right;">
-        <div class="score">{{ m.uitslag_eind_thuis }}-{{ m.uitslag_eind_uit }}</div>
-        <div style="font-size:11px; color:var(--grey);">rust {{ m.uitslag_rust_thuis }}-{{ m.uitslag_rust_uit }}</div>
-      </div>
-      {% endif %}
-    </div>
-  </div>
-</a>
+<p style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.05em; margin-top:20px;">Actuele wedstrijden</p>
+{% for m in actuele %}
+  {{ wedstrijd_kaart(m) }}
+{% else %}
+<p style="font-size:13px; color:var(--grey);">Geen actuele wedstrijden.</p>
 {% endfor %}
+
+<p style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.05em; margin-top:20px;">Geplande wedstrijden</p>
+{% for m in gepland %}
+  {{ wedstrijd_kaart(m) }}
+{% else %}
+<p style="font-size:13px; color:var(--grey);">Geen geplande wedstrijden.</p>
+{% endfor %}
+
+<p style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.05em; margin-top:20px;">Eerder gespeeld</p>
+{% for m in eerder_gespeeld %}
+  {{ wedstrijd_kaart(m) }}
+{% else %}
+<p style="font-size:13px; color:var(--grey);">Nog geen wedstrijden gespeeld.</p>
+{% endfor %}
+
 {% endblock %}
