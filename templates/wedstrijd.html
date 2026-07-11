@@ -37,6 +37,30 @@
 <p style="color:var(--grey); font-size:13px;">Voorspellen kan niet meer — de wedstrijd is begonnen.</p>
 {% endif %}
 
+{% if voorspelling_status %}
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">👁️ Alleen zichtbaar voor beheerders — status voorspellingen</p>
+  <table class="klassement-tabel">
+    <thead>
+      <tr>
+        <th>Deelnemer</th>
+        <th class="punten">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in voorspelling_status %}
+      <tr>
+        <td>{{ r.naam }}</td>
+        <td class="punten" style="color: {{ 'var(--green)' if r.heeft_voorspeld else 'var(--red-dark)' }};">
+          {{ '✓ Ingevuld' if r.heeft_voorspeld else '— Nog niet' }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
 {% if mag_voorspellingen_zien %}
 <div class="card">
   <p style="font-weight:700; font-size:14px;">Overzicht — alle voorspellingen</p>
