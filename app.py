@@ -275,6 +275,7 @@ def beheerder():
         matches=queries.get_matches(seizoen),
         github_data_url=github_sync.GITHUB_DATA_URL,
         registratie_sluit_na_wedstrijd=queries.get_registratie_sluit_na_wedstrijd(),
+        reset_link_reveal=session.pop("reset_link_reveal", None),
     )
 
 
@@ -324,6 +325,21 @@ def beheerder_registratie_instelling():
         flash("Registratie-instelling opgeslagen.", "info")
     except (KeyError, ValueError) as e:
         flash(f"Ongeldige waarde: {e}", "fout")
+    return redirect(url_for("beheerder"))
+
+
+@app.route("/beheerder/reset-link", methods=["POST"])
+@admin_required
+def beheerder_reset_link():
+    email = request.form.get("email", "").strip()
+    token = auth.request_password_reset(email)
+    if not token:
+        flash(f"Geen account gevonden met e-mailadres {email}.", "fout")
+        return redirect(url_for("beheerder"))
+    reset_link = url_for("wachtwoord_resetten", token=token, _external=True)
+    # Eenmalig tonen via de session (niet permanent bewaard) -- zo kan de link
+    # in een kopieerbaar veld getoond worden i.p.v. in een vluchtige flash-tekst.
+    session["reset_link_reveal"] = {"email": email, "link": reset_link}
     return redirect(url_for("beheerder"))
 
 
