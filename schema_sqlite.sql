@@ -163,6 +163,6 @@ LEFT JOIN predictions pr
     ON pr.participant_id = p.id AND pr.match_id = m.id AND pr.punten IS NOT NULL
 LEFT JOIN season_predictions sp
     ON sp.participant_id = p.id AND sp.seizoen = (SELECT seizoen_actief FROM app_settings)
-WHERE p.rol = 'deelnemer' AND p.status = 'goedgekeurd'
+WHERE p.status = 'goedgekeurd'
 GROUP BY p.id, p.naam
 ORDER BY totaal_punten DESC;
