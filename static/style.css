@@ -22,14 +22,20 @@ body {
 
 .ticker-wrap {
   position: sticky; top: 0; z-index: 30;
-  background: var(--ink); overflow: hidden; white-space: nowrap;
-  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.08);
+  background: #fff; white-space: nowrap;
+  padding: 7px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center;
 }
+.ticker-label {
+  flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--red);
+  padding: 0 12px 0 16px; border-right: 1px solid var(--line); white-space: nowrap;
+}
+.ticker-scroll { overflow: hidden; flex: 1; }
 .ticker-track { display: inline-flex; animation: ticker-scroll 45s linear infinite; }
 .ticker-wrap:active .ticker-track { animation-play-state: paused; }
 .ticker-item {
-  color: #fff; text-decoration: none; font-size: 12px; font-weight: 500;
-  padding: 0 28px; opacity: .92; flex-shrink: 0;
+  color: var(--ink); text-decoration: none; font-size: 12px; font-weight: 500;
+  padding: 0 28px; flex-shrink: 0;
 }
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
