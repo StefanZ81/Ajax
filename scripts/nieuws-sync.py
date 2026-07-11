@@ -1,0 +1,35 @@
+name: Ajax-nieuws synchroniseren
+
+# Draait elke 15 minuten (nieuws hoeft niet zo vaak als livescores) en is
+# ook handmatig te starten via "Run workflow".
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # nodig om data/nieuws.json terug te committen
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Dependencies installeren
+        run: pip install requests
+
+      - name: Ajax-nieuws ophalen
+        run: python scripts/nieuws_sync.py
+
+      - name: Wijzigingen committen (alleen als er echt iets veranderde)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/nieuws.json
+          git diff --staged --quiet || git commit -m "Ajax-nieuws bijgewerkt [skip ci]"
+          git push
