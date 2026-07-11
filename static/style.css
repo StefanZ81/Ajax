@@ -25,6 +25,7 @@ body {
   background: #fff; white-space: nowrap;
   padding: 7px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   display: flex; align-items: center;
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
 }
 .ticker-label {
   flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--red);
