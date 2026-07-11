@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align:center; margin: 32px 0;">
+  <img src="{{ url_for('static', filename='ajax_logo.png') }}" alt="Ajax" style="width:64px; height:64px; margin: 0 auto 12px; display:block;">
+  <h1 style="margin:0;">J-POULE</h1>
+</div>
+
+<div class="card">
+  <p style="font-weight:700; margin-top:0;">Wachtwoord vergeten</p>
+  <p style="font-size:13px; color:var(--grey);">
+    Vul je e-mailadres in. Als dat bij ons bekend is, ontvang je een link om een nieuw wachtwoord in te stellen.
+  </p>
+  <form method="post">
+    <div class="veld">
+      <label>E-mailadres</label>
+      <input type="email" name="email" required>
+    </div>
+    <button type="submit">Verstuur link</button>
+  </form>
+</div>
+
+<p style="text-align:center; font-size:13px;">
+  <a href="{{ url_for('login') }}" style="color:var(--red); text-decoration:none;">&larr; Terug naar inloggen</a>
+</p>
+{% endblock %}
