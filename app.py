@@ -225,6 +225,11 @@ def wedstrijd(match_id):
         mijn_voorspelling=queries.get_my_prediction(match_id, gebruiker["id"]),
         mag_voorspellingen_zien=mag_voorspellingen_zien,
         voorspellingen=queries.get_predictions_for_match(match_id) if mag_voorspellingen_zien else [],
+        voorspelling_status=(
+            queries.get_voorspelling_status(match_id)
+            if gebruiker["rol"] == "beheerder" and kan_nog_voorspellen
+            else None
+        ),
     )
 
 
