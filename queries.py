@@ -56,6 +56,26 @@ def get_match(match_id: int) -> dict | None:
         return _match_row(row) if row else None
 
 
+def get_voorspelling_status(match_id: int) -> list[dict]:
+    """Voor het beheerder-only overzicht 'wie heeft nog niet voorspeld' —
+    alleen zinvol vóór aftrap. Compleet = zowel rust als eindstand ingevuld
+    (het formulier vereist altijd beide tegelijk, dus in de praktijk is een
+    voorspelling per definitie compleet of afwezig, nooit half)."""
+    with get_connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT p.naam,
+                   (pr.id IS NOT NULL) AS heeft_voorspeld
+            FROM participants p
+            LEFT JOIN predictions pr ON pr.participant_id = p.id AND pr.match_id = ?
+            WHERE p.status = 'goedgekeurd'
+            ORDER BY heeft_voorspeld ASC, p.naam
+            """,
+            (match_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
 def get_predictions_for_match(match_id: int) -> list[dict]:
     with get_connection() as conn:
         rows = conn.execute(
