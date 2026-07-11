@@ -183,6 +183,67 @@ def wijzig_wachtwoord(deelnemer_id: str, huidig_wachtwoord: str, nieuw_wachtwoor
 # resetlink mee, en verifieer het token op de resetpagina.
 
 
+# ---------------- Wachtwoord vergeten ----------------
+# Hergebruikt de magic_token/magic_token_verloopt_op-kolommen die al in het
+# schema stonden (oorspronkelijk bedoeld voor e-mail-reminderlinks).
+#
+# Belangrijk: request_password_reset() geeft BEWUST nooit terug of het
+# e-mailadres bestaat — de aanroepende route toont altijd dezelfde generieke
+# melding, ongeacht het resultaat, om user enumeration te voorkomen (zelfde
+# principe als bij login()).
+
+WACHTWOORD_RESET_GELDIGHEID_S = 30 * 60  # 30 minuten
+
+
+def request_password_reset(email: str) -> Optional[str]:
+    """Maakt (indien het e-mailadres bestaat) een resettoken aan en geeft die
+    terug zodat de aanroeper 'm kan e-mailen. Geeft None terug als het
+    e-mailadres niet bestaat — de aanroeper moet dit verschil NOOIT aan de
+    gebruiker laten zien."""
+    email = email.strip().lower()
+    deelnemer = find_participant_by_email(email)
+    if not deelnemer:
+        return None
+
+    token = secrets.token_urlsafe(32)
+    token_hash = hashlib.sha256(token.encode()).hexdigest()
+    verloopt_op = time.time() + WACHTWOORD_RESET_GELDIGHEID_S
+
+    with get_connection() as conn:
+        conn.execute(
+            "UPDATE participants SET magic_token = ?, magic_token_verloopt_op = ? WHERE id = ?",
+            (token_hash, str(verloopt_op), deelnemer["id"]),
+        )
+    return token
+
+
+def reset_password_with_token(token: str, nieuw_wachtwoord: str) -> None:
+    token_hash = hashlib.sha256(token.encode()).hexdigest()
+
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT * FROM participants WHERE magic_token = ?", (token_hash,)
+        ).fetchone()
+
+    if not row:
+        raise ValidationError("Deze link is ongeldig of al gebruikt. Vraag een nieuwe aan.")
+
+    deelnemer = dict(row)
+    if not deelnemer["magic_token_verloopt_op"] or float(deelnemer["magic_token_verloopt_op"]) < time.time():
+        raise ValidationError("Deze link is verlopen. Vraag een nieuwe aan.")
+
+    fouten = valideer_wachtwoord(nieuw_wachtwoord)
+    if fouten:
+        raise ValidationError(" ".join(fouten))
+
+    deelnemer["password_hash"] = hash_password(nieuw_wachtwoord)
+    with get_connection() as conn:
+        conn.execute(
+            "UPDATE participants SET password_hash = ?, magic_token = NULL, magic_token_verloopt_op = NULL WHERE id = ?",
+            (deelnemer["password_hash"], deelnemer["id"]),
+        )
+
+
 # ---------------- Database-koppelpunten ----------------
 
 def find_participant_by_email(email: str) -> Optional[dict]:
@@ -252,4 +313,3 @@ def demote_to_participant(uitvoerder_sessie: dict, doel_participant_id: str) -> 
 
     doel["rol"] = "deelnemer"
     return save_participant(doel)
-
