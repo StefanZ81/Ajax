@@ -100,6 +100,16 @@
 </div>
 
 <div class="card accent">
+  <p style="font-weight:700; font-size:14px;">📊 Puntenopbouw exporteren</p>
+  <p style="font-size:12px; color:var(--grey);">
+    Excel-bestand met de volledige, controleerbare puntenopbouw van alle deelnemers: per wedstrijd,
+    inclusief ieders voorspelling, plus de seizoensvoorspelling na 17 en 34 wedstrijden. Alle totalen
+    zijn live formules — niets is hardcoded, dus je kunt elke som zelf natrekken.
+  </p>
+  <a href="{{ url_for('beheerder_export_excel') }}"><button type="button">Exporteren naar Excel</button></a>
+</div>
+
+<div class="card accent">
   <p style="font-weight:700; font-size:14px;">🔑 Wachtwoord opnieuw instellen namens een deelnemer</p>
   <p style="font-size:12px; color:var(--grey);">
     Werkt op het gratis plan: er wordt geen e-mail verstuurd (dat kan niet), maar je krijgt hier
