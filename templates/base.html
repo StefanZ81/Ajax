@@ -7,6 +7,19 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  {% if nieuws %}
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      {% for item in nieuws %}
+      <a href="{{ item.link }}" target="_blank" rel="noopener" class="ticker-item">📰 {{ item.titel }}</a>
+      {% endfor %}
+      {% for item in nieuws %}
+      <a href="{{ item.link }}" target="_blank" rel="noopener" class="ticker-item" aria-hidden="true">📰 {{ item.titel }}</a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
   {% if huidige_gebruiker %}
   <header class="top">
     <img src="{{ url_for('static', filename='ajax_logo.png') }}" alt="Ajax" class="crest-logo">
@@ -41,4 +54,3 @@
   {% endif %}
 </body>
 </html>
-
