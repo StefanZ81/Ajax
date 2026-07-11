@@ -58,6 +58,28 @@
 </div>
 
 <div class="card accent">
+  <p style="font-weight:700; font-size:14px;">🔑 Wachtwoord opnieuw instellen namens een deelnemer</p>
+  <p style="font-size:12px; color:var(--grey);">
+    Werkt op het gratis plan: er wordt geen e-mail verstuurd (dat kan niet), maar je krijgt hier
+    een link die je zelf kunt kopiëren en versturen (WhatsApp, je eigen mail, etc.) — 30 minuten geldig.
+  </p>
+  <form method="post" action="{{ url_for('beheerder_reset_link') }}">
+    <div class="veld">
+      <label>E-mailadres van de deelnemer</label>
+      <input type="email" name="email" required>
+    </div>
+    <button type="submit" class="secundair">Reset-link genereren</button>
+  </form>
+  {% if reset_link_reveal %}
+  <div class="veld" style="margin-top:14px;">
+    <label>Link voor {{ reset_link_reveal.email }} — kopieer en verstuur zelf:</label>
+    <input type="text" value="{{ reset_link_reveal.link }}" readonly
+           onclick="this.select()" style="font-size:12px; background:#F7F7F9;">
+  </div>
+  {% endif %}
+</div>
+
+<div class="card accent">
   <p style="font-weight:700; font-size:14px;">👥 Aanmeldingen ({{ aanvragen|length }})</p>
   {% for p in aanvragen %}
   <div class="rij">
