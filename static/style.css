@@ -83,7 +83,18 @@ button.secundair { background: #F0F0F3; color: var(--ink); }
 .flash.info { background: #E7F5EC; color: var(--green); }
 
 .rij { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+
+.klassement-tabel { width: 100%; border-collapse: collapse; }
+.klassement-tabel th {
+  text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--grey); padding: 0 0 10px 0;
+}
+.klassement-tabel th.punten, .klassement-tabel td.punten { text-align: right; }
+.klassement-tabel td {
+  padding: 9px 0; font-size: 14px; font-weight: 500; color: var(--ink);
+}
+.klassement-tabel td.positie { font-weight: 700; width: 28px; }
+.klassement-tabel td.punten { font-weight: 700; font-variant-numeric: tabular-nums; }
 .tabs-toggle { display: flex; gap: 4px; background: #F0F0F3; border-radius: 999px; padding: 4px; margin-bottom: 16px; }
 .tabs-toggle a { flex: 1; text-align: center; padding: 8px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--grey); }
 .tabs-toggle a.actief { background: var(--ink); color: #fff; }
-
