@@ -26,6 +26,7 @@ import auth
 import db
 import github_sync
 import mail
+import nieuws_sync
 import queries
 from scoring import bereken_punten
 
@@ -104,6 +105,7 @@ def inject_user():
         "huidige_gebruiker": current_user(),
         "seizoen": seizoen,
         "registratie_gesloten": queries.registratie_gesloten(seizoen),
+        "nieuws": nieuws_sync.get_nieuws(),
     }
 
 
@@ -309,7 +311,25 @@ def beheerder():
         github_data_url=github_sync.GITHUB_DATA_URL,
         registratie_sluit_na_wedstrijd=queries.get_registratie_sluit_na_wedstrijd(),
         reset_link_reveal=session.pop("reset_link_reveal", None),
+        season_result=queries.get_season_result(seizoen),
     )
+
+
+@app.route("/beheerder/seizoensuitkomst", methods=["POST"])
+@admin_required
+def beheerder_seizoensuitkomst():
+    checkpoint = request.form.get("checkpoint")
+    if checkpoint not in ("na17", "na34"):
+        abort(400)
+    try:
+        positie = int(request.form["positie"])
+        punten = int(request.form["punten"])
+        seizoen = queries.get_active_season()
+        queries.set_season_result(seizoen, checkpoint, positie, punten)
+        flash(f"Seizoensuitkomst {checkpoint} opgeslagen, punten van alle deelnemers doorgerekend.", "info")
+    except (KeyError, ValueError) as e:
+        flash(f"Ongeldige invoer: {e}", "fout")
+    return redirect(url_for("beheerder"))
 
 
 @app.route("/beheerder/wedstrijd-toevoegen", methods=["POST"])
