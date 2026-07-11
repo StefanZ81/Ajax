@@ -2,7 +2,7 @@
 {% block content %}
 <p><a href="{{ url_for('programma') }}" style="color:var(--red); font-size:13px; text-decoration:none;">&larr; Terug naar overzicht</a></p>
 <h2 style="margin-bottom:2px;">{{ match.thuis }} – {{ match.uit }}</h2>
-<p style="color:var(--grey); font-size:13px; margin-top:0;">{{ match.kickoff.strftime('%A %d %B %Y · %H:%M') }} · {{ match.competitie }}</p>
+<p style="color:var(--grey); font-size:13px; margin-top:0;">{{ match.kickoff | nl_lang }} · {{ match.competitie }}</p>
 
 {% if kan_nog_voorspellen %}
 <div class="card accent">
@@ -40,21 +40,34 @@
 {% if mag_voorspellingen_zien %}
 <div class="card">
   <p style="font-weight:700; font-size:14px;">Overzicht — alle voorspellingen</p>
-  {% for v in voorspellingen %}
-  <div class="rij">
-    <span><b>{{ v.naam }}</b>{{ ' ★' if v.joker }}</span>
-    <span style="text-align:right;">
-      <span style="font-size:11px; color:var(--grey);">rust {{ v.rust_thuis }}-{{ v.rust_uit }}</span>
-      <span class="score">{{ v.eind_thuis }}-{{ v.eind_uit }}</span>
-      {% if v.punten is not none %}<div style="color:var(--red); font-weight:700; font-size:12px;">{{ v.punten }} pt</div>{% endif %}
-    </span>
-  </div>
+  {% if voorspellingen %}
+  <table class="klassement-tabel">
+    <thead>
+      <tr>
+        <th>Deelnemer</th>
+        <th class="punten">Rust</th>
+        <th class="punten">Eind</th>
+        <th class="punten">Joker</th>
+        <th class="punten">Punten</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in voorspellingen %}
+      <tr>
+        <td>{{ v.naam }}</td>
+        <td class="punten">{{ v.rust_thuis }}-{{ v.rust_uit }}</td>
+        <td class="punten">{{ v.eind_thuis }}-{{ v.eind_uit }}</td>
+        <td class="punten">{{ 'J' if v.joker else 'N' }}</td>
+        <td class="punten">{{ v.punten if v.punten is not none else '–' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   {% else %}
   <p style="font-size:13px; color:var(--grey);">Nog geen voorspellingen.</p>
-  {% endfor %}
+  {% endif %}
 </div>
 {% else %}
 <p style="font-size:13px; color:var(--grey);">🔒 Voorspellingen van andere deelnemers zijn zichtbaar zodra de wedstrijd is begonnen.</p>
 {% endif %}
 {% endblock %}
-
