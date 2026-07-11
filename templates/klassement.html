@@ -2,14 +2,27 @@
 {% block content %}
 <div class="card accent">
   <p style="font-weight:700; font-size:14px;">🏆 Klassement J-Poule</p>
-  {% for rij in klassement %}
-  <div class="rij">
-    <span><b style="color: {{ 'var(--red)' if loop.index == 1 else 'var(--grey)' }};">{{ loop.index }}</b>&nbsp;&nbsp;{{ rij.naam }}</span>
-    <span class="score">{{ rij.totaal_punten }} pt</span>
-  </div>
+  {% if klassement %}
+  <table class="klassement-tabel">
+    <thead>
+      <tr>
+        <th style="width:28px;">#</th>
+        <th>Deelnemer</th>
+        <th class="punten">Punten</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rij in klassement %}
+      <tr>
+        <td class="positie" style="color: {{ 'var(--red)' if loop.index == 1 else 'var(--ink)' }};">{{ loop.index }}</td>
+        <td>{{ rij.naam }}</td>
+        <td class="punten">{{ rij.totaal_punten }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   {% else %}
   <p style="font-size:13px; color:var(--grey);">Nog geen punten dit seizoen.</p>
-  {% endfor %}
+  {% endif %}
 </div>
 {% endblock %}
-
