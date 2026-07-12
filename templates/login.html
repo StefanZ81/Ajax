@@ -1,34 +1,62 @@
-{% extends "base.html" %}
-{% block content %}
-<div style="text-align:center; margin: 32px 0;">
-  <img src="{{ url_for('static', filename='ajax_logo.png') }}" alt="Ajax" style="width:64px; height:64px; margin: 0 auto 12px; display:block;">
-  <h1 style="margin:0;">J-POULE</h1>
-  <p style="color:var(--grey); font-size:13px;">Besloten Ajax-voetbalpoule</p>
-</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240">
+  <defs>
+    <clipPath id="schildvorm">
+      <path d="M100,10
+               C138,10 172,24 180,46
+               L180,138
+               C180,176 152,208 100,231
+               C48,208 20,176 20,138
+               L20,46
+               C28,24 62,10 100,10
+               Z"/>
+    </clipPath>
 
-<div class="tabs-toggle">
-  <a href="{{ url_for('login') }}" class="actief">Inloggen</a>
-  {% if not registratie_gesloten %}<a href="{{ url_for('registreren') }}">Aanmelden</a>{% endif %}
-</div>
+    <linearGradient id="glansWit" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"  stop-color="#D6D7DB"/>
+      <stop offset="18%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#FFFFFF"/>
+      <stop offset="82%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D6D7DB"/>
+    </linearGradient>
+    <linearGradient id="glansRood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"  stop-color="#8C0C1F"/>
+      <stop offset="20%" stop-color="#EA4A62"/>
+      <stop offset="50%" stop-color="#D2122E"/>
+      <stop offset="80%" stop-color="#D2122E"/>
+      <stop offset="100%" stop-color="#8C0C1F"/>
+    </linearGradient>
 
-<div class="card">
-  <form method="post">
-    <div class="veld">
-      <label>E-mailadres</label>
-      <input type="email" name="email" required>
-    </div>
-    <div class="veld">
-      <label>Wachtwoord</label>
-      <input type="password" name="wachtwoord" required>
-    </div>
-    <button type="submit">Inloggen</button>
-  </form>
-  <p style="text-align:center; font-size:12px; margin-top:12px;">
-    <a href="{{ url_for('wachtwoord_vergeten') }}" style="color:var(--grey); text-decoration:none;">Wachtwoord vergeten?</a>
-  </p>
-</div>
+    <radialGradient id="glansVlek" cx="50%" cy="0%" r="75%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
 
-<p style="font-size:11px; color:var(--grey); text-align:center;">
-  🔒 Je wachtwoord wordt versleuteld opgeslagen en is nooit leesbaar — ook niet voor de beheerder.
-</p>
-{% endblock %}
+  <path d="M100,16
+           C138,16 172,30 180,52
+           L180,144
+           C180,182 152,214 100,237
+           C48,214 20,182 20,144
+           L20,52
+           C28,30 62,16 100,16
+           Z"
+        fill="#15161B" opacity="0.18"/>
+
+  <g clip-path="url(#schildvorm)">
+    <rect x="20" y="0" width="53.4" height="240" fill="url(#glansWit)"/>
+    <rect x="73.4" y="0" width="53.2" height="240" fill="url(#glansRood)"/>
+    <rect x="126.6" y="0" width="53.4" height="240" fill="url(#glansWit)"/>
+    <rect x="0" y="0" width="200" height="240" fill="url(#glansVlek)"/>
+  </g>
+
+  <path d="M100,10
+           C138,10 172,24 180,46
+           L180,138
+           C180,176 152,208 100,231
+           C48,208 20,176 20,138
+           L20,46
+           C28,24 62,10 100,10
+           Z"
+        fill="none" stroke="#15161B" stroke-width="7" stroke-linejoin="round"/>
+</svg>
