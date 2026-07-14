@@ -405,18 +405,54 @@ def bereken_en_bewaar_punten(match_id: int) -> int:
     return len(voorspellingen)
 
 
+def stop_sync_wedstrijd(match_id: int) -> None:
+    """Zet de vlag die de automatische sync negeert voor deze wedstrijd,
+    zonder de status/uitslag aan te passen. Bedoeld voor een gestaakte
+    wedstrijd: de automatische bron (football-data.org) weet nog niet wat
+    de uiteindelijke uitslag wordt, dus de beheerder bevriest de wedstrijd
+    eerst en vult de uitslag later handmatig in via set_match_result()
+    hierboven (die dezelfde vlag ook al zet)."""
+    with get_connection() as conn:
+        conn.execute("UPDATE matches SET handmatig_overschreven = 1 WHERE id = ?", (match_id,))
+
+
 def set_match_result(match_id: int, rust: tuple[int, int], eind: tuple[int, int]) -> None:
     with get_connection() as conn:
         conn.execute(
             """
             UPDATE matches SET status = 'afgelopen',
                 uitslag_rust_thuis = ?, uitslag_rust_uit = ?,
-                uitslag_eind_thuis = ?, uitslag_eind_uit = ?
+                uitslag_eind_thuis = ?, uitslag_eind_uit = ?,
+                handmatig_overschreven = 1
             WHERE id = ?
             """,
             (rust[0], rust[1], eind[0], eind[1], match_id),
         )
     bereken_en_bewaar_punten(match_id)
+
+
+def vind_mogelijke_duplicaten(seizoen: str) -> list[tuple[dict, dict]]:
+    """Signaleert mogelijke dubbele registraties van dezelfde Eredivisie-
+    wedstrijd — het scenario waarin een gestaakte wedstrijd bij hervatting
+    een NIEUW fixture-id krijgt in plaats van hetzelfde id te behouden
+    (bv. Ajax-FC Groningen, gestaakt 30-11-2025, uitgespeeld 2-12-2025).
+
+    Twee wedstrijden gelden als verdacht als: zelfde twee teams, zelfde
+    thuis/uit-richting, in hetzelfde seizoen, met aftraptijden binnen 14
+    dagen van elkaar. Een reguliere thuis- en uitwedstrijd tussen dezelfde
+    teams liggen in de Eredivisie altijd maanden uit elkaar, dus dit venster
+    is bewust krap gehouden om nooit een legitiem duel dubbel te melden."""
+    matches = [m for m in get_matches(seizoen) if m["competitie"] == "Eredivisie"]
+    gevonden = []
+    for i, m1 in enumerate(matches):
+        for m2 in matches[i + 1:]:
+            if m1["id"] == m2["id"]:
+                continue
+            if m1["thuis"] == m2["thuis"] and m1["uit"] == m2["uit"]:
+                verschil = abs((m2["kickoff"] - m1["kickoff"]).days)
+                if verschil <= 14:
+                    gevonden.append((m1, m2))
+    return gevonden
 
 
 def get_standings_widget(seizoen: str) -> list[dict]:
