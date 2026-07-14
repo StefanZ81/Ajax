@@ -57,6 +57,7 @@ CREATE TABLE matches (
     uitslag_rust_uit    INTEGER,
     uitslag_eind_thuis  INTEGER,
     uitslag_eind_uit    INTEGER,
+    handmatig_overschreven INTEGER NOT NULL DEFAULT 0,  -- zie queries.set_match_result() / github_sync.py
     bijgewerkt_op       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
     CHECK ((uitslag_rust_thuis IS NULL) = (uitslag_rust_uit IS NULL)),
