@@ -1,6 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if mogelijke_duplicaten %}
+<div class="card" style="border-top:5px solid var(--red); background:#FBE7EA;">
+  <p style="font-weight:700; font-size:14px; color:var(--red-dark);">⚠️ Mogelijke dubbele wedstrijd gevonden</p>
+  <p style="font-size:12px; color:var(--red-dark);">
+    Dit kan gebeuren als een gestaakte wedstrijd bij hervatting een nieuw wedstrijd-id krijgt van de
+    databron (zoals bij Ajax – FC Groningen in 2025). Controleer welke van de twee de juiste is, verwijder
+    de foutieve niet zelf, maar gebruik bij de verkeerde "Sync stopzetten" en laat de juiste doorlopen —
+    of vul bij de juiste zelf de uitslag in zodat de voorspellingen daar terechtkomen.
+  </p>
+  {% for m1, m2 in mogelijke_duplicaten %}
+  <div class="rij" style="border-color:rgba(165,14,36,0.2);">
+    <span style="font-size:13px; color:var(--red-dark);">
+      <b>{{ m1.thuis }} – {{ m1.uit }}</b><br>
+      id {{ m1.id }} ({{ m1.kickoff | nl_kort }}, {{ m1.status }}) &nbsp;vs&nbsp;
+      id {{ m2.id }} ({{ m2.kickoff | nl_kort }}, {{ m2.status }})
+    </span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 <div class="card accent">
   <p style="font-weight:700; font-size:14px;">➕ Europese wedstrijd toevoegen</p>
   <p style="font-size:12px; color:var(--grey);">
@@ -187,10 +208,16 @@
 <div class="card accent">
   <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
   <div class="match-sub">{{ m.kickoff | nl_kort }} · {{ m.competitie }}{% if m.oefenwedstrijd %} · oefenwedstrijd{% endif %}</div>
+  {% if m.handmatig_overschreven %}<span class="pill gold" style="margin-top:6px; display:inline-block;">🔒 Sync gestopt</span>{% endif %}
   {% if m.status == 'afgelopen' %}
     <div class="score" style="margin-top:6px;">{{ m.uitslag_eind_thuis }}-{{ m.uitslag_eind_uit }}</div>
     <div style="font-size:11px; color:var(--grey);">rust {{ m.uitslag_rust_thuis }}-{{ m.uitslag_rust_uit }}</div>
   {% else %}
+    {% if m.id > 0 and not m.handmatig_overschreven %}
+    <form method="post" action="{{ url_for('beheerder_sync_stopzetten', match_id=m.id) }}" style="margin-top:10px;">
+      <button type="submit" class="secundair" style="font-size:12px;">⏸ Sync stopzetten (bv. bij een gestaakte wedstrijd)</button>
+    </form>
+    {% endif %}
     <form method="post" action="{{ url_for('beheerder_uitslag', match_id=m.id) }}" style="margin-top:10px;">
       <div class="score-inputs" style="margin-bottom:6px;">
         <span style="font-size:11px; color:var(--grey); width:50px;">Rust</span>
