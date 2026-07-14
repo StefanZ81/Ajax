@@ -215,7 +215,7 @@
   {% else %}
     {% if m.id > 0 and not m.handmatig_overschreven %}
     <form method="post" action="{{ url_for('beheerder_sync_stopzetten', match_id=m.id) }}" style="margin-top:10px;">
-      <button type="submit" class="secundair" style="font-size:12px;">⏸ Sync stopzetten (bv. bij een gestaakte wedstrijd)</button>
+      <button type="submit" class="secundair" style="font-size:12px;">⏸ Sync stopzetten</button>
     </form>
     {% endif %}
     <form method="post" action="{{ url_for('beheerder_uitslag', match_id=m.id) }}" style="margin-top:10px;">
