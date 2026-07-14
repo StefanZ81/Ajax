@@ -87,11 +87,15 @@ def _sync_now() -> int:
                     competitie = excluded.competitie,
                     ronde = excluded.ronde,
                     kickoff = excluded.kickoff,
-                    status = excluded.status,
-                    uitslag_rust_thuis = excluded.uitslag_rust_thuis,
-                    uitslag_rust_uit = excluded.uitslag_rust_uit,
-                    uitslag_eind_thuis = excluded.uitslag_eind_thuis,
-                    uitslag_eind_uit = excluded.uitslag_eind_uit,
+                    -- status en uitslag NIET overschrijven zodra de beheerder deze
+                    -- wedstrijd handmatig heeft gecorrigeerd (zie queries.set_match_result) --
+                    -- anders zou een volgende automatische sync die correctie stiekem
+                    -- weer terugdraaien.
+                    status = CASE WHEN matches.handmatig_overschreven = 1 THEN matches.status ELSE excluded.status END,
+                    uitslag_rust_thuis = CASE WHEN matches.handmatig_overschreven = 1 THEN matches.uitslag_rust_thuis ELSE excluded.uitslag_rust_thuis END,
+                    uitslag_rust_uit = CASE WHEN matches.handmatig_overschreven = 1 THEN matches.uitslag_rust_uit ELSE excluded.uitslag_rust_uit END,
+                    uitslag_eind_thuis = CASE WHEN matches.handmatig_overschreven = 1 THEN matches.uitslag_eind_thuis ELSE excluded.uitslag_eind_thuis END,
+                    uitslag_eind_uit = CASE WHEN matches.handmatig_overschreven = 1 THEN matches.uitslag_eind_uit ELSE excluded.uitslag_eind_uit END,
                     bijgewerkt_op = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
                 """,
                 {
