@@ -53,6 +53,7 @@ def run_migrations() -> None:
     herhaald kan worden zonder bestaande data te raken."""
     migraties = [
         "ALTER TABLE app_settings ADD COLUMN registratie_sluit_na_wedstrijd INTEGER NOT NULL DEFAULT 2",
+        "ALTER TABLE matches ADD COLUMN handmatig_overschreven INTEGER NOT NULL DEFAULT 0",
     ]
     with get_connection() as conn:
         for sql in migraties:
