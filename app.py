@@ -184,8 +184,12 @@ def logout():
 def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict], list[dict]]:
     """Verdeelt de wedstrijden van het seizoen in drie categorieën:
     - actuele: de netgespeelde wedstrijd (indien <72u geleden) bovenaan,
-      gevolgd door de eerstvolgende nog te spelen (of lopende) wedstrijd.
-      Maximaal 2 wedstrijden.
+      gevolgd door de eerstvolgende nog te spelen (of lopende) wedstrijd,
+      plus eventuele wedstrijden waarvan de sync is stopgezet maar die nog
+      geen uitslag hebben (bv. een gestaakte wedstrijd — zie
+      queries.stop_sync_wedstrijd) — die blijven hier staan totdat de
+      beheerder de uitslag alsnog handmatig verwerkt, ongeacht hun plek in
+      de normale chronologische volgorde.
     - gepland: alle overige, nog niet gespeelde wedstrijden.
     - eerder_gespeeld: alle afgelopen wedstrijden die niet (meer) in
       'actuele' staan, nieuwste eerst.
@@ -200,8 +204,18 @@ def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict
         net_gespeeld = afgelopen[0]
 
     actuele = [m for m in (net_gespeeld, eerstvolgende) if m is not None]
-    gepland = niet_afgelopen[1:]
-    eerder_gespeeld = [m for m in afgelopen if not net_gespeeld or m["id"] != net_gespeeld["id"]]
+
+    # Gestaakte/bevroren wedstrijden die op verwerking wachten: altijd bij
+    # Actuele tonen, ook als ze niet de eerstvolgende zijn.
+    wacht_op_verwerking = [
+        m for m in niet_afgelopen
+        if m.get("handmatig_overschreven") and m["id"] not in {x["id"] for x in actuele}
+    ]
+    actuele.extend(wacht_op_verwerking)
+
+    actuele_ids = {m["id"] for m in actuele}
+    gepland = [m for m in niet_afgelopen if m["id"] not in actuele_ids]
+    eerder_gespeeld = [m for m in afgelopen if m["id"] not in actuele_ids]
 
     return actuele, gepland, eerder_gespeeld
 
@@ -314,6 +328,7 @@ def beheerder():
         registratie_sluit_na_wedstrijd=queries.get_registratie_sluit_na_wedstrijd(),
         reset_link_reveal=session.pop("reset_link_reveal", None),
         season_result=queries.get_season_result(seizoen),
+        mogelijke_duplicaten=queries.vind_mogelijke_duplicaten(seizoen),
     )
 
 
@@ -352,6 +367,15 @@ def beheerder_wedstrijd_toevoegen():
         flash("Wedstrijd toegevoegd.", "info")
     except (KeyError, ValueError) as e:
         flash(f"Kon wedstrijd niet toevoegen: {e}", "fout")
+    return redirect(url_for("beheerder"))
+
+
+@app.route("/beheerder/sync-stopzetten/<match_id>", methods=["POST"])
+@admin_required
+def beheerder_sync_stopzetten(match_id):
+    match_id = int(match_id)
+    queries.stop_sync_wedstrijd(match_id)
+    flash("Automatische sync stopgezet voor deze wedstrijd. Vul de uitslag hieronder handmatig in zodra bekend.", "info")
     return redirect(url_for("beheerder"))
 
 
