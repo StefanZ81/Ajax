@@ -80,6 +80,7 @@ nav.tabs a.actief { color: var(--red); font-weight: 700; }
 .pill.green { background: #E7F5EC; color: var(--green); }
 
 .score { font-family: "Courier New", monospace; font-weight: 700; font-size: 20px; }
+.regelpunten { font-weight: 700; font-size: 13px; font-family: inherit; color: var(--red); white-space: nowrap; }
 
 a.match-link { text-decoration: none; color: inherit; display: block; }
 .match-top { display: flex; justify-content: space-between; align-items: flex-start; }
