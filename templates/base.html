@@ -49,7 +49,7 @@
     <a href="{{ url_for('programma') }}" class="{{ 'actief' if request.endpoint == 'programma' else '' }}">Programma</a>
     <a href="{{ url_for('klassement') }}" class="{{ 'actief' if request.endpoint == 'klassement' else '' }}">Klassement</a>
     <a href="{{ url_for('seizoen_voorspelling') }}" class="{{ 'actief' if request.endpoint == 'seizoen_voorspelling' else '' }}">Seizoen</a>
-    <a href="{{ url_for('profiel') }}" class="{{ 'actief' if request.endpoint == 'profiel' else '' }}">Profiel</a>
+    <a href="{{ url_for('spelregels') }}" class="{{ 'actief' if request.endpoint == 'spelregels' else '' }}">Spelregels</a>
     {% if huidige_gebruiker.rol == 'beheerder' %}
     <a href="{{ url_for('beheerder') }}" class="{{ 'actief' if request.endpoint == 'beheerder' else '' }}">Beheer</a>
     {% endif %}
