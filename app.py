@@ -313,6 +313,18 @@ def profiel():
     return render_template("profiel.html")
 
 
+@app.route("/spelregels")
+@login_required
+def spelregels():
+    seizoen = queries.get_active_season()
+    return render_template(
+        "spelregels.html",
+        rules=queries.get_rules(seizoen),
+        registratie_sluit_na_wedstrijd=queries.get_registratie_sluit_na_wedstrijd(),
+        seizoenspunten_per_onderdeel=queries.SEIZOENSPUNTEN_PER_ONDERDEEL,
+    )
+
+
 # ---------------- Beheerder-routes ----------------
 
 @app.route("/beheerder")
