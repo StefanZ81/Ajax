@@ -455,6 +455,52 @@ def vind_mogelijke_duplicaten(seizoen: str) -> list[tuple[dict, dict]]:
     return gevonden
 
 
+def get_klassement_met_delta(seizoen: str) -> list[dict]:
+    """Klassement zoals get_klassement(), aangevuld met per deelnemer:
+    - punten_deze_ronde: de punten uit de meest recent afgeronde wedstrijd
+      (over alle competities heen, dus ook een handmatig toegevoegde
+      Europese wedstrijd telt mee als dat de laatste was)
+    - delta: het aantal plaatsen gestegen (positief) of gedaald (negatief)
+      t.o.v. de stand vóór die wedstrijd, 0 bij gelijk gebleven
+
+    Geen aparte geschiedenistabel nodig: de 'vorige stand' wordt simpelweg
+    teruggerekend door ieders punten uit de laatste wedstrijd van het
+    huidige totaal af te trekken, en op basis daarvan opnieuw te ranken."""
+    with get_connection() as conn:
+        laatste = conn.execute(
+            "SELECT id FROM matches WHERE seizoen = ? AND status = 'afgelopen' ORDER BY kickoff DESC LIMIT 1",
+            (seizoen,),
+        ).fetchone()
+        laatste_match_id = laatste["id"] if laatste else None
+
+        klassement = [dict(r) for r in conn.execute("SELECT * FROM klassement").fetchall()]
+
+        punten_ronde = {}
+        if laatste_match_id is not None:
+            for rij in conn.execute(
+                "SELECT participant_id, punten FROM predictions WHERE match_id = ? AND punten IS NOT NULL",
+                (laatste_match_id,),
+            ).fetchall():
+                punten_ronde[rij["participant_id"]] = rij["punten"]
+
+    for rij in klassement:
+        rij["punten_deze_ronde"] = punten_ronde.get(rij["participant_id"], 0)
+        rij["totaal_vorige_ronde"] = rij["totaal_punten"] - rij["punten_deze_ronde"]
+
+    klassement_nu = sorted(klassement, key=lambda r: -r["totaal_punten"])
+    for i, rij in enumerate(klassement_nu):
+        rij["positie_nu"] = i + 1
+
+    klassement_vorig = sorted(klassement, key=lambda r: -r["totaal_vorige_ronde"])
+    positie_vorig_per_id = {rij["participant_id"]: i + 1 for i, rij in enumerate(klassement_vorig)}
+
+    for rij in klassement_nu:
+        rij["positie_vorig"] = positie_vorig_per_id[rij["participant_id"]]
+        rij["delta"] = rij["positie_vorig"] - rij["positie_nu"]
+
+    return klassement_nu
+
+
 def get_standings_widget(seizoen: str) -> list[dict]:
     with get_connection() as conn:
         rows = conn.execute(
