@@ -79,7 +79,7 @@ nav.tabs a.actief { color: var(--red); font-weight: 700; }
 .pill.gold { background: #FCF1D8; color: #8A6300; }
 .pill.green { background: #E7F5EC; color: var(--green); }
 
-.score { font-family: "Courier New", monospace; font-weight: 700; font-size: 20px; }
+.score { font-family: inherit; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 20px; }
 .regelpunten { font-weight: 700; font-size: 13px; font-family: inherit; color: var(--red); white-space: nowrap; }
 
 a.match-link { text-decoration: none; color: inherit; display: block; }
@@ -93,7 +93,7 @@ input[type=text], input[type=email], input[type=password], input[type=number] {
   width: 100%; height: 42px; padding: 0 12px; border-radius: 10px; border: 1.5px solid var(--line); font-size: 15px;
 }
 .score-inputs { display: flex; align-items: center; gap: 8px; }
-.score-inputs input { width: 56px; text-align: center; font-family: "Courier New", monospace; font-weight: 700; font-size: 18px; }
+.score-inputs input { width: 56px; text-align: center; font-family: inherit; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 18px; }
 
 button, input[type=submit] {
   background: var(--red); color: #fff; border: none; border-radius: 10px;
