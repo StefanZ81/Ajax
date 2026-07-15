@@ -11,9 +11,9 @@
 
 <div class="card accent">
   <p style="font-weight:700; font-size:14px;">⚽ Punten per wedstrijd</p>
-  <div class="rij"><span>Juiste ruststand</span><span class="score">{{ rules.halftime_punten }} pt</span></div>
-  <div class="rij"><span>Juiste eindstand</span><span class="score">{{ rules.fulltime_punten }} pt</span></div>
-  <div class="rij"><span>Juiste winnaar of gelijkspel (niet de exacte stand)</span><span class="score">{{ rules.outcome_punten }} pt</span></div>
+  <div class="rij"><span style="font-size:13px;">Juiste ruststand</span><span class="regelpunten">{{ rules.halftime_punten }} pt</span></div>
+  <div class="rij"><span style="font-size:13px;">Juiste eindstand</span><span class="regelpunten">{{ rules.fulltime_punten }} pt</span></div>
+  <div class="rij"><span style="font-size:13px;">Juiste winnaar of gelijkspel (niet de exacte stand)</span><span class="regelpunten">{{ rules.outcome_punten }} pt</span></div>
   <p style="font-size:12px; color:var(--grey); margin-top:10px;">
     Ruststand en eindstand tellen los van elkaar — bij een exact goed voorspelde eindstand die ook
     de juiste winnaar/gelijkspel opleverde, telt alleen de eindstand-bonus (niet allebei).
@@ -51,16 +51,16 @@
 <div class="card accent">
   <p style="font-weight:700; font-size:14px;">⏱️ Tijdslijnen — deadlines</p>
   <div class="rij">
-    <span>Voorspelling per wedstrijd (rust + eind)</span>
-    <span style="text-align:right; font-size:13px;">Tot aftrap van die wedstrijd</span>
+    <span style="font-size:13px;">Voorspelling per wedstrijd (rust + eind)</span>
+    <span style="text-align:right; font-size:13px; font-weight:600;">Tot aftrap van die wedstrijd</span>
   </div>
   <div class="rij">
-    <span>Seizoensvoorspelling (na 17 en na 34)</span>
-    <span style="text-align:right; font-size:13px;">Tot aftrap van de 1e Eredivisie-wedstrijd</span>
+    <span style="font-size:13px;">Seizoensvoorspelling (na 17 en na 34)</span>
+    <span style="text-align:right; font-size:13px; font-weight:600;">Tot aftrap van de 1e Eredivisie-wedstrijd</span>
   </div>
   <div class="rij">
-    <span>Aanmelden als nieuwe deelnemer</span>
-    <span style="text-align:right; font-size:13px;">Tot aftrap van Eredivisie-wedstrijd nr. {{ registratie_sluit_na_wedstrijd }}</span>
+    <span style="font-size:13px;">Aanmelden als nieuwe deelnemer</span>
+    <span style="text-align:right; font-size:13px; font-weight:600;">Tot aftrap van Eredivisie-wedstrijd nr. {{ registratie_sluit_na_wedstrijd }}</span>
   </div>
   <p style="font-size:12px; color:var(--grey); margin-top:10px;">
     Na de deadline is het formulier niet meer beschikbaar — er is geen mogelijkheid om een voorspelling
