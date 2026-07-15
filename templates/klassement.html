@@ -7,15 +7,27 @@
     <thead>
       <tr>
         <th style="width:28px;">#</th>
+        <th style="width:36px;"></th>
         <th>Deelnemer</th>
-        <th class="punten">Punten</th>
+        <th class="punten">Ronde</th>
+        <th class="punten">Totaal</th>
       </tr>
     </thead>
     <tbody>
       {% for rij in klassement %}
       <tr>
-        <td class="positie" style="color: {{ 'var(--red)' if loop.index == 1 else 'var(--ink)' }};">{{ loop.index }}</td>
+        <td class="positie" style="color: {{ 'var(--red)' if rij.positie_nu == 1 else 'var(--ink)' }};">{{ rij.positie_nu }}</td>
+        <td>
+          {% if rij.delta > 0 %}
+          <span style="color:var(--green); font-size:11px; font-weight:700;">▲{{ rij.delta }}</span>
+          {% elif rij.delta < 0 %}
+          <span style="color:var(--red-dark); font-size:11px; font-weight:700;">▼{{ -rij.delta }}</span>
+          {% else %}
+          <span style="color:var(--grey); font-size:12px;">–</span>
+          {% endif %}
+        </td>
         <td>{{ rij.naam }}</td>
+        <td class="punten">{{ rij.punten_deze_ronde }}</td>
         <td class="punten">{{ rij.totaal_punten }}</td>
       </tr>
       {% endfor %}
