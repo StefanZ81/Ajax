@@ -282,7 +282,8 @@ def wedstrijd(match_id):
 @app.route("/klassement")
 @login_required
 def klassement():
-    return render_template("klassement.html", klassement=queries.get_klassement())
+    seizoen = queries.get_active_season()
+    return render_template("klassement.html", klassement=queries.get_klassement_met_delta(seizoen))
 
 
 @app.route("/seizoen", methods=["GET", "POST"])
