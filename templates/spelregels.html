@@ -1,72 +1,124 @@
-{% extends "base.html" %}
-{% block content %}
+:root {
+  --red: #D2122E;
+  --red-dark: #A50E24;
+  --ink: #15161B;
+  --paper: #FFFFFF;
+  --gold: #E3A008;
+  --green: #1F8A4C;
+  --grey: #6E7180;
+  --line: #E4E6EA;
+}
 
-<div class="card accent">
-  <p style="font-weight:700; font-size:14px;">📖 Spelregels</p>
-</div>
+* { box-sizing: border-box; }
 
-<div class="card accent">
-  <p style="font-weight:700; font-size:14px;">⚽ Punten per wedstrijd</p>
-  <div class="rij"><span style="font-size:13px;">Juiste ruststand</span><span class="regelpunten">{{ rules.halftime_punten }} pt</span></div>
-  <div class="rij"><span style="font-size:13px;">Juiste eindstand</span><span class="regelpunten">{{ rules.fulltime_punten }} pt</span></div>
-  <div class="rij"><span style="font-size:13px;">Juiste winnaar of gelijkspel (niet de exacte stand)</span><span class="regelpunten">{{ rules.outcome_punten }} pt</span></div>
-  <p style="font-size:12px; color:var(--grey); margin-top:10px;">
-    Ruststand en eindstand tellen los van elkaar — bij een exact goed voorspelde eindstand die ook
-    de juiste winnaar/gelijkspel opleverde, telt alleen de eindstand-bonus (niet allebei).
-  </p>
-</div>
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0;
+}
 
-<div class="card accent">
-  <p style="font-weight:700; font-size:14px;">★ Joker</p>
-  <p style="font-size:13px;">
-    Per wedstrijd kun je kiezen om een joker in te zetten. Dit kost <b>{{ rules.joker_kosten }} punt</b>,
-    en vermenigvuldigt alle bovenstaande punten voor die ene wedstrijd met <b>{{ rules.joker_vermenigvuldiger }}</b>.
-  </p>
-  <p style="font-size:12px; color:var(--grey);">
-    Let op: dit kan ook negatief uitpakken. Voorspel je met joker volledig verkeerd, dan levert dat
-    <b>0 × {{ rules.joker_vermenigvuldiger }} − {{ rules.joker_kosten }} = −{{ rules.joker_kosten }} punt</b> op voor die wedstrijd.
-    Er geldt geen limiet op hoe vaak je de joker mag inzetten gedurende het seizoen.
-  </p>
-</div>
+.container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 80px; }
 
-<div class="card accent">
-  <p style="font-weight:700; font-size:14px;">🏆 Seizoensvoorspelling</p>
-  <p style="font-size:13px;">
-    Je voorspelt de positie én het puntenaantal van Ajax in de Eredivisie, op twee momenten: na 17 en
-    na 34 wedstrijden. Per moment levert een juiste positie <b>{{ seizoenspunten_per_onderdeel }} punten</b> op,
-    en een juist puntenaantal nóg eens <b>{{ seizoenspunten_per_onderdeel }} punten</b> — dus maximaal
-    {{ seizoenspunten_per_onderdeel * 4 }} punten in totaal over beide momenten samen.
-  </p>
-  <p style="font-size:12px; color:var(--grey);">
-    De uitkomst na 17 en na 34 wedstrijden wordt pas vastgesteld zodra alle 18 teams minstens dat aantal
-    wedstrijden hebben gespeeld — dat voorkomt een oneerlijke, nog niet stabiele tussenstand door
-    uitgestelde wedstrijden.
-  </p>
-</div>
+.ticker-wrap {
+  position: sticky; top: 0; z-index: 30;
+  background: #fff; white-space: nowrap;
+  padding: 7px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center;
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+}
+.ticker-label {
+  flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--red);
+  padding: 0 12px 0 16px; border-right: 1px solid var(--line); white-space: nowrap;
+}
+.ticker-scroll { overflow: hidden; flex: 1; }
+.ticker-track { display: inline-flex; animation: ticker-scroll 45s linear infinite; }
+.ticker-wrap:active .ticker-track { animation-play-state: paused; }
+.ticker-item {
+  color: var(--ink); text-decoration: none; font-size: 12px; font-weight: 500;
+  padding: 0 28px; flex-shrink: 0;
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
-<div class="card accent">
-  <p style="font-weight:700; font-size:14px;">⏱️ Tijdslijnen — deadlines</p>
-  <div class="rij">
-    <span style="font-size:13px;">Voorspelling per wedstrijd (rust + eind)</span>
-    <span style="text-align:right; font-size:13px; font-weight:600;">Tot aftrap van die wedstrijd</span>
-  </div>
-  <div class="rij">
-    <span style="font-size:13px;">Seizoensvoorspelling (na 17 en na 34)</span>
-    <span style="text-align:right; font-size:13px; font-weight:600;">Tot aftrap van de 1e Eredivisie-wedstrijd</span>
-  </div>
-  <p style="font-size:12px; color:var(--grey); margin-top:10px;">
-    Na de deadline is het formulier niet meer beschikbaar — er is geen mogelijkheid om een voorspelling
-    na aftrap alsnog aan te passen of in te dienen.
-  </p>
-</div>
+header.top {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px; border-bottom: 1px solid var(--line);
+}
+header.top .crest-logo { width: 44px; height: 44px; object-fit: contain; flex-shrink: 0; }
+header.top .crest {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--red);
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 18px; flex-shrink: 0;
+}
+header.top h1 { font-size: 20px; margin: 0; }
+header.top p { font-size: 12px; color: var(--grey); margin: 0; }
+header.top a.logout { margin-left: auto; font-size: 12px; color: var(--grey); text-decoration: none; }
 
-<div class="card accent">
-  <p style="font-weight:700; font-size:14px;">🔒 Besloten poule</p>
-  <p style="font-size:13px;">
-    Nieuwe aanmeldingen worden pas actief na goedkeuring door de beheerder. Voorspellingen van andere
-    deelnemers voor een wedstrijd zijn pas zichtbaar zodra die wedstrijd is begonnen — vooraf kan
-    niemand elkaars voorspelling zien.
-  </p>
-</div>
+nav.tabs {
+  display: flex; border-top: 1px solid var(--line); position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff; max-width: 480px; margin: 0 auto;
+}
+nav.tabs a {
+  flex: 1; text-align: center; padding: 10px 4px; font-size: 11px; color: var(--grey); text-decoration: none;
+}
+nav.tabs a.actief { color: var(--red); font-weight: 700; }
 
-{% endblock %}
+.widget { background: var(--red); color: #fff; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+.widget * { color: #fff; }
+.widget-title { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .9; margin-bottom: 10px; }
+.widget-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px; }
+
+.card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+.card.accent { border-top: 5px solid var(--red); border-radius: 16px 16px 0 0; }
+
+.pill { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 999px; background: #FBE7EA; color: var(--red-dark); margin-right: 6px; }
+.pill.gold { background: #FCF1D8; color: #8A6300; }
+.pill.green { background: #E7F5EC; color: var(--green); }
+
+.score { font-family: inherit; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 20px; }
+.regelpunten { font-weight: 700; font-size: 12px; font-family: inherit; color: var(--red); white-space: nowrap; }
+
+a.match-link { text-decoration: none; color: inherit; display: block; }
+.match-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.match-title { font-size: 16px; font-weight: 700; margin-top: 6px; }
+.match-sub { font-size: 12px; color: var(--grey); margin-top: 2px; }
+
+form .veld { margin-bottom: 14px; }
+form label { display: block; font-size: 12px; color: var(--grey); margin-bottom: 4px; }
+input[type=text], input[type=email], input[type=password], input[type=number] {
+  width: 100%; height: 42px; padding: 0 12px; border-radius: 10px; border: 1.5px solid var(--line); font-size: 15px;
+}
+.score-inputs { display: flex; align-items: center; gap: 8px; }
+.score-inputs input { width: 56px; text-align: center; font-family: inherit; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 18px; }
+
+button, input[type=submit] {
+  background: var(--red); color: #fff; border: none; border-radius: 10px;
+  font-weight: 600; padding: 12px 18px; font-size: 15px; cursor: pointer; width: 100%;
+}
+button:hover, input[type=submit]:hover { background: var(--red-dark); }
+button.secundair { background: #F0F0F3; color: var(--ink); }
+
+.flash { padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 14px; }
+.flash.fout { background: #FBE7EA; color: var(--red-dark); }
+.flash.info { background: #E7F5EC; color: var(--green); }
+
+.rij { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+
+.klassement-tabel { width: 100%; border-collapse: collapse; }
+.klassement-tabel th {
+  text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--grey); padding: 0 0 10px 0;
+}
+.klassement-tabel th.punten, .klassement-tabel td.punten { text-align: right; }
+.klassement-tabel td {
+  padding: 9px 0; font-size: 14px; font-weight: 500; color: var(--ink);
+}
+.klassement-tabel td.positie { font-weight: 700; width: 28px; }
+.klassement-tabel td.punten { font-weight: 700; font-variant-numeric: tabular-nums; }
+.tabs-toggle { display: flex; gap: 4px; background: #F0F0F3; border-radius: 999px; padding: 4px; margin-bottom: 16px; }
+.tabs-toggle a { flex: 1; text-align: center; padding: 8px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--grey); }
+.tabs-toggle a.actief { background: var(--ink); color: #fff; }
