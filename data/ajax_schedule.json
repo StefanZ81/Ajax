@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-07-21T00:11:00.945682+00:00",
+  "bijgewerkt_op": "2026-07-22T09:35:49.177529+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -413,73 +413,7 @@
   "stand": [
     {
       "positie": 1,
-      "team": "ADO Den Haag",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "AFC Ajax",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "AZ",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "FC Groningen",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "FC Twente '65",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "FC Utrecht",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "Feyenoord Rotterdam",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "Fortuna Sittard",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "Go Ahead Eagles",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "NEC",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "PEC Zwolle",
-      "punten": 0,
-      "gespeeld": 0
-    },
-    {
-      "positie": 1,
-      "team": "PSV",
+      "team": "Telstar 1963",
       "punten": 0,
       "gespeeld": 0
     },
@@ -491,13 +425,49 @@
     },
     {
       "positie": 1,
+      "team": "Feyenoord Rotterdam",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "FC Groningen",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "PEC Zwolle",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "FC Twente '65",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
       "team": "SC Cambuur-Leeuwarden",
       "punten": 0,
       "gespeeld": 0
     },
     {
       "positie": 1,
-      "team": "SC Heerenveen",
+      "team": "AFC Ajax",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "NEC",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "FC Utrecht",
       "punten": 0,
       "gespeeld": 0
     },
@@ -509,13 +479,43 @@
     },
     {
       "positie": 1,
-      "team": "Telstar 1963",
+      "team": "Fortuna Sittard",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "SC Heerenveen",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "PSV",
       "punten": 0,
       "gespeeld": 0
     },
     {
       "positie": 1,
       "team": "Willem II Tilburg",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "Go Ahead Eagles",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "ADO Den Haag",
+      "punten": 0,
+      "gespeeld": 0
+    },
+    {
+      "positie": 1,
+      "team": "AZ",
       "punten": 0,
       "gespeeld": 0
     }
