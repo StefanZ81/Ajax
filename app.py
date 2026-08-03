@@ -24,6 +24,7 @@ from zoneinfo import ZoneInfo
 from flask import Flask, abort, flash, redirect, render_template, request, send_file, session, url_for
 
 import auth
+import backup_database
 import db
 import export
 import github_sync
@@ -105,6 +106,7 @@ def admin_required(f):
 def inject_user():
     seizoen = queries.get_active_season()
     reminder_export.sync_if_needed(seizoen)
+    backup_database.sync_if_needed()
     return {
         "huidige_gebruiker": current_user(),
         "seizoen": seizoen,
