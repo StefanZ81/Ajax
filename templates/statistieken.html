@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">📊 Mijn statistieken</p>
+  {% if not stats.toon_sectie_1 %}
+  <p style="font-size:12px; color:var(--grey);">
+    Zodra de eerste wedstrijd is gespeeld, verschijnen hier je persoonlijke statistieken.
+  </p>
+  {% endif %}
+</div>
+
+{% if stats.toon_sectie_1 %}
+<div class="card accent">
+  <div class="rij"><span style="font-size:12px;">Aantal voorspelde wedstrijden</span><span class="regelpunten">{{ stats.aantal_voorspeld }}</span></div>
+  <div class="rij"><span style="font-size:12px;">Aantal wedstrijden gemist</span><span class="regelpunten">{{ stats.aantal_gemist }}</span></div>
+  <div class="rij"><span style="font-size:12px;">Totaal aantal punten</span><span class="regelpunten">{{ stats.totaal_punten }}</span></div>
+  <div class="rij"><span style="font-size:12px;">Positie in de poule</span><span class="regelpunten">{{ stats.positie }}</span></div>
+  {% if stats.laatste_voorspelling_percentiel is not none %}
+  <p style="font-size:12px; margin-top:10px; margin-bottom:0;">
+    Je laatste voorspelling was beter dan {{ stats.laatste_voorspelling_percentiel }}% van je medespelers.
+  </p>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if stats.toon_sectie_2 %}
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">🎯 Nauwkeurigheid</p>
+  <div class="rij"><span style="font-size:12px;">Winnaar/gelijkspel juist</span><span class="regelpunten">{{ stats.pct_winnaar_juist }}%</span></div>
+  <div class="rij"><span style="font-size:12px;">Eindstand juist</span><span class="regelpunten">{{ stats.pct_eindstand_juist }}%</span></div>
+  <div class="rij"><span style="font-size:12px;">Ruststand juist</span><span class="regelpunten">{{ stats.pct_ruststand_juist }}%</span></div>
+</div>
+
+<div class="card accent">
+  <div class="rij"><span style="font-size:12px;">Eindstand juist — thuiswedstrijden</span><span class="regelpunten">{{ stats.pct_eindstand_thuis_juist if stats.pct_eindstand_thuis_juist is not none else '–' }}%</span></div>
+  <div class="rij"><span style="font-size:12px;">Eindstand juist — uitwedstrijden</span><span class="regelpunten">{{ stats.pct_eindstand_uit_juist if stats.pct_eindstand_uit_juist is not none else '–' }}%</span></div>
+  <div class="rij"><span style="font-size:12px;">Eindstand juist — topwedstrijden</span><span class="regelpunten">{{ stats.pct_eindstand_top_juist if stats.pct_eindstand_top_juist is not none else '–' }}%</span></div>
+</div>
+
+<div class="card accent">
+  {% if stats.beste_wedstrijd %}
+  <div class="rij"><span style="font-size:12px;">Beste voorspelling</span><span style="font-size:12px; font-weight:700;">{{ stats.beste_wedstrijd.thuis }} – {{ stats.beste_wedstrijd.uit }}</span></div>
+  {% endif %}
+  {% if stats.slechtste_wedstrijd %}
+  <div class="rij"><span style="font-size:12px;">Slechtste voorspelling</span><span style="font-size:12px; font-weight:700;">{{ stats.slechtste_wedstrijd.thuis }} – {{ stats.slechtste_wedstrijd.uit }}</span></div>
+  {% endif %}
+</div>
+
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">★ Joker</p>
+  <div class="rij"><span style="font-size:12px;">Aantal keer ingezet</span><span class="regelpunten">{{ stats.aantal_jokers }}</span></div>
+  <div class="rij"><span style="font-size:12px;">Winnaar/gelijkspel juist</span><span class="regelpunten">{{ stats.pct_joker_winnaar_juist if stats.pct_joker_winnaar_juist is not none else '–' }}%</span></div>
+  <div class="rij"><span style="font-size:12px;">Ruststand juist</span><span class="regelpunten">{{ stats.pct_joker_ruststand_juist if stats.pct_joker_ruststand_juist is not none else '–' }}%</span></div>
+  <div class="rij"><span style="font-size:12px;">Eindstand juist</span><span class="regelpunten">{{ stats.pct_joker_eindstand_juist if stats.pct_joker_eindstand_juist is not none else '–' }}%</span></div>
+</div>
+{% endif %}
+
+{% if stats.toon_sectie_3 %}
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">🏆 Seizoensvoorspelling</p>
+
+  <p style="font-size:12px; font-weight:600; margin-bottom:4px;">Na 17 wedstrijden</p>
+  <div class="rij">
+    <span style="font-size:12px;">Voorspeld</span>
+    <span style="font-size:12px;">
+      {% if stats.seizoensvoorspelling %}positie {{ stats.seizoensvoorspelling.na17_positie }}, {{ stats.seizoensvoorspelling.na17_punten }} pt{% else %}–{% endif %}
+    </span>
+  </div>
+  <div class="rij">
+    <span style="font-size:12px;">Werkelijk</span>
+    <span style="font-size:12px;">
+      {% if stats.seizoensuitkomst and stats.seizoensuitkomst.na17_positie is not none %}positie {{ stats.seizoensuitkomst.na17_positie }}, {{ stats.seizoensuitkomst.na17_punten }} pt{% else %}nog niet bekend{% endif %}
+    </span>
+  </div>
+
+  <p style="font-size:12px; font-weight:600; margin:14px 0 4px;">Na 34 wedstrijden</p>
+  <div class="rij">
+    <span style="font-size:12px;">Voorspeld</span>
+    <span style="font-size:12px;">
+      {% if stats.seizoensvoorspelling %}positie {{ stats.seizoensvoorspelling.na34_positie }}, {{ stats.seizoensvoorspelling.na34_punten }} pt{% else %}–{% endif %}
+    </span>
+  </div>
+  <div class="rij">
+    <span style="font-size:12px;">Werkelijk</span>
+    <span style="font-size:12px;">
+      {% if stats.seizoensuitkomst and stats.seizoensuitkomst.na34_positie is not none %}positie {{ stats.seizoensuitkomst.na34_positie }}, {{ stats.seizoensuitkomst.na34_punten }} pt{% else %}nog niet bekend{% endif %}
+    </span>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
