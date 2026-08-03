@@ -30,6 +30,7 @@ import github_sync
 import mail
 import nieuws_sync
 import queries
+import reminder_export
 from scoring import bereken_punten
 
 db.run_migrations()
@@ -103,6 +104,7 @@ def admin_required(f):
 @app.context_processor
 def inject_user():
     seizoen = queries.get_active_season()
+    reminder_export.sync_if_needed(seizoen)
     return {
         "huidige_gebruiker": current_user(),
         "seizoen": seizoen,
@@ -173,6 +175,14 @@ def wachtwoord_resetten(token):
     return render_template("wachtwoord_resetten.html", token=token)
 
 
+@app.route("/uitschrijven/<token>")
+def uitschrijven(token):
+    deelnemer = queries.uitschrijven_reminders(token)
+    if deelnemer:
+        reminder_export.sync_if_needed(queries.get_active_season(), force=True)
+    return render_template("uitschrijven.html", gelukt=deelnemer is not None)
+
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -183,7 +193,7 @@ def logout():
 
 def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict], list[dict]]:
     """Verdeelt de wedstrijden van het seizoen in drie categorieën:
-    - actuele: de netgespeelde wedstrijd (indien <72u geleden) bovenaan,
+    - actuele: de netgespeelde wedstrijd (indien <24u na aftrap) bovenaan,
       gevolgd door de eerstvolgende nog te spelen (of lopende) wedstrijd,
       plus eventuele wedstrijden waarvan de sync is stopgezet maar die nog
       geen uitslag hebben (bv. een gestaakte wedstrijd — zie
@@ -200,7 +210,7 @@ def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict
 
     eerstvolgende = niet_afgelopen[0] if niet_afgelopen else None
     net_gespeeld = None
-    if afgelopen and (nu - afgelopen[0]["kickoff"]) <= timedelta(hours=72):
+    if afgelopen and (nu - afgelopen[0]["kickoff"]) <= timedelta(hours=24):
         net_gespeeld = afgelopen[0]
 
     actuele = [m for m in (net_gespeeld, eerstvolgende) if m is not None]
@@ -311,6 +321,14 @@ def seizoen_voorspelling():
 @login_required
 def profiel():
     return render_template("profiel.html")
+
+
+@app.route("/statistieken")
+@login_required
+def statistieken():
+    gebruiker = current_user()
+    seizoen = queries.get_active_season()
+    return render_template("statistieken.html", stats=queries.get_mijn_statistieken(gebruiker["id"], seizoen))
 
 
 @app.route("/spelregels")
@@ -468,6 +486,7 @@ def beheerder_aanvraag(participant_id, besluit):
         queries.delete_participant(participant_id)
     else:
         queries.set_participant_status(participant_id, besluit)
+        reminder_export.sync_if_needed(queries.get_active_season(), force=True)
     return redirect(url_for("beheerder"))
 
 
