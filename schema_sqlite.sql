@@ -21,6 +21,8 @@ CREATE TABLE participants (
     status          TEXT NOT NULL DEFAULT 'aangevraagd' CHECK (status IN ('aangevraagd', 'goedgekeurd', 'geweigerd')),
     magic_token     TEXT,
     magic_token_verloopt_op TEXT,
+    ontvangt_reminders INTEGER NOT NULL DEFAULT 1,
+    uitschrijf_token TEXT UNIQUE,
     aangemaakt_op   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     bijgewerkt_op   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
