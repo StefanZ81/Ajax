@@ -26,6 +26,11 @@
 
 {% if stats.toon_sectie_2 %}
 <div class="card accent">
+  <div class="rij"><span style="font-size:12px;">Hoogste positie in de poule</span><span class="regelpunten">{{ stats.hoogste_positie }}</span></div>
+  <div class="rij"><span style="font-size:12px;">Laagste positie in de poule</span><span class="regelpunten">{{ stats.laagste_positie }}</span></div>
+</div>
+
+<div class="card accent">
   <p style="font-weight:700; font-size:14px;">🎯 Nauwkeurigheid</p>
   <div class="rij"><span style="font-size:12px;">Winnaar/gelijkspel juist</span><span class="regelpunten">{{ stats.pct_winnaar_juist }}%</span></div>
   <div class="rij"><span style="font-size:12px;">Eindstand juist</span><span class="regelpunten">{{ stats.pct_eindstand_juist }}%</span></div>
