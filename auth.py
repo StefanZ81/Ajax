@@ -102,6 +102,7 @@ def register_participant(naam: str, email: str, password: str) -> dict:
         "password_hash": hash_password(password),
         "rol": "deelnemer",  # hardcoded — een client kan dit nooit overschrijven, zie ook onderaan dit bestand
         "status": "aangevraagd",  # wacht op goedkeuring door beheerder
+        "uitschrijf_token": secrets.token_urlsafe(24),
     }
     opgeslagen = save_participant(nieuwe_deelnemer)  # -> database, geeft de volledige rij terug
 
@@ -259,12 +260,15 @@ def find_participant_by_id(participant_id: str) -> Optional[dict]:
 
 
 def save_participant(deelnemer: dict) -> dict:
-    """Upsert op id: nieuw account -> insert, bestaand account -> update."""
+    """Upsert op id: nieuw account -> insert, bestaand account -> update.
+    uitschrijf_token wordt bewust NOOIT via de UPDATE-tak aangepast --
+    die moet blijvend hetzelfde blijven, anders breekt een eerder
+    verstuurde uitschrijflink."""
     with get_connection() as conn:
         conn.execute(
             """
-            INSERT INTO participants (id, naam, email, password_hash, rol, status)
-            VALUES (:id, :naam, :email, :password_hash, :rol, :status)
+            INSERT INTO participants (id, naam, email, password_hash, rol, status, uitschrijf_token)
+            VALUES (:id, :naam, :email, :password_hash, :rol, :status, :uitschrijf_token)
             ON CONFLICT (id) DO UPDATE SET
                 naam = excluded.naam, email = excluded.email, password_hash = excluded.password_hash,
                 rol = excluded.rol, status = excluded.status
