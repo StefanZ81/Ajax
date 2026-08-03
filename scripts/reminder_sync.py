@@ -13,7 +13,20 @@ wordt door dit script zelf bijgewerkt en teruggecommit, zodat een
 wedstrijd nooit twee keer wordt aangekondigd, ook al draait deze
 workflow elke paar minuten opnieuw.
 
-Vereist secret: RESEND_API_KEY (Settings → Secrets → Actions)
+Verstuurt via Gmail SMTP (smtp.gmail.com) — geen eigen domein of externe
+dienst zoals Resend nodig, en er is geen beperking op wie de mail mag
+ontvangen (in tegenstelling tot een niet-geverifieerd Resend-account, dat
+alleen naar het eigen aanmeldadres mag versturen).
+
+Vereiste secrets (Settings → Secrets and variables → Actions):
+  GMAIL_ADRES            het Gmail-adres waarmee verstuurd wordt
+  GMAIL_APP_WACHTWOORD   een 16-tekens 'app-wachtwoord' (NIET het gewone
+                          Gmail-wachtwoord) -- aan te maken via
+                          myaccount.google.com/security, vereist dat
+                          tweestapsverificatie aanstaat op dat account.
+
+Gratis Gmail staat ~500 e-mails per dag toe, ruim voldoende voor een
+besloten poule.
 ------------------------------------------------------------------
 """
 
@@ -21,17 +34,18 @@ from __future__ import annotations
 
 import json
 import os
+import smtplib
 import subprocess
 from datetime import datetime, timedelta, timezone
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from zoneinfo import ZoneInfo
-
-import requests
 
 REMINDER_DATA_PATH = "data/reminder_data.json"
 VERZONDEN_PATH = "data/reminders_verzonden.json"
 
-RESEND_API_KEY = os.environ["RESEND_API_KEY"]
-EMAIL_FROM = os.environ.get("EMAIL_FROM", "J-Poule <poule@jpoule.nl>")
+GMAIL_ADRES = os.environ["GMAIL_ADRES"]
+GMAIL_APP_WACHTWOORD = os.environ["GMAIL_APP_WACHTWOORD"]
 APP_URL = os.environ.get("APP_URL", "https://ajaxpoule.pythonanywhere.com")
 
 # Marge rond het 24-uursmoment, om dezelfde reden als bij de scores-probe:
@@ -123,13 +137,16 @@ def stel_mail_samen(deelnemer: dict, wedstrijd: dict) -> tuple[str, str]:
 
 
 def verstuur_mail(naar: str, onderwerp: str, html: str) -> None:
-    res = requests.post(
-        "https://api.resend.com/emails",
-        headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"},
-        json={"from": EMAIL_FROM, "to": naar, "subject": onderwerp, "html": html},
-        timeout=15,
-    )
-    res.raise_for_status()
+    bericht = MIMEMultipart("alternative")
+    bericht["Subject"] = onderwerp
+    bericht["From"] = f"J-Poule <{GMAIL_ADRES}>"
+    bericht["To"] = naar
+    bericht.attach(MIMEText(html, "html"))
+
+    with smtplib.SMTP("smtp.gmail.com", 587, timeout=15) as server:
+        server.starttls()
+        server.login(GMAIL_ADRES, GMAIL_APP_WACHTWOORD)
+        server.sendmail(GMAIL_ADRES, naar, bericht.as_string())
 
 
 def main() -> None:
