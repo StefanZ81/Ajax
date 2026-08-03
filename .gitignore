@@ -9,3 +9,7 @@ __pycache__/
 venv/
 *.log
 
+# Uitzondering: de automatische database-back-up moet WEL gecommit worden
+# (zie backup_database.py) -- de algemene *.db-regel hierboven zou dit
+# anders stilzwijgend negeren.
+!backups/jpoule_backup.db
