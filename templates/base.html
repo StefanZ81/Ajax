@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>J-Poule</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <!-- Toevoegen aan beginscherm (PWA) -->
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <meta name="theme-color" content="#D2122E">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/favicon.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="J-Poule">
 </head>
 <body>
   {% if huidige_gebruiker %}
@@ -50,6 +59,7 @@
     <a href="{{ url_for('klassement') }}" class="{{ 'actief' if request.endpoint == 'klassement' else '' }}">Klassement</a>
     <a href="{{ url_for('seizoen_voorspelling') }}" class="{{ 'actief' if request.endpoint == 'seizoen_voorspelling' else '' }}">Seizoen</a>
     <a href="{{ url_for('spelregels') }}" class="{{ 'actief' if request.endpoint == 'spelregels' else '' }}">Spelregels</a>
+    <a href="{{ url_for('statistieken') }}" class="{{ 'actief' if request.endpoint == 'statistieken' else '' }}">Mijn stats</a>
     {% if huidige_gebruiker.rol == 'beheerder' %}
     <a href="{{ url_for('beheerder') }}" class="{{ 'actief' if request.endpoint == 'beheerder' else '' }}">Beheer</a>
     {% endif %}
