@@ -32,4 +32,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/nieuws.json
           git diff --staged --quiet || git commit -m "Ajax-nieuws bijgewerkt [skip ci]"
+          # Zie ajax-data-sync.yml voor waarom dit nodig is: meerdere workflows
+          # committen onafhankelijk naar dezelfde main-branch.
+          git pull --rebase --autostash
           git push
