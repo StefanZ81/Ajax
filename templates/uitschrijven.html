@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align:center; margin: 32px 0;">
+  <img src="{{ url_for('static', filename='badge.svg') }}" alt="J-Poule" style="width:72px; height:auto; margin: 0 auto 12px; display:block;">
+  <h1 style="margin:0;">J-POULE</h1>
+</div>
+
+<div class="card">
+  {% if gelukt %}
+  <p style="font-weight:700; margin-top:0;">Uitgeschreven</p>
+  <p style="font-size:13px;">
+    Je ontvangt vanaf nu geen aankondigingsmail meer voor aankomende wedstrijden. Je account en je
+    voorspellingen blijven gewoon bestaan — je kunt nog altijd gewoon inloggen en meespelen.
+  </p>
+  {% else %}
+  <p style="font-weight:700; margin-top:0;">Link niet (meer) geldig</p>
+  <p style="font-size:13px; color:var(--grey);">
+    Deze uitschrijflink werd niet herkend. Mogelijk was je al uitgeschreven.
+  </p>
+  {% endif %}
+</div>
+
+<p style="text-align:center; font-size:13px;">
+  <a href="{{ url_for('login') }}" style="color:var(--red); text-decoration:none;">&larr; Naar J-Poule</a>
+</p>
+{% endblock %}
