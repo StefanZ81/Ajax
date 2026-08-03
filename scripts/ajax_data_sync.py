@@ -17,7 +17,7 @@ competitie == "Eredivisie" aan (zie save()/merge-logica onderaan).
 Wat het doet, elke keer dat het draait:
   1. Eén keer per dag: volledige ververing van Ajax' Eredivisie-programma.
   2. Tijdens een wedstrijd: gerichte extra opvraging van precies díe
-     wedstrijd, rond T+50 min (ruststand) en T+115 min (eindstand) na
+     wedstrijd, rond T+50 min (ruststand) en T+125 min (eindstand) na
      aftrap — niet vaker, om binnen de 10 verzoeken/minuut te blijven.
 
 Schrijft naar data/ajax_schedule.json — dit bestand wordt bij elke
@@ -49,7 +49,7 @@ OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "data/ajax_schedule.json")
 # Precies deze twee momenten na aftrap worden extra bevraagd (zie opdracht):
 PROBE_MOMENTEN = [
     (50, "rust"),   # ruim na de eerste helft (45 min + wat marge)
-    (115, "eind"),  # 90 min + rust + ruime marge voor blessuretijd/verlenging
+    (125, "eind"),  # 90 min + rust + ruime marge voor blessuretijd/verlenging
 ]
 PROBE_MARGE = timedelta(minutes=5)  # cron draait elke 5 min, dus dit dekt het venster af
 
@@ -112,7 +112,7 @@ def daily_full_refresh() -> list[dict]:
     return matches
 
 
-# ---------------- Gerichte live-probe rond T+50 / T+115 min ----------------
+# ---------------- Gerichte live-probe rond T+50 / T+125 min ----------------
 
 def wedstrijden_binnen_probe_venster(matches: list[dict]) -> list[tuple[int, str]]:
     nu = datetime.now(timezone.utc)
