@@ -351,6 +351,178 @@ def eerste_competitiewedstrijd_gestart(seizoen: str) -> bool:
     return datetime.now(timezone.utc) >= _parse_dt(row["kickoff"])
 
 
+TOP_TEGENSTANDERS = ("Feyenoord", "PSV", "AZ")
+
+
+def _aantal_gespeelde_eredivisie_wedstrijden(seizoen: str) -> int:
+    with get_connection() as conn:
+        rij = conn.execute(
+            "SELECT COUNT(*) AS n FROM matches WHERE seizoen = ? AND competitie = 'Eredivisie' AND status = 'afgelopen'",
+            (seizoen,),
+        ).fetchone()
+        return rij["n"]
+
+
+def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
+    """Persoonlijke statistieken voor één deelnemer, opgedeeld in drie
+    secties die pas verschijnen zodra er genoeg Eredivisie-wedstrijden zijn
+    gespeeld (1 / 5 / 17) om de betreffende cijfers zinvol te maken."""
+    gespeelde_eredivisie = _aantal_gespeelde_eredivisie_wedstrijden(seizoen)
+
+    with get_connection() as conn:
+        gespeeld = [
+            dict(r) for r in conn.execute(
+                "SELECT * FROM matches WHERE seizoen = ? AND status = 'afgelopen' ORDER BY kickoff", (seizoen,)
+            ).fetchall()
+        ]
+        eigen_voorspellingen = {
+            r["match_id"]: dict(r) for r in conn.execute(
+                "SELECT * FROM predictions WHERE participant_id = ?", (participant_id,)
+            ).fetchall()
+        }
+        klassement = [dict(r) for r in conn.execute("SELECT * FROM klassement").fetchall()]
+        seizoensvoorspelling_rij = conn.execute(
+            "SELECT * FROM season_predictions WHERE participant_id = ? AND seizoen = ?", (participant_id, seizoen)
+        ).fetchone()
+        seizoensuitkomst_rij = conn.execute(
+            "SELECT * FROM season_results WHERE seizoen = ?", (seizoen,)
+        ).fetchone()
+
+    resultaat: dict = {
+        "toon_sectie_1": gespeelde_eredivisie >= 1,
+        "toon_sectie_2": gespeelde_eredivisie >= 5,
+        "toon_sectie_3": gespeelde_eredivisie >= 17,
+    }
+    if not resultaat["toon_sectie_1"]:
+        return resultaat
+
+    # ---------------- Sectie 1 ----------------
+    gespeelde_met_voorspelling = [m for m in gespeeld if m["id"] in eigen_voorspellingen]
+    resultaat["aantal_voorspeld"] = len(gespeelde_met_voorspelling)
+    resultaat["aantal_gemist"] = len(gespeeld) - len(gespeelde_met_voorspelling)
+
+    eigen_klassement_rij = next((r for r in klassement if r["participant_id"] == participant_id), None)
+    resultaat["totaal_punten"] = eigen_klassement_rij["totaal_punten"] if eigen_klassement_rij else 0
+
+    gesorteerd = sorted(klassement, key=lambda r: -r["totaal_punten"])
+    resultaat["positie"] = next(
+        (i + 1 for i, r in enumerate(gesorteerd) if r["participant_id"] == participant_id), None
+    )
+
+    resultaat["laatste_voorspelling_percentiel"] = None
+    if gespeelde_met_voorspelling:
+        laatste_wedstrijd = gespeelde_met_voorspelling[-1]  # al gesorteerd op aftrap, dus de laatste hier = de meest recente
+        eigen_punten_laatste = eigen_voorspellingen[laatste_wedstrijd["id"]]["punten"] or 0
+        with get_connection() as conn:
+            medespelers = conn.execute(
+                """
+                SELECT p.id, COALESCE(pr.punten, 0) AS punten
+                FROM participants p
+                LEFT JOIN predictions pr ON pr.participant_id = p.id AND pr.match_id = ?
+                WHERE p.status = 'goedgekeurd' AND p.id != ?
+                """,
+                (laatste_wedstrijd["id"], participant_id),
+            ).fetchall()
+        if medespelers:
+            aantal_minder = sum(1 for r in medespelers if r["punten"] < eigen_punten_laatste)
+            resultaat["laatste_voorspelling_percentiel"] = round(100 * aantal_minder / len(medespelers))
+
+    if not resultaat["toon_sectie_2"]:
+        return resultaat
+
+    # ---------------- Sectie 2 ----------------
+    def _uitkomst(thuis: int, uit: int) -> str:
+        if thuis > uit:
+            return "thuis"
+        if thuis < uit:
+            return "uit"
+        return "gelijk"
+
+    n = len(gespeelde_met_voorspelling)
+    aantal_winnaar_juist = aantal_eind_juist = aantal_rust_juist = 0
+    thuis_wedstrijden = uit_wedstrijden = thuis_juist = uit_juist = 0
+    top_wedstrijden = top_juist = 0
+    beste = None  # (punten, wedstrijd)
+    slechtste = None  # (afwijking, wedstrijd)
+
+    for m in gespeelde_met_voorspelling:
+        v = eigen_voorspellingen[m["id"]]
+        werkelijke_uitkomst = _uitkomst(m["uitslag_eind_thuis"], m["uitslag_eind_uit"])
+        voorspelde_uitkomst = _uitkomst(v["eind_thuis"], v["eind_uit"])
+        if werkelijke_uitkomst == voorspelde_uitkomst:
+            aantal_winnaar_juist += 1
+
+        eind_juist = (v["eind_thuis"] == m["uitslag_eind_thuis"] and v["eind_uit"] == m["uitslag_eind_uit"])
+        rust_juist = (v["rust_thuis"] == m["uitslag_rust_thuis"] and v["rust_uit"] == m["uitslag_rust_uit"])
+        if eind_juist:
+            aantal_eind_juist += 1
+        if rust_juist:
+            aantal_rust_juist += 1
+
+        is_thuis = "Ajax" in m["thuis"]
+        if is_thuis:
+            thuis_wedstrijden += 1
+            thuis_juist += eind_juist
+        else:
+            uit_wedstrijden += 1
+            uit_juist += eind_juist
+
+        tegenstander = m["uit"] if is_thuis else m["thuis"]
+        if any(t in tegenstander for t in TOP_TEGENSTANDERS):
+            top_wedstrijden += 1
+            top_juist += eind_juist
+
+        if v["punten"] is not None and (beste is None or v["punten"] > beste[0]):
+            beste = (v["punten"], m)
+        afwijking = abs(v["eind_thuis"] - m["uitslag_eind_thuis"]) + abs(v["eind_uit"] - m["uitslag_eind_uit"])
+        if slechtste is None or afwijking > slechtste[0]:
+            slechtste = (afwijking, m)
+
+    def _pct(teller: int, noemer: int) -> float | None:
+        return round(100 * teller / noemer, 1) if noemer else None
+
+    resultaat.update({
+        "pct_winnaar_juist": _pct(aantal_winnaar_juist, n),
+        "pct_eindstand_juist": _pct(aantal_eind_juist, n),
+        "pct_ruststand_juist": _pct(aantal_rust_juist, n),
+        "pct_eindstand_thuis_juist": _pct(thuis_juist, thuis_wedstrijden),
+        "pct_eindstand_uit_juist": _pct(uit_juist, uit_wedstrijden),
+        "pct_eindstand_top_juist": _pct(top_juist, top_wedstrijden),
+        "beste_wedstrijd": beste[1] if beste else None,
+        "slechtste_wedstrijd": slechtste[1] if slechtste else None,
+    })
+
+    jokers = [eigen_voorspellingen[m["id"]] for m in gespeelde_met_voorspelling if eigen_voorspellingen[m["id"]]["joker"]]
+    aantal_jokers = len(jokers)
+    joker_winnaar_juist = joker_rust_juist = joker_eind_juist = 0
+    for m in gespeelde_met_voorspelling:
+        v = eigen_voorspellingen[m["id"]]
+        if not v["joker"]:
+            continue
+        if _uitkomst(v["eind_thuis"], v["eind_uit"]) == _uitkomst(m["uitslag_eind_thuis"], m["uitslag_eind_uit"]):
+            joker_winnaar_juist += 1
+        if v["eind_thuis"] == m["uitslag_eind_thuis"] and v["eind_uit"] == m["uitslag_eind_uit"]:
+            joker_eind_juist += 1
+        if v["rust_thuis"] == m["uitslag_rust_thuis"] and v["rust_uit"] == m["uitslag_rust_uit"]:
+            joker_rust_juist += 1
+
+    resultaat.update({
+        "aantal_jokers": aantal_jokers,
+        "pct_joker_winnaar_juist": _pct(joker_winnaar_juist, aantal_jokers),
+        "pct_joker_ruststand_juist": _pct(joker_rust_juist, aantal_jokers),
+        "pct_joker_eindstand_juist": _pct(joker_eind_juist, aantal_jokers),
+    })
+
+    if not resultaat["toon_sectie_3"]:
+        return resultaat
+
+    # ---------------- Sectie 3 ----------------
+    resultaat["seizoensvoorspelling"] = dict(seizoensvoorspelling_rij) if seizoensvoorspelling_rij else None
+    resultaat["seizoensuitkomst"] = dict(seizoensuitkomst_rij) if seizoensuitkomst_rij else None
+
+    return resultaat
+
+
 def get_klassement() -> list[dict]:
     with get_connection() as conn:
         rows = conn.execute("SELECT * FROM klassement").fetchall()
@@ -499,6 +671,24 @@ def get_klassement_met_delta(seizoen: str) -> list[dict]:
         rij["delta"] = rij["positie_vorig"] - rij["positie_nu"]
 
     return klassement_nu
+
+
+def uitschrijven_reminders(uitschrijf_token: str) -> dict | None:
+    """Schrijft een deelnemer uit voor reminder-mails op basis van het token
+    uit de uitschrijflink. Geeft de deelnemer terug bij succes, None als het
+    token onbekend is (nooit een fout tonen die zou kunnen verraden of een
+    token ooit heeft bestaan)."""
+    with get_connection() as conn:
+        rij = conn.execute(
+            "SELECT * FROM participants WHERE uitschrijf_token = ?", (uitschrijf_token,)
+        ).fetchone()
+        if not rij:
+            return None
+        conn.execute(
+            "UPDATE participants SET ontvangt_reminders = 0 WHERE uitschrijf_token = ?",
+            (uitschrijf_token,),
+        )
+        return dict(rij)
 
 
 def get_standings_widget(seizoen: str) -> list[dict]:
