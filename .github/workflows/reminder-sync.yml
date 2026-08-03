@@ -21,12 +21,9 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Dependencies installeren
-        run: pip install requests
-
       - name: Aankondigingen versturen
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          GMAIL_ADRES: ${{ secrets.GMAIL_ADRES }}
+          GMAIL_APP_WACHTWOORD: ${{ secrets.GMAIL_APP_WACHTWOORD }}
           APP_URL: https://ajaxpoule.pythonanywhere.com
         run: python scripts/reminder_sync.py
