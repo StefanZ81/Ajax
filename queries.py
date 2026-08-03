@@ -363,6 +363,37 @@ def _aantal_gespeelde_eredivisie_wedstrijden(seizoen: str) -> int:
         return rij["n"]
 
 
+def _positie_hoogste_laagste(participant_id: str, gespeeld: list[dict], alle_deelnemer_ids: list[str]) -> tuple[int | None, int | None]:
+    """Reconstrueert, voor elke gespeelde wedstrijd chronologisch, de positie
+    van deze deelnemer in het klassement OP DAT MOMENT (puur op basis van de
+    wedstrijdpunten tot en met die wedstrijd -- seizoensvoorspelling-bonussen
+    zijn niet aan één specifieke wedstrijd te koppelen en tellen hier bewust
+    niet in mee). Geeft (hoogste positie ooit, laagste positie ooit) terug,
+    waarbij 'hoogste positie' de BESTE (laagste getal, bv. 1e) is."""
+    if not gespeeld:
+        return None, None
+
+    with get_connection() as conn:
+        alle_predicties = conn.execute(
+            "SELECT match_id, participant_id, punten FROM predictions WHERE punten IS NOT NULL"
+        ).fetchall()
+
+    punten_per_match: dict[int, dict[str, int]] = {}
+    for r in alle_predicties:
+        punten_per_match.setdefault(r["match_id"], {})[r["participant_id"]] = r["punten"]
+
+    lopend_totaal = {pid: 0 for pid in alle_deelnemer_ids}
+    posities = []
+    for m in gespeeld:
+        punten_deze_wedstrijd = punten_per_match.get(m["id"], {})
+        for pid in alle_deelnemer_ids:
+            lopend_totaal[pid] += punten_deze_wedstrijd.get(pid, 0)
+        gesorteerd = sorted(alle_deelnemer_ids, key=lambda pid: -lopend_totaal[pid])
+        posities.append(gesorteerd.index(participant_id) + 1)
+
+    return min(posities), max(posities)
+
+
 def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
     """Persoonlijke statistieken voor één deelnemer, opgedeeld in drie
     secties die pas verschijnen zodra er genoeg Eredivisie-wedstrijden zijn
@@ -431,6 +462,11 @@ def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
         return resultaat
 
     # ---------------- Sectie 2 ----------------
+    alle_deelnemer_ids = [r["participant_id"] for r in klassement]
+    resultaat["hoogste_positie"], resultaat["laagste_positie"] = _positie_hoogste_laagste(
+        participant_id, gespeeld, alle_deelnemer_ids
+    )
+
     def _uitkomst(thuis: int, uit: int) -> str:
         if thuis > uit:
             return "thuis"
