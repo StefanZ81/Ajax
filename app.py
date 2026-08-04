@@ -271,8 +271,7 @@ def wedstrijd(match_id):
         return redirect(url_for("wedstrijd", match_id=match_id))
 
     mag_voorspellingen_zien = (
-        gebruiker["rol"] == "beheerder"
-        or match["status"] != "gepland"
+        match["status"] != "gepland"
         or datetime.now(timezone.utc) >= match["kickoff"]
     )
 
