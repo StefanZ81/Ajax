@@ -33,6 +33,22 @@ from typing import Optional
 from db import get_connection
 
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "")
+
+# Weiger BEWUST op te starten met een lege of nog-niet-vervangen sleutel --
+# een voorspelbare/publiek bekende sleutel betekent dat iedereen een geldig
+# beheerder-sessietoken kan vervalsen zonder in te loggen. Dit voorkomt dat
+# zo'n misconfiguratie ooit stilzwijgend blijft staan (zoals eerder gebeurde
+# met de placeholder-tekst uit wsgi_pythonanywhere.py).
+_ONVEILIGE_SESSION_SECRETS = {"", "vervang-dit-door-een-lange-willekeurige-string"}
+if SESSION_SECRET in _ONVEILIGE_SESSION_SECRETS:
+    raise RuntimeError(
+        "SESSION_SECRET is niet (goed) ingesteld — de app start hierdoor bewust niet op, "
+        "want dit is een kritiek beveiligingsprobleem (iedereen zou anders een beheerder-"
+        "sessie kunnen vervalsen). Genereer een echte, willekeurige sleutel:\n"
+        '  python3 -c "import secrets; print(secrets.token_hex(32))"\n'
+        "en zet die als SESSION_SECRET in je WSGI-configuratiebestand."
+    )
+
 SESSION_GELDIGHEID_S = 30 * 24 * 60 * 60  # 30 dagen
 
 EMAIL_REGEX = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
