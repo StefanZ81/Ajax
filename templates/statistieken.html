@@ -45,10 +45,12 @@
 
 <div class="card accent">
   {% if stats.beste_wedstrijd %}
-  <div class="rij"><span style="font-size:12px;">Beste voorspelling</span><span style="font-size:12px; font-weight:700;">{{ stats.beste_wedstrijd.thuis }} – {{ stats.beste_wedstrijd.uit }}</span></div>
+  <p style="font-size:12px; color:var(--grey); margin-bottom:2px;">Beste voorspelling</p>
+  <p style="font-size:12px; font-weight:700; margin-top:0; margin-bottom:14px;">{{ stats.beste_wedstrijd.thuis }} – {{ stats.beste_wedstrijd.uit }}</p>
   {% endif %}
   {% if stats.slechtste_wedstrijd %}
-  <div class="rij"><span style="font-size:12px;">Slechtste voorspelling</span><span style="font-size:12px; font-weight:700;">{{ stats.slechtste_wedstrijd.thuis }} – {{ stats.slechtste_wedstrijd.uit }}</span></div>
+  <p style="font-size:12px; color:var(--grey); margin-bottom:2px;">Slechtste voorspelling</p>
+  <p style="font-size:12px; font-weight:700; margin-top:0; margin-bottom:0;">{{ stats.slechtste_wedstrijd.thuis }} – {{ stats.slechtste_wedstrijd.uit }}</p>
   {% endif %}
 </div>
 
