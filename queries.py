@@ -352,6 +352,8 @@ def eerste_competitiewedstrijd_gestart(seizoen: str) -> bool:
 
 
 TOP_TEGENSTANDERS = ("Feyenoord", "PSV", "AZ")
+EREDIVISIE_LINKS = ("PSV", "Feyenoord", "NEC", "FC Twente", "FC Utrecht", "AZ", "SC Heerenveen", "FC Groningen")
+EREDIVISIE_RECHTS = ("Sparta", "Fortuna Sittard", "Go Ahead Eagles", "Excelsior", "Telstar", "PEC Zwolle", "Cambuur", "Willem II", "ADO Den Haag")
 
 
 def _aantal_gespeelde_eredivisie_wedstrijden(seizoen: str) -> int:
@@ -478,6 +480,8 @@ def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
     aantal_winnaar_juist = aantal_eind_juist = aantal_rust_juist = 0
     thuis_wedstrijden = uit_wedstrijden = thuis_juist = uit_juist = 0
     top_wedstrijden = top_juist = 0
+    links_wedstrijden = links_juist = 0
+    rechts_wedstrijden = rechts_juist = 0
     beste = None  # (punten, wedstrijd)
     slechtste = None  # (afwijking, wedstrijd)
 
@@ -507,6 +511,12 @@ def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
         if any(t in tegenstander for t in TOP_TEGENSTANDERS):
             top_wedstrijden += 1
             top_juist += eind_juist
+        if any(t in tegenstander for t in EREDIVISIE_LINKS):
+            links_wedstrijden += 1
+            links_juist += eind_juist
+        if any(t in tegenstander for t in EREDIVISIE_RECHTS):
+            rechts_wedstrijden += 1
+            rechts_juist += eind_juist
 
         if v["punten"] is not None and (beste is None or v["punten"] > beste[0]):
             beste = (v["punten"], m)
@@ -524,6 +534,8 @@ def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
         "pct_eindstand_thuis_juist": _pct(thuis_juist, thuis_wedstrijden),
         "pct_eindstand_uit_juist": _pct(uit_juist, uit_wedstrijden),
         "pct_eindstand_top_juist": _pct(top_juist, top_wedstrijden),
+        "pct_eindstand_links_juist": _pct(links_juist, links_wedstrijden),
+        "pct_eindstand_rechts_juist": _pct(rechts_juist, rechts_wedstrijden),
         "beste_wedstrijd": beste[1] if beste else None,
         "slechtste_wedstrijd": slechtste[1] if slechtste else None,
     })
