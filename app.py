@@ -38,6 +38,25 @@ db.run_migrations()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.environ.get("SESSION_SECRET", "dev-only-niet-in-productie"))
+
+# Zelfde soort harde weigering als bij SESSION_SECRET (zie auth.py) -- deze
+# sleutel ondertekent Flask's eigen sessiecookie, een aparte laag rond het
+# zelfgebouwde token. Ook hier: een bekende/lege waarde is een kritiek
+# beveiligingslek, dus de app start hier bewust niet mee op.
+_ONVEILIGE_SECRET_KEYS = {
+    "",
+    "dev-only-niet-in-productie",
+    "kies-hier-een-andere-lange-willekeurige-string",
+    "vervang-dit-door-een-lange-willekeurige-string",
+}
+if app.secret_key in _ONVEILIGE_SECRET_KEYS:
+    raise RuntimeError(
+        "FLASK_SECRET_KEY (en/of SESSION_SECRET) is niet goed ingesteld — de app start "
+        "hierdoor bewust niet op, want dit is een kritiek beveiligingsprobleem. Genereer "
+        'een echte, willekeurige sleutel: python3 -c "import secrets; print(secrets.token_hex(32))" '
+        "en zet die als FLASK_SECRET_KEY in je WSGI-configuratiebestand (gebruik een ANDERE "
+        "waarde dan je SESSION_SECRET)."
+    )
 AMSTERDAM = ZoneInfo("Europe/Amsterdam")
 
 # ---------------- Nederlandse datumopmaak ----------------
