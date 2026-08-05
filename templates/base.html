@@ -16,6 +16,7 @@
   <meta name="apple-mobile-web-app-title" content="J-Poule">
 </head>
 <body>
+  <div class="sticky-top-groep">
   {% if huidige_gebruiker %}
   <header class="top">
     <img src="{{ url_for('static', filename='ajax_logo.png') }}" alt="Ajax" class="crest-logo">
@@ -42,6 +43,7 @@
     </div>
   </div>
   {% endif %}
+  </div>
 
   <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
