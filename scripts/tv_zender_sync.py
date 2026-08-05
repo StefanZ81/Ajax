@@ -61,18 +61,17 @@ def haal_op() -> list[dict]:
 
     kop = soup.find(string=re.compile(r"Volgende wedstrijden live op\s*TV", re.IGNORECASE))
     if not kop:
-        print("[tv_zender_sync] Kop 'Volgende wedstrijden live op TV' niet gevonden -- opmaak gewijzigd?")
-        return []
+        raise RuntimeError(
+            "Kop 'Volgende wedstrijden live op TV' niet gevonden -- de opmaak van "
+            "sport-tv-gids.nl is vermoedelijk gewijzigd, de scraper moet worden aangepast."
+        )
 
-    container = kop.find_parent()
-    while container and not container.find(string=re.compile(_DATUM_PATROON)):
-        container = container.find_next_sibling()
-    if not container:
-        print("[tv_zender_sync] Geen wedstrijdblokken gevonden onder de kop.")
-        return []
+    kop_element = kop.find_parent()
+    if not kop_element:
+        raise RuntimeError("Kon geen bovenliggend element bij de kop vinden.")
 
     resultaat = []
-    for element in [container] + container.find_all_next():
+    for element in kop_element.find_all_next():
         if not hasattr(element, "get_text"):
             continue
         tekst = element.get_text(" ", strip=True)
@@ -114,9 +113,23 @@ def haal_op() -> list[dict]:
                 "maand": maand,
                 "tegenstander": tegenstander,
                 "zenders": zenders,
+                "_grootte": len(str(element)),  # voor ontdubbeling hieronder
             })
 
-    return resultaat
+    # Bij geneste containers kan dezelfde wedstrijd op meerdere niveaus
+    # worden gevonden (bv. zowel de buitenste kaart als een binnenste
+    # wrapper) -- per (dag, maand, tegenstander) houden we dan de kleinste
+    # (dus meest specifieke) match aan, en de rest wordt genegeerd.
+    kleinste_per_wedstrijd: dict[tuple, dict] = {}
+    for w in resultaat:
+        sleutel = (w["dag"], w["maand"], w["tegenstander"])
+        if sleutel not in kleinste_per_wedstrijd or w["_grootte"] < kleinste_per_wedstrijd[sleutel]["_grootte"]:
+            kleinste_per_wedstrijd[sleutel] = w
+
+    for w in kleinste_per_wedstrijd.values():
+        del w["_grootte"]
+
+    return list(kleinste_per_wedstrijd.values())
 
 
 def bewaar(wedstrijden: list[dict]) -> None:
@@ -126,7 +139,7 @@ def bewaar(wedstrijden: list[dict]) -> None:
     print(f"[tv_zender_sync] {len(wedstrijden)} wedstrijd(en) met bekende zender weggeschreven.")
 
 
-def git_commit_en_push() -> None:
+def git_commit_en_push() -> bool:
     def run(cmd):
         return subprocess.run(cmd, capture_output=True, text=True)
 
@@ -136,12 +149,14 @@ def git_commit_en_push() -> None:
     diff = run(["git", "diff", "--staged", "--quiet"])
     if diff.returncode == 0:
         print("[tv_zender_sync] Geen wijzigingen -- niets te committen.")
-        return
+        return True
     run(["git", "commit", "-m", "Tv-zenders bijgewerkt [skip ci]"])
     run(["git", "pull", "--rebase", "--autostash"])
     push = run(["git", "push"])
     if push.returncode != 0:
         print(f"[tv_zender_sync] Push mislukt: {push.stderr.strip()}", file=sys.stderr)
+        return False
+    return True
 
 
 if __name__ == "__main__":
@@ -149,8 +164,8 @@ if __name__ == "__main__":
         wedstrijden = haal_op()
     except Exception as e:
         print(f"[tv_zender_sync] Ophalen mislukt: {e}", file=sys.stderr)
-        wedstrijden = None
+        sys.exit(1)  # laat de workflow duidelijk rood zien -- niet stil doorlopen
 
-    if wedstrijden is not None:
-        bewaar(wedstrijden)
-        git_commit_en_push()
+    bewaar(wedstrijden)
+    if not git_commit_en_push():
+        sys.exit(1)  # zelfde: een mislukte push mag niet als 'succesvol' ogen
