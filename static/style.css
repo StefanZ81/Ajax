@@ -11,17 +11,31 @@
 
 * { box-sizing: border-box; }
 
+html {
+  /* Beperkt het 'elastische' terugveer-effect voorbij de boven-/onderkant
+     van de pagina op iOS Safari -- daardoor kon content heel even
+     zichtbaar boven de vastgezette header uit schieten tijdens het
+     scrollen. */
+  overscroll-behavior-y: none;
+}
+
 body {
   background: var(--paper);
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   margin: 0;
+  overscroll-behavior-y: none;
 }
 
 .container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 80px; }
 
 .sticky-top-groep {
   position: sticky; top: 0; z-index: 30; background: #fff;
+  /* Dwingt een eigen renderlaag af -- voorkomt dat iOS Safari de sticky
+     header tijdens het scrollen soms even te laat/onjuist tekent,
+     waardoor content er zichtbaar overheen leek te schuiven. */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .ticker-wrap {
