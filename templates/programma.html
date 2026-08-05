@@ -13,6 +13,13 @@
       <div>
         <div class="match-title">{{ m.thuis }} – {{ m.uit }}</div>
         <div class="match-sub">{{ m.kickoff | nl_kort }}</div>
+        {% if m.tv_zenders %}
+        <div style="margin-top:4px; display:flex; gap:6px; align-items:center;">
+          {% for z in m.tv_zenders %}
+          <img src="{{ z.logo }}" alt="{{ z.naam }}" title="{{ z.naam }}" style="height:18px; width:auto; border-radius:3px;">
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
       {% if m.status == 'afgelopen' %}
       <div style="text-align:right;">
