@@ -1,14 +1,13 @@
 """
-scripts/tv_zender_debug.py
+scripts/tv_zender_debug.py (v2)
 ------------------------------------------------------------------
-TIJDELIJK diagnose-script -- niet voor productiegebruik. Haalt
-dezelfde pagina op als tv_zender_sync.py, maar toont in plaats van
-netjes te structureren gewoon exact wat er in elk wedstrijdblok staat:
-alle kop-tags (h1-h6, b, strong) en alle <img>-tags met hun src/title/
-alt. Daarmee kan de 'echte' opmaak van de site worden afgelezen, zodat
-tv_zender_sync.py daarop kan worden afgestemd.
+TIJDELIJK diagnose-script -- niet voor productiegebruik.
 
-Verwijderen zodra tv_zender_sync.py weer correct wedstrijden vindt.
+Bleek uit v1: de datum staat in een eigen, geïsoleerd element zonder
+teamnamen/logo's erbinnen. Deze versie zoekt daarom vanaf elke
+datum-vondst een paar niveaus OMHOOG (ouder, grootouder, ...) en toont
+per niveau wat daar te vinden is, zodat duidelijk wordt op welke
+hoogte teamnamen én logo's voor het eerst samen voorkomen.
 ------------------------------------------------------------------
 """
 
@@ -30,54 +29,64 @@ _DATUM_PATROON = re.compile(
 )
 
 
+def toon_niveau(element, diepte: int) -> None:
+    teamnamen = []
+    for tag_naam in ["h1", "h2", "h3", "h4", "h5", "h6", "b", "strong"]:
+        for t in element.find_all(tag_naam):
+            tekst = t.get_text(strip=True)
+            if tekst:
+                teamnamen.append((tag_naam, tekst))
+
+    afbeeldingen = element.find_all("img")
+    zender_imgs = [img for img in afbeeldingen if "/sportzender/" in (img.get("src") or "")]
+
+    print(f"  [omhoog {diepte}] tag=<{element.name} class={element.get('class')}>  "
+          f"teamnamen={teamnamen[:6]}  aantal_img={len(afbeeldingen)}  aantal_zender_img={len(zender_imgs)}")
+    if zender_imgs:
+        for img in zender_imgs[:4]:
+            print(f"      zender-img: src={img.get('src')!r} title={img.get('title')!r} alt={img.get('alt')!r}")
+
+
 def main() -> None:
     resp = requests.get(TEAM_PAGINA, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
 
     kop = soup.find(string=re.compile(r"Volgende wedstrijden live op\s*TV", re.IGNORECASE))
-    print("Kop gevonden:", kop is not None)
     if not kop:
-        print("STOP -- kop zelf al niet gevonden, dus daar zit het probleem al.")
+        print("STOP -- kop niet gevonden.")
         return
-
     kop_element = kop.find_parent()
-    print("Kop-element tag:", kop_element.name if kop_element else None)
 
-    aantal_datumblokken = 0
+    geziene_datums = set()
     for element in kop_element.find_all_next():
         if not hasattr(element, "get_text"):
             continue
         tekst = element.get_text(" ", strip=True)
         if "Recente resultaten" in tekst and len(tekst) < 50:
-            print("\n-- 'Recente resultaten' bereikt, stoppen --")
             break
 
         datum_match = _DATUM_PATROON.search(tekst)
         if not datum_match or not hasattr(element, "find_all"):
             continue
+        if len(tekst) > len(datum_match.group(0)) + 15:
+            continue
 
-        # Alleen het KLEINSTE/eerste element per unieke datumtekst tonen,
-        # anders spammen geneste ouders dezelfde info telkens opnieuw.
-        aantal_datumblokken += 1
-        if aantal_datumblokken > 15:
-            print("\n(meer dan 15 datumblokken gezien, waarschijnlijk veel geneste duplicaten -- stop met tonen)")
+        datum_sleutel = datum_match.group(0)
+        if datum_sleutel in geziene_datums:
+            continue
+        geziene_datums.add(datum_sleutel)
+
+        print(f"\n=== Datum-element gevonden: '{tekst}' (tag=<{element.name}>) ===")
+        niveau = element
+        for diepte in range(1, 6):
+            niveau = niveau.parent
+            if niveau is None:
+                break
+            toon_niveau(niveau, diepte)
+
+        if len(geziene_datums) >= 2:
             break
-
-        print(f"\n=== Blok #{aantal_datumblokken} -- tag <{element.name}>, datum-match: '{datum_match.group(0)}' ===")
-        print("Volledige tekst (eerste 150 tekens):", tekst[:150])
-
-        print("Kop-tags (h1-h6, b, strong) hierin:")
-        for tag_naam in ["h1", "h2", "h3", "h4", "h5", "h6", "b", "strong", "span"]:
-            gevonden = element.find_all(tag_naam)
-            if gevonden:
-                teksten = [t.get_text(strip=True) for t in gevonden if t.get_text(strip=True)]
-                if teksten:
-                    print(f"  <{tag_naam}>: {teksten[:6]}")
-
-        print("Afbeeldingen hierin:")
-        for img in element.find_all("img")[:8]:
-            print(f"  src={img.get('src')!r}  title={img.get('title')!r}  alt={img.get('alt')!r}")
 
 
 if __name__ == "__main__":
