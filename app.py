@@ -32,6 +32,7 @@ import mail
 import nieuws_sync
 import queries
 import reminder_export
+import tv_sync
 from scoring import bereken_punten
 
 db.run_migrations()
@@ -258,6 +259,8 @@ def programma():
     gebruiker = current_user()
     seizoen = queries.get_active_season()
     matches = queries.get_matches(seizoen)
+    for m in matches:
+        m["tv_zenders"] = tv_sync.zoek_zenders_voor_wedstrijd(m)
     actuele, gepland, eerder_gespeeld = categoriseer_wedstrijden(matches)
     return render_template(
         "programma.html",
@@ -278,6 +281,7 @@ def wedstrijd(match_id):
     match = queries.get_match(match_id)
     if not match:
         abort(404)
+    match["tv_zenders"] = tv_sync.zoek_zenders_voor_wedstrijd(match)
 
     kan_nog_voorspellen = datetime.now(timezone.utc) < match["kickoff"]
 
