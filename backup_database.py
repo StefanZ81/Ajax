@@ -42,6 +42,8 @@ import sys
 import time
 from datetime import datetime, timezone
 
+import git_auth
+
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.environ.get("DB_PATH", os.path.join(PROJECT_DIR, "jpoule.db"))
 BACKUP_PATH = os.path.join(PROJECT_DIR, "backups", "jpoule_backup.db")
@@ -83,6 +85,7 @@ def git_commit_en_push() -> bool:
     commit = _run(["git", "commit", "-m", f"Automatische database-back-up {stempel}"])
     print(commit.stdout.strip(), commit.stderr.strip())
 
+    git_auth.zorg_voor_geauthenticeerde_remote(PROJECT_DIR)
     _run(["git", "pull", "--rebase", "--autostash"])
 
     push = _run(["git", "push"])
