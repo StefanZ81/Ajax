@@ -30,6 +30,7 @@ import subprocess
 import sys
 import time
 
+import git_auth
 from db import get_connection
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -83,6 +84,7 @@ def _git_commit_en_push() -> bool:
     # Meerdere GitHub Actions-workflows committen onafhankelijk naar dezelfde
     # main-branch -- eerst rebasen voorkomt een mislukte push als daar net
     # iets tussendoor is gepusht.
+    git_auth.zorg_voor_geauthenticeerde_remote(PROJECT_DIR)
     _run(["git", "pull", "--rebase", "--autostash"])
     push = _run(["git", "push"])
     if push.returncode != 0:
