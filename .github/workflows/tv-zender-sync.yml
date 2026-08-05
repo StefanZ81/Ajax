@@ -1,0 +1,28 @@
+name: Tv-zenders ophalen
+
+# Deze info verandert niet vaak (meestal pas enkele dagen tot een week
+# vooraf bekend), dus een paar keer per dag is ruim voldoende -- geen
+# reden om de bron-site vaker te belasten dan nodig.
+on:
+  schedule:
+    - cron: '0 8,14,20 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  tv-zender-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Dependencies installeren
+        run: pip install requests beautifulsoup4
+
+      - name: Tv-zenders ophalen
+        run: python scripts/tv_zender_sync.py
