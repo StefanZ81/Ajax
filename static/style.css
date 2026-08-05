@@ -27,16 +27,22 @@ body {
   overscroll-behavior-y: none;
 }
 
-.container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 80px; }
-
 .sticky-top-groep {
-  position: sticky; top: 0; z-index: 30; background: #fff;
-  /* Dwingt een eigen renderlaag af -- voorkomt dat iOS Safari de sticky
-     header tijdens het scrollen soms even te laat/onjuist tekent,
-     waardoor content er zichtbaar overheen leek te schuiven. */
+  /* 'fixed' i.p.v. 'sticky': op iOS in standalone PWA-modus (toegevoegd aan
+     het beginscherm, zonder Safari-balk) bleek 'sticky' onbetrouwbaar --
+     content kon er soms nog steeds overheen/doorheen schuiven. 'fixed' is
+     direct aan het scherm verankerd, los van scrollgedrag, en kan dat niet. */
+  position: fixed; top: 0; left: 0; right: 0; z-index: 30; background: #fff;
+  max-width: 480px; margin: 0 auto;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
+
+/* Omdat de header nu 'fixed' is (dus buiten de normale doorstroom van de
+   pagina valt), moet de content zelf een marge krijgen zodat er niets
+   achter de header verdwijnt. 112px is exact gemeten als de hoogte van
+   header + nieuwsticker samen; 8px extra als veiligheidsmarge. */
+.container { max-width: 480px; margin: 0 auto; padding: 16px; padding-top: 128px; padding-bottom: 80px; }
 
 .ticker-wrap {
   background: #fff; white-space: nowrap;
