@@ -85,6 +85,13 @@ def _git_commit_en_push() -> bool:
     # iets tussendoor is gepusht.
     _run(["git", "pull", "--rebase", "--autostash"])
     push = _run(["git", "push"])
+    if push.returncode != 0:
+        print(
+            f"[reminder_export] git push mislukt.\n"
+            f"[reminder_export] stdout: {push.stdout.strip()}\n"
+            f"[reminder_export] stderr: {push.stderr.strip()}",
+            file=sys.stderr,
+        )
     return push.returncode == 0
 
 
