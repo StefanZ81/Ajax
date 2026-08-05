@@ -70,67 +70,75 @@ def haal_op() -> list[dict]:
     if not kop_element:
         raise RuntimeError("Kon geen bovenliggend element bij de kop vinden.")
 
+    # BELANGRIJK (bevestigd via handmatige diagnose op de echte pagina):
+    # wedstrijden staan NIET elk in hun eigen kaart/wrapper -- datum, teams
+    # en zenderlogo's van ALLE aankomende wedstrijden staan plat naast
+    # elkaar in dezelfde grote lijst-container. Daarom reconstrueren we
+    # elke wedstrijd door de container in documentvolgorde te doorlopen en
+    # alles wat ná een datum komt bij die datum te groeperen, tot de
+    # eerstvolgende datum begint.
+    container = kop_element
+    for _ in range(6):
+        if len(_DATUM_PATROON.findall(container.get_text(" "))) >= 2:
+            break
+        if container.parent is None:
+            break
+        container = container.parent
+
     resultaat = []
-    for element in kop_element.find_all_next():
-        if not hasattr(element, "get_text"):
-            continue
-        tekst = element.get_text(" ", strip=True)
-        if "Recente resultaten" in tekst and len(tekst) < 50:
+    huidige: dict | None = None
+
+    for node in container.descendants:
+        naam_tag = getattr(node, "name", None)
+
+        if naam_tag in ("h1", "h2", "h3") and "Recente resultaten" in node.get_text():
             break
 
-        datum_match = _DATUM_PATROON.search(tekst)
-        if not datum_match or not hasattr(element, "find_all"):
+        if isinstance(node, str):
+            tekst = node.strip()
+            datum_match = _DATUM_PATROON.search(tekst)
+            # Alleen een tekstnode die (nagenoeg) UITSLUITEND de datum is
+            # telt als een nieuw wedstrijd-startpunt -- dat voorkomt dat een
+            # datum die toevallig ergens middenin een langere zin voorkomt
+            # verkeerd als nieuwe wedstrijd wordt gezien.
+            if datum_match and len(tekst) <= len(datum_match.group(0)) + 15:
+                if huidige and huidige["tegenstander"] and huidige["zenders"]:
+                    resultaat.append(huidige)
+                huidige = {
+                    "dag": int(datum_match.group(1)),
+                    "maand": _MAANDEN[datum_match.group(2).lower()],
+                    "tegenstander": None,
+                    "_teams": [],
+                    "zenders": [],
+                }
             continue
 
-        dag = int(datum_match.group(1))
-        maand = _MAANDEN[datum_match.group(2).lower()]
+        if huidige is None:
+            continue
 
-        teamnamen = [
-            t.get_text(strip=True) for t in element.find_all(["h6", "h5", "b"])
-            if t.get_text(strip=True) and t.get_text(strip=True).lower() != "ajax"
-        ]
-        tegenstander = teamnamen[0] if teamnamen else None
+        if naam_tag in ("h6", "h5", "b", "strong"):
+            tekst = node.get_text(strip=True)
+            if tekst and tekst.lower() != "ajax" and tekst not in huidige["_teams"]:
+                huidige["_teams"].append(tekst)
+                huidige["tegenstander"] = huidige["_teams"][0]
 
-        zenders = []
-        gezien = set()
-        for img in element.find_all("img"):
-            if not _is_zenderlogo(img):
-                continue
-            naam = img.get("title")
-            if naam in gezien:
-                continue
-            gezien.add(naam)
-            src = img.get("src") or ""
-            if src.startswith("//"):
-                src = "https:" + src
-            elif src.startswith("/"):
-                src = "https://sport-tv-gids.nl" + src
-            zenders.append({"naam": naam, "logo": src})
+        elif naam_tag == "img" and _is_zenderlogo(node):
+            zendernaam = node.get("title")
+            if zendernaam and zendernaam not in [z["naam"] for z in huidige["zenders"]]:
+                src = node.get("src") or ""
+                if src.startswith("//"):
+                    src = "https:" + src
+                elif src.startswith("/"):
+                    src = "https://sport-tv-gids.nl" + src
+                huidige["zenders"].append({"naam": zendernaam, "logo": src})
 
-        if tegenstander and zenders:
-            resultaat.append({
-                "dag": dag,
-                "maand": maand,
-                "tegenstander": tegenstander,
-                "zenders": zenders,
-                "_grootte": len(str(element)),  # voor ontdubbeling hieronder
-            })
+    if huidige and huidige["tegenstander"] and huidige["zenders"]:
+        resultaat.append(huidige)
 
-    # Bij geneste containers kan dezelfde wedstrijd op meerdere niveaus
-    # worden gevonden (bv. zowel de buitenste kaart als een binnenste
-    # wrapper) -- per (dag, maand, tegenstander) houden we dan de kleinste
-    # (dus meest specifieke) match aan, en de rest wordt genegeerd.
-    kleinste_per_wedstrijd: dict[tuple, dict] = {}
     for w in resultaat:
-        sleutel = (w["dag"], w["maand"], w["tegenstander"])
-        if sleutel not in kleinste_per_wedstrijd or w["_grootte"] < kleinste_per_wedstrijd[sleutel]["_grootte"]:
-            kleinste_per_wedstrijd[sleutel] = w
+        del w["_teams"]
 
-    for w in kleinste_per_wedstrijd.values():
-        del w["_grootte"]
-
-    return list(kleinste_per_wedstrijd.values())
-
+    return resultaat
 
 def bewaar(wedstrijden: list[dict]) -> None:
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
