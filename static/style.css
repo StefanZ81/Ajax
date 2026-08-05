@@ -20,8 +20,11 @@ body {
 
 .container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 80px; }
 
+.sticky-top-groep {
+  position: sticky; top: 0; z-index: 30; background: #fff;
+}
+
 .ticker-wrap {
-  position: sticky; top: 0; z-index: 30;
   background: #fff; white-space: nowrap;
   padding: 7px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   display: flex; align-items: center;
