@@ -86,11 +86,12 @@ def git_commit_en_push() -> bool:
     _run(["git", "pull", "--rebase", "--autostash"])
 
     push = _run(["git", "push"])
-    print(push.stdout.strip(), push.stderr.strip())
     if push.returncode != 0:
         print(
             "[git] Push mislukt -- de lokale back-up staat wel klaar in "
-            "backups/jpoule_backup.db, alleen het naar GitHub sturen lukte niet.",
+            "backups/jpoule_backup.db, alleen het naar GitHub sturen lukte niet.\n"
+            f"[git] stdout: {push.stdout.strip()}\n"
+            f"[git] stderr: {push.stderr.strip()}",
             file=sys.stderr,
         )
         return False
