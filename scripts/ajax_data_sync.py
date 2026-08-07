@@ -162,11 +162,17 @@ def load_existing() -> dict | None:
         return json.load(f)
 
 
-def save(matches: list[dict], stand: list[dict] | None = None) -> None:
+def save(matches: list[dict], stand: list[dict] | None = None, stand_bijgewerkt_op: str | None = None) -> None:
     payload = {
         "bijgewerkt_op": datetime.now(timezone.utc).isoformat(),
         "wedstrijden": sorted(matches, key=lambda m: m["kickoff"]),
         "stand": stand if stand is not None else [],
+        # Aparte tijdstempel specifiek voor de standen (i.p.v. de algemene
+        # 'bijgewerkt_op', die bij elke wedstrijd-ververing verandert): de
+        # standen mogen namelijk op hun EIGEN, vaker terugkerend ritme
+        # ververst worden (elke 2 uur), los van de dagelijkse volledige
+        # wedstrijd-ververing.
+        "stand_bijgewerkt_op": stand_bijgewerkt_op,
     }
     os.makedirs(os.path.dirname(OUTPUT_PATH) or ".", exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
@@ -181,21 +187,52 @@ def moet_daily_refresh(bestaand: dict | None) -> bool:
     return laatst.date() != datetime.now(timezone.utc).date()
 
 
+def moet_stand_verversen(bestaand: dict | None, marge_uren: float = 2.0) -> bool:
+    """Standen mogen vaker ververst worden dan de wedstrijden zelf -- in een
+    speelweekend verschuift de tabel door meerdere wedstrijden tegelijk in
+    korte tijd. Ververst als het nog nooit is gebeurd, of langer dan
+    marge_uren geleden."""
+    if not bestaand or not bestaand.get("stand_bijgewerkt_op"):
+        return True
+    laatst = datetime.fromisoformat(bestaand["stand_bijgewerkt_op"])
+    return (datetime.now(timezone.utc) - laatst) >= timedelta(hours=marge_uren)
+
+
 # ---------------- Hoofdlogica ----------------
 
 def main() -> None:
     bestaand = load_existing()
     matches = bestaand["wedstrijden"] if bestaand else []
     stand = bestaand.get("stand", []) if bestaand else []
+    stand_bijgewerkt_op = bestaand.get("stand_bijgewerkt_op") if bestaand else None
 
-    if moet_daily_refresh(bestaand):
+    # Handmatig gestart via "Run workflow" (workflow_dispatch)? Dan altijd
+    # alles verversen -- ook als de dagelijkse ververing vandaag al gebeurde
+    # en er nu geen wedstrijd binnen een live-probevenster valt. Zonder dit
+    # zou een handmatige run buiten die smalle momenten om stilzwijgend
+    # helemaal niets doen, ook niet de standenlijst bijwerken.
+    geforceerd = os.environ.get("FORCE_REFRESH", "").lower() == "true"
+    daily_nodig = moet_daily_refresh(bestaand)
+    stand_nodig = moet_stand_verversen(bestaand)
+
+    if daily_nodig or geforceerd:
         matches = daily_full_refresh()
+
+    # Standen op hun EIGEN, vaker terugkerend ritme verversen (elke 2 uur) --
+    # los van de dagelijkse wedstrijd-ververing hierboven, want in een
+    # speelweekend verschuift de tabel door meerdere wedstrijden in korte tijd.
+    if stand_nodig or geforceerd:
         stand = fetch_standings()
-        save(matches, stand)
+        stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
+
+    if daily_nodig or geforceerd or stand_nodig:
+        save(matches, stand, stand_bijgewerkt_op)
+        if geforceerd:
+            print("[main] Handmatig gestart -- volledige verversing (wedstrijden + stand) uitgevoerd.")
 
     te_proben = wedstrijden_binnen_probe_venster(matches)
     if not te_proben:
-        print("[main] Geen wedstrijd binnen een probe-venster deze cyclus — niets te doen.")
+        print("[main] Geen wedstrijd binnen een probe-venster deze cyclus — niets verder te doen.")
         return
 
     by_id = {m["id"]: m for m in matches}
@@ -215,8 +252,9 @@ def main() -> None:
     if standen_verversen:
         print("[main] Wedstrijd afgerond -- standenlijst direct meeverversen.")
         stand = fetch_standings()
+        stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
 
-    save(list(by_id.values()), stand)
+    save(list(by_id.values()), stand, stand_bijgewerkt_op)
 
 
 if __name__ == "__main__":
