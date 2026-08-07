@@ -217,6 +217,10 @@
     <form method="post" action="{{ url_for('beheerder_sync_stopzetten', match_id=m.id) }}" style="margin-top:10px;">
       <button type="submit" class="secundair" style="font-size:12px;">⏸ Sync stopzetten</button>
     </form>
+    {% elif m.id > 0 and m.handmatig_overschreven %}
+    <form method="post" action="{{ url_for('beheerder_sync_hervatten', match_id=m.id) }}" style="margin-top:10px;">
+      <button type="submit" class="secundair" style="font-size:12px;">▶ Sync hervatten</button>
+    </form>
     {% endif %}
     <form method="post" action="{{ url_for('beheerder_uitslag', match_id=m.id) }}" style="margin-top:10px;">
       <div class="score-inputs" style="margin-bottom:6px;">
