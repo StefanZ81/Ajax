@@ -35,6 +35,7 @@ jobs:
       - name: Ajax-data ophalen en tabel bijwerken
         env:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
+          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' }}
         run: python scripts/ajax_data_sync.py
 
       - name: Wijzigingen committen (alleen als er echt iets veranderde)
