@@ -636,6 +636,13 @@ def stop_sync_wedstrijd(match_id: int) -> None:
         conn.execute("UPDATE matches SET handmatig_overschreven = 1 WHERE id = ?", (match_id,))
 
 
+def hervat_sync_wedstrijd(match_id: int) -> None:
+    """Heft stop_sync_wedstrijd() weer op: de automatische sync
+    (football-data.org) mag deze wedstrijd weer als vanouds bijwerken."""
+    with get_connection() as conn:
+        conn.execute("UPDATE matches SET handmatig_overschreven = 0 WHERE id = ?", (match_id,))
+
+
 def set_match_result(match_id: int, rust: tuple[int, int], eind: tuple[int, int]) -> None:
     with get_connection() as conn:
         conn.execute(
