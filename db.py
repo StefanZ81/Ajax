@@ -66,24 +66,29 @@ def run_migrations() -> None:
                 if "duplicate column name" not in str(e):
                     raise
 
-        # standings had een verkeerde primary key (seizoen, positie) — dat gaat
-        # kapot zodra meerdere teams gelijk staan (bv. vóór de competitiestart,
-        # als alle teams nog op positie 1 met 0 punten staan). standings is
-        # pure cachedata die bij elke sync toch volledig wordt herschreven,
-        # dus veilig om de tabel opnieuw op te bouwen met de juiste sleutel
-        # (seizoen, team).
-        conn.execute("DROP TABLE IF EXISTS standings")
-        conn.execute("""
-            CREATE TABLE standings (
-                seizoen         TEXT NOT NULL,
-                positie         INTEGER NOT NULL,
-                team            TEXT NOT NULL,
-                punten          INTEGER NOT NULL,
-                gespeeld        INTEGER NOT NULL DEFAULT 0,
-                bijgewerkt_op   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-                PRIMARY KEY (seizoen, team)
-            )
-        """)
+        # standings had ooit een verkeerde primary key (seizoen, positie) --
+        # dat ging kapot zodra meerdere teams gelijk stonden (bv. vóór de
+        # competitiestart, als alle teams nog op positie 1 met 0 punten
+        # staan). Dit hoort een EENMALIGE reparatie te zijn -- daarom eerst
+        # checken of de oude, foute sleutel er nog daadwerkelijk staat.
+        # (Eerder liep dit onvoorwaardelijk bij elke opstart, waardoor de
+        # standen-tabel bij elke herstart van de webapp leeggeveegd werd.)
+        tabel_info = conn.execute(
+            "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'standings'"
+        ).fetchone()
+        if not tabel_info or "PRIMARY KEY (seizoen, positie)" in tabel_info["sql"]:
+            conn.execute("DROP TABLE IF EXISTS standings")
+            conn.execute("""
+                CREATE TABLE standings (
+                    seizoen         TEXT NOT NULL,
+                    positie         INTEGER NOT NULL,
+                    team            TEXT NOT NULL,
+                    punten          INTEGER NOT NULL,
+                    gespeeld        INTEGER NOT NULL DEFAULT 0,
+                    bijgewerkt_op   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+                    PRIMARY KEY (seizoen, team)
+                )
+            """)
 
         # Opschoning: geen data van geweigerde aanmeldingen bewaren (kan van
         # vóór deze regel al in de database staan). Veilig herhaalbaar: als
