@@ -16,9 +16,15 @@ competitie == "Eredivisie" aan (zie save()/merge-logica onderaan).
 
 Wat het doet, elke keer dat het draait:
   1. Eén keer per dag: volledige ververing van Ajax' Eredivisie-programma.
-  2. Tijdens een wedstrijd: gerichte extra opvraging van precies díe
-     wedstrijd, rond T+50 min (ruststand) en T+125 min (eindstand) na
-     aftrap — niet vaker, om binnen de 10 verzoeken/minuut te blijven.
+  2. Standen: elke 2 uur ververst (los van de dagelijkse ververing), zie
+     moet_stand_verversen().
+  3. Tijdens een wedstrijd: continu bevraagd vanaf net vóór aftrap tot 150
+     minuten erna, elke cyclus opnieuw (niet slechts twee smalle momenten).
+     Reden: football-data.org's gratis laag geeft VERTRAAGDE scores, geen
+     real-time data -- een eenmalig smal venster liep het risico dat de
+     bron op dát exacte moment nog niet had bijgewerkt, met als gevolg dat
+     met name de ruststand (die maar kort 'actueel' is) blijvend gemist kon
+     worden. Blijven proberen tot de wedstrijd 'afgelopen' is, vangt dit af.
 
 Schrijft naar data/ajax_schedule.json — dit bestand wordt bij elke
 dagelijkse ververing VOLLEDIG OVERSCHREVEN (geen historie, alleen de
@@ -46,12 +52,19 @@ COMPETITIE_CODE = "DED"  # Eredivisie — enige Ajax-competitie in de gratis tie
 
 OUTPUT_PATH = os.environ.get("OUTPUT_PATH", "data/ajax_schedule.json")
 
-# Precies deze twee momenten na aftrap worden extra bevraagd (zie opdracht):
-PROBE_MOMENTEN = [
-    (50, "rust"),   # ruim na de eerste helft (45 min + wat marge)
-    (125, "eind"),  # 90 min + rust + ruime marge voor blessuretijd/verlenging
-]
-PROBE_MARGE = timedelta(minutes=5)  # cron draait elke 5 min, dus dit dekt het venster af
+# Continu proberen vanaf net vóór aftrap tot ruim ná de wedstrijd, in plaats
+# van twee losse, smalle "schietgaten" (was: alleen rond T+50 en T+125 min).
+# Reden: football-data.org's gratis laag geeft VERTRAAGDE scores, geen
+# real-time data (bevestigd door henzelf en meerdere onafhankelijke bronnen).
+# Bij een smal eenmalig venster loop je het risico dat de API op dát exacte
+# moment nog niet heeft bijgewerkt, en dat venster daarna voorgoed gesloten
+# is -- vooral riskant voor de ruststand, die maar kort "actueel" is voordat
+# de tweede helft alweer begint. Door continu (elke cyclus) te blijven
+# proberen zolang de wedstrijd nog niet 'afgelopen' is, pakken we een
+# vertraagde ruststand alsnog op zodra de bron is bijgetrokken -- ongeacht
+# hoe laat dat is.
+PROBE_VENSTER_MINUTEN = 150  # ruim voorbij 90 min + rust + eventuele verlenging
+PROBE_START_MARGE = timedelta(minutes=10)  # ook vlak vóór het geplande aftrapmoment al proberen
 
 
 # ---------------- football-data.org ----------------
@@ -112,19 +125,21 @@ def daily_full_refresh() -> list[dict]:
     return matches
 
 
-# ---------------- Gerichte live-probe rond T+50 / T+125 min ----------------
+# ---------------- Continue live-probe tijdens een wedstrijd ----------------
 
-def wedstrijden_binnen_probe_venster(matches: list[dict]) -> list[tuple[int, str]]:
+def wedstrijden_binnen_probe_venster(matches: list[dict]) -> list[int]:
+    """Geeft de id's van wedstrijden die deze cyclus opnieuw bevraagd moeten
+    worden: alles wat nog niet 'afgelopen' is en waarvan de aftrap tussen
+    (nu - PROBE_VENSTER_MINUTEN) en (nu + PROBE_START_MARGE) ligt."""
     nu = datetime.now(timezone.utc)
     te_proben = []
     for m in matches:
         if m["status"] == "afgelopen":
             continue
         kickoff = datetime.fromisoformat(m["kickoff"])
-        for offset_minuten, doel in PROBE_MOMENTEN:
-            moment = kickoff + timedelta(minutes=offset_minuten)
-            if moment - PROBE_MARGE <= nu <= moment + PROBE_MARGE:
-                te_proben.append((m["id"], doel))
+        venster_einde = kickoff + timedelta(minutes=PROBE_VENSTER_MINUTEN)
+        if kickoff - PROBE_START_MARGE <= nu <= venster_einde:
+            te_proben.append(m["id"])
     return te_proben
 
 
@@ -254,16 +269,17 @@ def main() -> None:
 
     by_id = {m["id"]: m for m in matches}
     standen_verversen = False
-    for fixture_id, doel in te_proben:
-        print(f"[main] Probe fixture {fixture_id} (doel: {doel})...")
+    for fixture_id in te_proben:
+        was_al_afgelopen = by_id.get(fixture_id, {}).get("status") == "afgelopen"
+        print(f"[main] Probe fixture {fixture_id}...")
         bijgewerkt = probe_fixture(fixture_id)
         if bijgewerkt:
             by_id[fixture_id] = bijgewerkt
-            # Zodra een eindstand-probe een daadwerkelijk afgeronde wedstrijd
-            # oplevert, is de standenlijst realistisch gezien ook net
-            # gewijzigd -- niet wachten tot de eerstvolgende dagelijkse
-            # verversing (die kan tot bijna 24 uur later zijn).
-            if doel == "eind" and bijgewerkt.get("status") == "afgelopen":
+            # Zodra een wedstrijd voor het eerst als 'afgelopen' terugkomt
+            # (dus niet al eerder zo was), is de standenlijst realistisch
+            # gezien ook net gewijzigd -- niet wachten tot de eerstvolgende
+            # dagelijkse verversing (die kan tot bijna 24 uur later zijn).
+            if not was_al_afgelopen and bijgewerkt.get("status") == "afgelopen":
                 standen_verversen = True
 
     if standen_verversen:
