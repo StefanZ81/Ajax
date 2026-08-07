@@ -1,21 +1,6 @@
 {
   "wedstrijden": [
     {
-      "dag": 6,
-      "maand": 8,
-      "tegenstander": "Shelbourne",
-      "zenders": [
-        {
-          "naam": "Ziggo Sport",
-          "logo": "https://sport-tv-gids.nl/sportzender/ziggo-voetbal-live-op-tv-zender-nederland.png"
-        },
-        {
-          "naam": "Ziggo Sport 14",
-          "logo": "https://sport-tv-gids.nl/sportzender/ziggo-sport-14-live-op-tv-zender-nederland.png"
-        }
-      ]
-    },
-    {
       "dag": 9,
       "maand": 8,
       "tegenstander": "PEC Zwolle",
