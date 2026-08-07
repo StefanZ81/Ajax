@@ -748,20 +748,41 @@ def uitschrijven_reminders(uitschrijf_token: str) -> dict | None:
 
 def get_standings_widget(seizoen: str) -> list[dict]:
     with get_connection() as conn:
-        rows = conn.execute(
-            """
-            SELECT * FROM standings WHERE seizoen = ? AND positie BETWEEN
-                MAX(1, (SELECT positie FROM standings WHERE seizoen = ? AND team LIKE '%Ajax%') - 1)
-                AND (SELECT positie FROM standings WHERE seizoen = ? AND team LIKE '%Ajax%') + 1
-            ORDER BY positie
-            """,
-            (seizoen, seizoen, seizoen),
-        ).fetchall()
-    resultaat = [dict(r) for r in rows]
-    # Vóór de competitiestart staan bij football-data.org alle teams nog gelijk
-    # (bv. iedereen op positie 1, 0 punten) — dat levert hier veel meer dan 3
-    # rijen op. Dat is geen zinvolle "1 boven/onder Ajax"-stand, dus dan liever
-    # niets tonen (de widget valt dan terug op "Stand nog niet gesynchroniseerd").
-    if len(resultaat) > 3:
+        ajax_rij = conn.execute(
+            "SELECT gespeeld FROM standings WHERE seizoen = ? AND team LIKE '%Ajax%'",
+            (seizoen,),
+        ).fetchone()
+        # Vóór Ajax' eigen eerste wedstrijd is de stand nog niet zinvol (bv.
+        # voor de competitiestart staan alle teams nog gelijk op 0 punten).
+        # Zodra Ajax zelf heeft gespeeld, is de eigen positie wél zinvol --
+        # ook al hebben andere teams die speelronde nog niet gespeeld en dus
+        # nog een gedeelde positie hebben.
+        if not ajax_rij or ajax_rij["gespeeld"] == 0:
+            return []
+
+        gerangschikt = [
+            dict(r) for r in conn.execute(
+                """
+                SELECT *, ROW_NUMBER() OVER (ORDER BY positie, team) AS rang
+                FROM standings WHERE seizoen = ?
+                ORDER BY rang
+                """,
+                (seizoen,),
+            ).fetchall()
+        ]
+
+    totaal = len(gerangschikt)
+    if totaal == 0:
         return []
-    return resultaat
+
+    ajax_rang = next((r["rang"] for r in gerangschikt if "ajax" in r["team"].lower()), None)
+    if ajax_rang is None:
+        return []
+
+    # Altijd een venster van 3 rijen (of minder als de competitie zelf
+    # minder dan 3 teams telt) tonen, verschoven zodat het binnen de tabel
+    # blijft: Ajax staat op de middelste regel, TENZIJ Ajax zelf 1e staat
+    # (dan tonen we 1-2-3) of laatste staat (dan de laatste 3 posities).
+    start = max(1, min(ajax_rang - 1, totaal - 2))
+    eind = min(totaal, start + 2)
+    return [r for r in gerangschikt if start <= r["rang"] <= eind]
