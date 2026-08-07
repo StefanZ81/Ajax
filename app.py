@@ -434,6 +434,15 @@ def beheerder_sync_stopzetten(match_id):
     return redirect(url_for("beheerder"))
 
 
+@app.route("/beheerder/sync-hervatten/<match_id>", methods=["POST"])
+@admin_required
+def beheerder_sync_hervatten(match_id):
+    match_id = int(match_id)
+    queries.hervat_sync_wedstrijd(match_id)
+    flash("Automatische sync hervat voor deze wedstrijd.", "info")
+    return redirect(url_for("beheerder"))
+
+
 @app.route("/beheerder/uitslag/<match_id>", methods=["POST"])
 @admin_required
 def beheerder_uitslag(match_id):
