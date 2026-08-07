@@ -199,11 +199,22 @@ def main() -> None:
         return
 
     by_id = {m["id"]: m for m in matches}
+    standen_verversen = False
     for fixture_id, doel in te_proben:
         print(f"[main] Probe fixture {fixture_id} (doel: {doel})...")
         bijgewerkt = probe_fixture(fixture_id)
         if bijgewerkt:
             by_id[fixture_id] = bijgewerkt
+            # Zodra een eindstand-probe een daadwerkelijk afgeronde wedstrijd
+            # oplevert, is de standenlijst realistisch gezien ook net
+            # gewijzigd -- niet wachten tot de eerstvolgende dagelijkse
+            # verversing (die kan tot bijna 24 uur later zijn).
+            if doel == "eind" and bijgewerkt.get("status") == "afgelopen":
+                standen_verversen = True
+
+    if standen_verversen:
+        print("[main] Wedstrijd afgerond -- standenlijst direct meeverversen.")
+        stand = fetch_standings()
 
     save(list(by_id.values()), stand)
 
