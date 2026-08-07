@@ -139,7 +139,24 @@ def probe_fixture(fixture_id: int) -> dict | None:
 
 def fetch_standings() -> list[dict]:
     data = football_data(f"/competitions/{COMPETITIE_CODE}/standings")
-    for groep in data.get("standings", []):
+
+    # TIJDELIJKE diagnose: laat zien wat de API precies teruggeeft, zodat we
+    # kunnen zien of het probleem in de aanroep zelf zit, of in hoe we het
+    # antwoord verwerken. Verwijderen zodra de standen weer goed doorkomen.
+    print(f"[fetch_standings] seizoensfilter uit de respons: {data.get('filters')}")
+    print(f"[fetch_standings] seizoen-info: {data.get('season')}")
+    groepen = data.get("standings", [])
+    print(f"[fetch_standings] aantal 'standings'-groepen in de respons: {len(groepen)}")
+    for g in groepen:
+        tabel = g.get("table", [])
+        eerste_3 = [
+            {"team": r["team"]["name"], "gespeeld": r["playedGames"], "punten": r["points"]}
+            for r in tabel[:3]
+        ]
+        print(f"[fetch_standings]   groep type={g.get('type')!r} stage={g.get('stage')!r} "
+              f"aantal_teams={len(tabel)} eerste_3={eerste_3}")
+
+    for groep in groepen:
         if groep.get("type") == "TOTAL":
             return [
                 {
