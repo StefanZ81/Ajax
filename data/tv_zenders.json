@@ -29,6 +29,21 @@
           "logo": "https://sport-tv-gids.nl/sportzender/ziggo-sport-14-live-op-tv-zender-nederland.png"
         }
       ]
+    },
+    {
+      "dag": 16,
+      "maand": 8,
+      "tegenstander": "SC Heerenveen",
+      "zenders": [
+        {
+          "naam": "ESPN Extra",
+          "logo": "https://sport-tv-gids.nl/sportzender/espn-extra-live-op-tv-zender-nederland.png"
+        },
+        {
+          "naam": "ESPN 2",
+          "logo": "https://sport-tv-gids.nl/sportzender/espn-2-live-op-tv-zender-nederland.png"
+        }
+      ]
     }
   ]
 }
