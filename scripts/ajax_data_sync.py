@@ -164,12 +164,12 @@ def fetch_standings() -> list[dict]:
     print(f"[fetch_standings] aantal 'standings'-groepen in de respons: {len(groepen)}")
     for g in groepen:
         tabel = g.get("table", [])
-        eerste_3 = [
-            {"team": r["team"]["name"], "gespeeld": r["playedGames"], "punten": r["points"]}
-            for r in tabel[:3]
+        eerste_rijen = [
+            {"positie": r["position"], "team": r["team"]["name"], "gespeeld": r["playedGames"], "punten": r["points"]}
+            for r in tabel[:6]
         ]
         print(f"[fetch_standings]   groep type={g.get('type')!r} stage={g.get('stage')!r} "
-              f"aantal_teams={len(tabel)} eerste_3={eerste_3}")
+              f"aantal_teams={len(tabel)} eerste_rijen={eerste_rijen}")
 
     for groep in groepen:
         if groep.get("type") == "TOTAL":
@@ -179,6 +179,9 @@ def fetch_standings() -> list[dict]:
                     "team": rij["team"]["name"],
                     "punten": rij["points"],
                     "gespeeld": rij["playedGames"],
+                    "winst": rij["won"],
+                    "gelijk": rij["draw"],
+                    "verlies": rij["lost"],
                 }
                 for rij in groep["table"]
             ]
@@ -230,6 +233,28 @@ def moet_stand_verversen(bestaand: dict | None, marge_uren: float = 2.0) -> bool
     return (datetime.now(timezone.utc) - laatst) >= timedelta(hours=marge_uren)
 
 
+def moet_stand_verversen_na_ajax_wedstrijd(bestaand: dict | None, matches: list[dict]) -> bool:
+    """Extra, snellere trigger náást de reguliere 2-uursklok hierboven: de
+    standenlijst verandert niet alleen door Ajax' eigen wedstrijden, maar
+    ook door alle andere Eredivisie-wedstrijden die competitie-breed
+    plaatsvinden -- dus het bijwerken van de stand hoort sowieso al
+    onafhankelijk van Ajax' eigen speelschema te gebeuren (dat doet de
+    2-uursklok hierboven ook al). Deze functie zorgt er daarnaast voor dat
+    de stand ook SNEL (binnen ~2u05m, i.p.v. tot 2 uur wachten op de
+    volgende klok-tik) wordt bijgewerkt rond het moment dat we wél zeker
+    weten dat er iets relevants gebeurd is: vlak na een Ajax-wedstrijd."""
+    stand_bijgewerkt_op = bestaand.get("stand_bijgewerkt_op") if bestaand else None
+    laatste_update = datetime.fromisoformat(stand_bijgewerkt_op) if stand_bijgewerkt_op else None
+    nu = datetime.now(timezone.utc)
+
+    for m in matches:
+        kickoff = datetime.fromisoformat(m["kickoff"])
+        moment = kickoff + timedelta(hours=2, minutes=5)
+        if moment <= nu and (laatste_update is None or laatste_update < moment):
+            return True
+    return False
+
+
 # ---------------- Hoofdlogica ----------------
 
 def main() -> None:
@@ -245,14 +270,19 @@ def main() -> None:
     # helemaal niets doen, ook niet de standenlijst bijwerken.
     geforceerd = os.environ.get("FORCE_REFRESH", "").lower() == "true"
     daily_nodig = moet_daily_refresh(bestaand)
-    stand_nodig = moet_stand_verversen(bestaand)
 
     if daily_nodig or geforceerd:
         matches = daily_full_refresh()
 
-    # Standen op hun EIGEN, vaker terugkerend ritme verversen (elke 2 uur) --
-    # los van de dagelijkse wedstrijd-ververing hierboven, want in een
-    # speelweekend verschuift de tabel door meerdere wedstrijden in korte tijd.
+    # Standen op hun EIGEN ritme verversen, VOLLEDIG los van of Ajax zelf al
+    # heeft gespeeld -- de standenlijst verandert immers ook door alle
+    # andere Eredivisie-wedstrijden. Twee triggers samen:
+    #  1. een reguliere klok (standaard elke 2 uur) als algemene ondergrens;
+    #  2. een snellere, gerichte trigger die specifiek 2u05m na de aftrap
+    #     van een Ajax-wedstrijd afgaat, zodat je niet per ongeluk tot bijna
+    #     2 uur na zo'n wedstrijd op de eerstvolgende klok-tik hoeft te wachten.
+    stand_nodig = moet_stand_verversen(bestaand) or moet_stand_verversen_na_ajax_wedstrijd(bestaand, matches)
+
     if stand_nodig or geforceerd:
         stand = fetch_standings()
         stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
