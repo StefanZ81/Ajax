@@ -48,7 +48,7 @@
   {% endif %}
   {% for r in standings %}
   <div class="widget-row" style="align-items:center;">
-    <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; {{ 'font-weight:700;' if r.team == 'Ajax' else 'opacity:.85;' }}">{{ r.positie }}. {{ r.team }}{{ ' ●' if r.team == 'Ajax' else '' }}</span>
+    <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; {{ 'font-weight:700;' if r.team == 'Ajax' else 'opacity:.85;' }}">{{ r.rang }}. {{ r.team }}{{ ' ●' if r.team == 'Ajax' else '' }}</span>
     <span style="width:16px; text-align:center; flex-shrink:0;">{{ r.gespeeld }}</span>
     <span style="width:16px; text-align:center; flex-shrink:0;">{{ r.winst }}</span>
     <span style="width:16px; text-align:center; flex-shrink:0;">{{ r.gelijk }}</span>
