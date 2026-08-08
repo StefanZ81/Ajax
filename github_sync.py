@@ -67,8 +67,11 @@ def _sync_now() -> int:
             conn.execute("DELETE FROM standings WHERE seizoen = ?", (seizoen,))
             for rij in stand:
                 conn.execute(
-                    "INSERT INTO standings (seizoen, positie, team, punten, gespeeld) VALUES (?, ?, ?, ?, ?)",
-                    (seizoen, rij["positie"], rij["team"], rij["punten"], rij.get("gespeeld", 0)),
+                    "INSERT INTO standings (seizoen, positie, team, punten, gespeeld, winst, gelijk, verlies) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (
+                        seizoen, rij["positie"], rij["team"], rij["punten"], rij.get("gespeeld", 0),
+                        rij.get("winst", 0), rij.get("gelijk", 0), rij.get("verlies", 0),
+                    ),
                 )
         queries.auto_vul_seizoensuitkomst(seizoen)
 
