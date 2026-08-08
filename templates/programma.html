@@ -36,10 +36,24 @@
 
 <div class="widget">
   <div class="widget-title">🏆 Ajax in de Eredivisie</div>
+  {% if standings %}
+  <div class="widget-row" style="font-size:10px; opacity:.75; padding-top:0;">
+    <span style="flex:1;"></span>
+    <span style="width:16px; text-align:center;">G</span>
+    <span style="width:16px; text-align:center;">W</span>
+    <span style="width:16px; text-align:center;">G</span>
+    <span style="width:16px; text-align:center;">V</span>
+    <span style="width:22px; text-align:right;">Pt</span>
+  </div>
+  {% endif %}
   {% for r in standings %}
-  <div class="widget-row">
-    <span style="{{ 'font-weight:700;' if r.team == 'Ajax' else 'opacity:.85;' }}">{{ r.positie }}. {{ r.team }}{{ ' ●' if r.team == 'Ajax' else '' }}</span>
-    <span>{{ r.punten }} pt</span>
+  <div class="widget-row" style="align-items:center;">
+    <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; {{ 'font-weight:700;' if r.team == 'Ajax' else 'opacity:.85;' }}">{{ r.positie }}. {{ r.team }}{{ ' ●' if r.team == 'Ajax' else '' }}</span>
+    <span style="width:16px; text-align:center; flex-shrink:0;">{{ r.gespeeld }}</span>
+    <span style="width:16px; text-align:center; flex-shrink:0;">{{ r.winst }}</span>
+    <span style="width:16px; text-align:center; flex-shrink:0;">{{ r.gelijk }}</span>
+    <span style="width:16px; text-align:center; flex-shrink:0;">{{ r.verlies }}</span>
+    <span style="width:22px; text-align:right; flex-shrink:0; font-weight:700;">{{ r.punten }}</span>
   </div>
   {% else %}
   <div style="font-size:13px; opacity:.8;">Stand nog niet gesynchroniseerd.</div>
