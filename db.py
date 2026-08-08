@@ -57,6 +57,9 @@ def run_migrations() -> None:
         "ALTER TABLE matches ADD COLUMN handmatig_overschreven INTEGER NOT NULL DEFAULT 0",
         "ALTER TABLE participants ADD COLUMN ontvangt_reminders INTEGER NOT NULL DEFAULT 1",
         "ALTER TABLE participants ADD COLUMN uitschrijf_token TEXT",
+        "ALTER TABLE standings ADD COLUMN winst INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE standings ADD COLUMN gelijk INTEGER NOT NULL DEFAULT 0",
+        "ALTER TABLE standings ADD COLUMN verlies INTEGER NOT NULL DEFAULT 0",
     ]
     with get_connection() as conn:
         for sql in migraties:
