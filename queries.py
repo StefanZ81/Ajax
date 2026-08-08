@@ -748,18 +748,6 @@ def uitschrijven_reminders(uitschrijf_token: str) -> dict | None:
 
 def get_standings_widget(seizoen: str) -> list[dict]:
     with get_connection() as conn:
-        ajax_rij = conn.execute(
-            "SELECT gespeeld FROM standings WHERE seizoen = ? AND team LIKE '%Ajax%'",
-            (seizoen,),
-        ).fetchone()
-        # Vóór Ajax' eigen eerste wedstrijd is de stand nog niet zinvol (bv.
-        # voor de competitiestart staan alle teams nog gelijk op 0 punten).
-        # Zodra Ajax zelf heeft gespeeld, is de eigen positie wél zinvol --
-        # ook al hebben andere teams die speelronde nog niet gespeeld en dus
-        # nog een gedeelde positie hebben.
-        if not ajax_rij or ajax_rij["gespeeld"] == 0:
-            return []
-
         gerangschikt = [
             dict(r) for r in conn.execute(
                 """
