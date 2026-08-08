@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-08T18:50:24.344438+00:00",
+  "bijgewerkt_op": "2026-08-08T21:04:13.188044+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -431,7 +431,7 @@
     },
     {
       "positie": 3,
-      "team": "Telstar 1963",
+      "team": "AZ",
       "punten": 3,
       "gespeeld": 1,
       "winst": 1,
@@ -440,6 +440,15 @@
     },
     {
       "positie": 4,
+      "team": "Telstar 1963",
+      "punten": 3,
+      "gespeeld": 1,
+      "winst": 1,
+      "gelijk": 0,
+      "verlies": 0
+    },
+    {
+      "positie": 5,
       "team": "Fortuna Sittard",
       "punten": 1,
       "gespeeld": 1,
@@ -448,7 +457,7 @@
       "verlies": 0
     },
     {
-      "positie": 4,
+      "positie": 5,
       "team": "PSV",
       "punten": 1,
       "gespeeld": 1,
@@ -457,16 +466,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
-      "team": "ADO Den Haag",
-      "punten": 0,
-      "gespeeld": 0,
-      "winst": 0,
-      "gelijk": 0,
-      "verlies": 0
-    },
-    {
-      "positie": 6,
+      "positie": 7,
       "team": "AFC Ajax",
       "punten": 0,
       "gespeeld": 0,
@@ -475,16 +475,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
-      "team": "AZ",
-      "punten": 0,
-      "gespeeld": 0,
-      "winst": 0,
-      "gelijk": 0,
-      "verlies": 0
-    },
-    {
-      "positie": 6,
+      "positie": 7,
       "team": "FC Groningen",
       "punten": 0,
       "gespeeld": 0,
@@ -493,7 +484,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "FC Twente '65",
       "punten": 0,
       "gespeeld": 0,
@@ -502,7 +493,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "FC Utrecht",
       "punten": 0,
       "gespeeld": 0,
@@ -511,7 +502,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "Feyenoord Rotterdam",
       "punten": 0,
       "gespeeld": 0,
@@ -520,7 +511,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "PEC Zwolle",
       "punten": 0,
       "gespeeld": 0,
@@ -529,7 +520,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "SC Heerenveen",
       "punten": 0,
       "gespeeld": 0,
@@ -538,7 +529,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "Sparta Rotterdam",
       "punten": 0,
       "gespeeld": 0,
@@ -547,8 +538,17 @@
       "verlies": 0
     },
     {
-      "positie": 16,
+      "positie": 15,
       "team": "NEC",
+      "punten": 0,
+      "gespeeld": 1,
+      "winst": 0,
+      "gelijk": 0,
+      "verlies": 1
+    },
+    {
+      "positie": 16,
+      "team": "ADO Den Haag",
       "punten": 0,
       "gespeeld": 1,
       "winst": 0,
@@ -574,5 +574,5 @@
       "verlies": 1
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-08T18:50:24.344429+00:00"
+  "stand_bijgewerkt_op": "2026-08-08T21:04:13.188030+00:00"
 }
