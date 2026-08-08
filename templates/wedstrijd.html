@@ -9,6 +9,11 @@
   <img src="{{ z.logo }}" alt="{{ z.naam }}" title="{{ z.naam }}" style="height:48px; width:auto; border-radius:4px;">
   {% endfor %}
 </div>
+{% elif match.status == 'afgelopen' %}
+<div style="margin-bottom:16px; font-size:14px;">
+  <div>Ruststand: <span style="font-weight:700;">{{ match.uitslag_rust_thuis }}-{{ match.uitslag_rust_uit }}</span></div>
+  <div>Eindstand: <span style="font-weight:700;">{{ match.uitslag_eind_thuis }}-{{ match.uitslag_eind_uit }}</span></div>
+</div>
 {% endif %}
 
 {% if kan_nog_voorspellen %}
@@ -40,8 +45,23 @@
     <button type="submit">Voorspelling opslaan</button>
   </form>
 </div>
+{% elif mijn_voorspelling %}
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">Jouw voorspelling</p>
+  <div class="veld">
+    <label>Ruststand</label>
+    <p style="font-weight:700; font-size:16px; margin:0;">{{ mijn_voorspelling.rust_thuis }}-{{ mijn_voorspelling.rust_uit }}</p>
+  </div>
+  <div class="veld">
+    <label>Eindstand</label>
+    <p style="font-weight:700; font-size:16px; margin:0;">{{ mijn_voorspelling.eind_thuis }}-{{ mijn_voorspelling.eind_uit }}</p>
+  </div>
+  {% if mijn_voorspelling.joker %}
+  <p style="font-size:13px; margin-bottom:0;">★ Joker ingezet</p>
+  {% endif %}
+</div>
 {% else %}
-<p style="color:var(--grey); font-size:13px;">Voorspellen kan niet meer — de wedstrijd is begonnen.</p>
+<p style="color:var(--grey); font-size:13px;">Voorspellen kan niet meer — de wedstrijd is begonnen. Je hebt geen voorspelling ingevuld.</p>
 {% endif %}
 
 {% if voorspelling_status %}
