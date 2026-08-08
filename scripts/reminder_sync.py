@@ -105,7 +105,7 @@ def stel_mail_samen(deelnemer: dict, wedstrijd: dict) -> tuple[str, str]:
     link_voorspelling = f"{APP_URL}/wedstrijd/{wedstrijd['id']}"
     link_uitschrijven = f"{APP_URL}/uitschrijven/{deelnemer['uitschrijf_token']}"
 
-    onderwerp = f"Ajax – {tegenstander} · {competitie}"
+    onderwerp = f"{thuis} – {uit} · {competitie}"
     html = f"""
     <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto;">
       <div style="background:#15161B; padding:20px; text-align:center;">
@@ -125,6 +125,7 @@ def stel_mail_samen(deelnemer: dict, wedstrijd: dict) -> tuple[str, str]:
             Geef je voorspelling door
           </a>
         </p>
+        <p>Denk eraan dat je de joker kunt inzetten voor dubbele punten.</p>
         <p>Veel succes en plezier met de wedstrijd!</p>
         <p>— J-Poule</p>
         <p style="font-size:11px; color:#6E7180; margin-top:32px;">
