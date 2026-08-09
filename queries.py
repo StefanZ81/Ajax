@@ -7,7 +7,7 @@ Databasequeries voor de webweergave — SQLite-versie.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 from db import get_connection
@@ -205,9 +205,32 @@ def auto_vul_seizoensuitkomst(seizoen: str) -> None:
             "SELECT MIN(gespeeld) AS m FROM standings WHERE seizoen = ?",
             (seizoen,),
         ).fetchone()
+        vroegste_kickoff = conn.execute(
+            "SELECT MIN(kickoff) AS v FROM matches WHERE seizoen = ?",
+            (seizoen,),
+        ).fetchone()
     if not ajax or not minimum_gespeeld or minimum_gespeeld["m"] is None:
         return
     alle_teams_gespeeld = minimum_gespeeld["m"]
+
+    # Aannemelijkheidscontrole tegen de kalender: 17 (laat staan 34)
+    # wedstrijden voor ALLE 18 teams is onmogelijk binnen enkele weken na de
+    # seizoensstart. Vangt dezelfde onstabiele/foutieve brondata af die ook
+    # al bij de wedstrijdstatus tot een te-vroeg-'afgelopen'-probleem leidde
+    # (zie ajax_data_sync.py) -- hier zonder deze check zou een foutieve
+    # 'gespeeld'-waarde meteen en onomkeerbaar seizoenspunten uitkeren.
+    if vroegste_kickoff and vroegste_kickoff["v"]:
+        seizoen_start = datetime.fromisoformat(vroegste_kickoff["v"])
+        nu = datetime.now(timezone.utc)
+        weken_bezig = (nu - seizoen_start).days / 7
+        if alle_teams_gespeeld >= 17 and weken_bezig < 8:
+            print(f"[auto_vul_seizoensuitkomst] Bron meldt {alle_teams_gespeeld} gespeelde wedstrijden voor "
+                  f"alle teams, maar het seizoen is pas {weken_bezig:.1f} weken bezig -- onaannemelijk, genegeerd.")
+            return
+        if alle_teams_gespeeld >= 34 and weken_bezig < 20:
+            print(f"[auto_vul_seizoensuitkomst] Bron meldt {alle_teams_gespeeld} gespeelde wedstrijden voor "
+                  f"alle teams, maar het seizoen is pas {weken_bezig:.1f} weken bezig -- onaannemelijk, genegeerd.")
+            return
 
     resultaat = get_season_result(seizoen) or {}
     if alle_teams_gespeeld >= 17 and resultaat.get("na17_positie") is None:
