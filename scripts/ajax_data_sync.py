@@ -75,10 +75,32 @@ def football_data(path: str) -> dict:
     return res.json()
 
 
-def _map_status(status: str) -> str:
+# Een wedstrijd kan onmogelijk écht afgelopen zijn binnen deze tijd na
+# aftrap -- 90 minuten speeltijd is al de norm, en zelfs bij een kort
+# gefloten wedstrijd (geen blessuretijd) is minder dan dit ondenkbaar.
+# Vangt een foutieve/instabiele 'FINISHED'-melding van de bron af (zie
+# ook de eerdere bevindingen over onstabiele standen-data van dezelfde
+# bron) vóórdat die permanent als waarheid wordt aangenomen: eenmaal
+# lokaal op 'afgelopen' gezet, wordt een wedstrijd nooit meer opnieuw
+# geprobeerd (zie wedstrijden_binnen_probe_venster hieronder), dus een
+# vroegtijdige foutmelding zou anders blijvend vast blijven zitten --
+# inclusief de puntenberekening die daar automatisch op volgt.
+MINIMALE_SPEELTIJD_VOOR_AFGELOPEN = timedelta(minutes=85)
+
+
+def _map_status(status: str, kickoff: datetime | None = None, nu: datetime | None = None) -> str:
     if status in ("IN_PLAY", "PAUSED"):
         return "live"
     if status in ("FINISHED", "AWARDED"):
+        if kickoff is not None:
+            nu = nu or datetime.now(timezone.utc)
+            if nu - kickoff < MINIMALE_SPEELTIJD_VOOR_AFGELOPEN:
+                print(
+                    f"[map_match] Bron meldt 'afgelopen' voor een wedstrijd die pas "
+                    f"{(nu - kickoff).total_seconds() / 60:.0f} min geleden begon -- "
+                    f"onaannemelijk, genegeerd (blijft 'live')."
+                )
+                return "live"
         return "afgelopen"
     return "gepland"  # SCHEDULED, TIMED, SUSPENDED, POSTPONED
 
@@ -104,7 +126,7 @@ def map_match(m: dict) -> dict:
         "thuis": m["homeTeam"]["name"],
         "uit": m["awayTeam"]["name"],
         "kickoff": kickoff.isoformat(),
-        "status": _map_status(m["status"]),
+        "status": _map_status(m["status"], kickoff=kickoff),
         "rust": _normaliseer_score(m["score"].get("halfTime")),
         "eind": _normaliseer_score(m["score"].get("fullTime")),
     }
