@@ -395,8 +395,12 @@ def main() -> None:
     stand_nodig = moet_stand_verversen(bestaand) or moet_stand_verversen_na_ajax_wedstrijd(bestaand, matches)
 
     if stand_nodig or geforceerd:
-        stand = fetch_standings(matches)
-        stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
+        nieuwe_stand = fetch_standings(matches)
+        if nieuwe_stand:
+            stand = nieuwe_stand
+            stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
+        else:
+            print("[main] Geen bruikbare (nieuwe) standenlijst ontvangen -- de vorige, laatst bekende stand blijft staan.")
 
     if daily_nodig or geforceerd or stand_nodig:
         save(matches, stand, stand_bijgewerkt_op)
@@ -425,8 +429,12 @@ def main() -> None:
 
     if standen_verversen:
         print("[main] Wedstrijd afgerond -- standenlijst direct meeverversen.")
-        stand = fetch_standings(list(by_id.values()))
-        stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
+        nieuwe_stand = fetch_standings(list(by_id.values()))
+        if nieuwe_stand:
+            stand = nieuwe_stand
+            stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
+        else:
+            print("[main] Geen bruikbare (nieuwe) standenlijst ontvangen -- de vorige, laatst bekende stand blijft staan.")
 
     save(list(by_id.values()), stand, stand_bijgewerkt_op)
 
