@@ -88,13 +88,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558221,
-      "competitie": "Eredivisie",
-      "thuis": "PEC Zwolle",
-      "uit": "AFC Ajax",
-      "kickoff": "2026-08-09T12:30:00+00:00"
-    },
-    {
       "id": 558231,
       "competitie": "Eredivisie",
       "thuis": "AFC Ajax",
