@@ -41,6 +41,7 @@ nooit rijen aan die er niet in voorkomen.
 from __future__ import annotations
 
 import json
+import math
 import os
 from datetime import datetime, timedelta, timezone
 
@@ -187,7 +188,7 @@ def probe_fixture(fixture_id: int) -> dict | None:
     return map_match(data)
 
 
-def fetch_standings() -> list[dict]:
+def fetch_standings(matches: list[dict] | None = None) -> list[dict]:
     data = football_data(f"/competitions/{COMPETITIE_CODE}/standings")
 
     # TIJDELIJKE diagnose: laat zien wat de API precies teruggeeft, zodat we
@@ -225,7 +226,7 @@ def fetch_standings() -> list[dict]:
                           f"maar gespeeld={rij['playedGames']} -- hele standenlijst afgewezen.")
                     return []
 
-            return [
+            resultaat = [
                 {
                     "positie": rij["position"],
                     "team": rij["team"]["name"],
@@ -237,6 +238,64 @@ def fetch_standings() -> list[dict]:
                 }
                 for rij in groep["table"]
             ]
+
+            # Kruiscontrole tussen twee delen van dezelfde bronrespons: onze
+            # eigen wedstrijddata (matches) is al streng gecontroleerd (zie
+            # _map_status hierboven) en dus betrouwbaarder dan de losse
+            # standen-endpoint. Als de standenlijst een ander 'gespeeld'-
+            # aantal voor Ajax claimt dan wat we zelf, via die betrouwbaardere
+            # bron, weten over afgeronde Ajax-wedstrijden, is dat een teken
+            # dat de standen-endpoint op dit moment inconsistent/onbetrouwbaar
+            # is (ook al is elke rij op zich intern consistent) -- dan liever
+            # de hele standenlijst afwijzen.
+            if matches is not None:
+                ajax_rij = next((r for r in resultaat if "ajax" in r["team"].lower()), None)
+                eigen_afgeronde_aantal = sum(1 for m in matches if m["status"] == "afgelopen")
+                if ajax_rij and ajax_rij["gespeeld"] != eigen_afgeronde_aantal:
+                    print(
+                        f"[fetch_standings] Inconsistentie: standenlijst meldt Ajax heeft "
+                        f"{ajax_rij['gespeeld']} wedstrijden gespeeld, maar onze eigen (streng "
+                        f"gecontroleerde) wedstrijddata bevestigt er {eigen_afgeronde_aantal} -- "
+                        f"de hele standenlijst wordt afgewezen."
+                    )
+                    return []
+
+                # Bredere kalendercontrole, voor ALLE 18 teams (niet alleen
+                # Ajax): we houden alleen Ajax' eigen programma onafhankelijk
+                # bij, dus van de andere 17 clubs kunnen we 'gespeeld' niet
+                # rechtstreeks verifiëren. Wel weten we, via Ajax' vroegste
+                # wedstrijd, wanneer het seizoen is gestart -- en dus hoeveel
+                # wedstrijden ÜBERHAUPT realistisch al gespeeld kunnen zijn,
+                # ongeacht welk team. Zelfde tempo-aanname als bij de
+                # seizoenscheckpoint-controle (17 wedstrijden vergt minstens
+                # 8 weken), voor consistentie door de hele codebase.
+                kickoffs = [m["kickoff"] for m in matches if m.get("kickoff")]
+                if kickoffs:
+                    seizoen_start = datetime.fromisoformat(min(kickoffs))
+                    nu = datetime.now(timezone.utc)
+                    weken_bezig = (nu - seizoen_start).days / 7
+                    # Ruim tempo (2 wedstrijden/week, zelfs drukke decembermaand
+                    # haalt dat zelden vol) + een vaste buffer van 2, zodat ook
+                    # de allereerste speelronde -- die per definitie al bij de
+                    # seizoensstart zelf hoort te kunnen plaatsvinden -- niet
+                    # onterecht als onaannemelijk wordt afgewezen. Dit is bewust
+                    # een ruime bovengrens (bedoeld om alleen overduidelijke
+                    # onzin te vangen), losstaand van de striktere 17-in-8-weken
+                    # aanname bij de seizoenscheckpoint-controle elders, die een
+                    # ander doel dient (daar gaat het om het EERSTE moment
+                    # waarop iets als bereikt mag gelden, hier om een
+                    # bovengrens tegen overduidelijke corruptie).
+                    max_plausibel = math.ceil(weken_bezig * 2) + 2
+                    for r in resultaat:
+                        if r["gespeeld"] > max_plausibel:
+                            print(
+                                f"[fetch_standings] Onaannemelijk: {r['team']} zou {r['gespeeld']} "
+                                f"wedstrijden gespeeld hebben, maar het seizoen is pas {weken_bezig:.1f} "
+                                f"weken bezig (max plausibel ~{max_plausibel}) -- hele standenlijst afgewezen."
+                            )
+                            return []
+
+            return resultaat
     return []
 
 
@@ -336,7 +395,7 @@ def main() -> None:
     stand_nodig = moet_stand_verversen(bestaand) or moet_stand_verversen_na_ajax_wedstrijd(bestaand, matches)
 
     if stand_nodig or geforceerd:
-        stand = fetch_standings()
+        stand = fetch_standings(matches)
         stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
 
     if daily_nodig or geforceerd or stand_nodig:
@@ -366,7 +425,7 @@ def main() -> None:
 
     if standen_verversen:
         print("[main] Wedstrijd afgerond -- standenlijst direct meeverversen.")
-        stand = fetch_standings()
+        stand = fetch_standings(list(by_id.values()))
         stand_bijgewerkt_op = datetime.now(timezone.utc).isoformat()
 
     save(list(by_id.values()), stand, stand_bijgewerkt_op)
