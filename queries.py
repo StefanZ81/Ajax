@@ -219,11 +219,20 @@ def auto_vul_seizoensuitkomst(seizoen: str) -> None:
     # al bij de wedstrijdstatus tot een te-vroeg-'afgelopen'-probleem leidde
     # (zie ajax_data_sync.py) -- hier zonder deze check zou een foutieve
     # 'gespeeld'-waarde meteen en onomkeerbaar seizoenspunten uitkeren.
-    if vroegste_kickoff and vroegste_kickoff["v"]:
+    #
+    # Geen referentiedatum beschikbaar (bv. de matches-tabel is om wat voor
+    # reden dan ook leeg) is GEEN vrijbrief om de controle over te slaan --
+    # dat zou het hele doel ondermijnen. Dan liever voorzichtig niets doen
+    # en gewoon op een latere, wel-verifieerbare cyclus wachten.
+    if alle_teams_gespeeld >= 17:
+        if not vroegste_kickoff or not vroegste_kickoff["v"]:
+            print("[auto_vul_seizoensuitkomst] Geen referentiedatum beschikbaar om de "
+                  f"{alle_teams_gespeeld} gespeelde wedstrijden tegen te toetsen -- uit voorzorg genegeerd.")
+            return
         seizoen_start = datetime.fromisoformat(vroegste_kickoff["v"])
         nu = datetime.now(timezone.utc)
         weken_bezig = (nu - seizoen_start).days / 7
-        if alle_teams_gespeeld >= 17 and weken_bezig < 8:
+        if weken_bezig < 8:
             print(f"[auto_vul_seizoensuitkomst] Bron meldt {alle_teams_gespeeld} gespeelde wedstrijden voor "
                   f"alle teams, maar het seizoen is pas {weken_bezig:.1f} weken bezig -- onaannemelijk, genegeerd.")
             return
