@@ -80,6 +80,51 @@ def _sync_now() -> int:
 
     with get_connection() as conn:
         for m in wedstrijden:
+            bestaand = conn.execute(
+                """SELECT status, uitslag_rust_thuis, uitslag_rust_uit,
+                          uitslag_eind_thuis, uitslag_eind_uit, handmatig_overschreven
+                   FROM matches WHERE id = ?""",
+                (m["id"],),
+            ).fetchone()
+
+            nieuwe_rust = m.get("rust") or {}
+            nieuwe_eind = m.get("eind") or {}
+            nieuwe_uitslag = (
+                nieuwe_rust.get("thuis"), nieuwe_rust.get("uit"),
+                nieuwe_eind.get("thuis"), nieuwe_eind.get("uit"),
+            )
+
+            # Bescherming tegen een vreemde aanpassing achteraf: als deze
+            # wedstrijd lokaal al een BEVESTIGDE uitslag heeft (status
+            # 'afgelopen', nog niet handmatig vergrendeld) en de bron meldt nu
+            # een ANDERE uitslag dan we al hadden, is dat op zijn minst
+            # verdacht -- een legitieme correctie door de bron zou zeldzaam
+            # moeten zijn en verdient bewuste controle, geen stille,
+            # automatische overschrijving. We wijzen de wijziging af en
+            # vergrendelen de wedstrijd (net als 'Sync stopzetten'), zodat de
+            # beheerder het bewust moet beoordelen via het beheerscherm.
+            if (
+                bestaand
+                and bestaand["status"] == "afgelopen"
+                and bestaand["uitslag_eind_thuis"] is not None
+                and not bestaand["handmatig_overschreven"]
+                and m["status"] == "afgelopen"
+            ):
+                bestaande_uitslag = (
+                    bestaand["uitslag_rust_thuis"], bestaand["uitslag_rust_uit"],
+                    bestaand["uitslag_eind_thuis"], bestaand["uitslag_eind_uit"],
+                )
+                if nieuwe_uitslag != bestaande_uitslag:
+                    print(
+                        f"[github_sync] WAARSCHUWING: wedstrijd {m['id']} ({m['thuis']} - {m['uit']}) had al "
+                        f"een bevestigde uitslag {bestaande_uitslag}, maar de bron meldt nu {nieuwe_uitslag}. "
+                        f"NIET automatisch overgenomen -- vergrendeld voor handmatige controle."
+                    )
+                    conn.execute(
+                        "UPDATE matches SET handmatig_overschreven = 1 WHERE id = ?", (m["id"],)
+                    )
+                    continue
+
             conn.execute(
                 """
                 INSERT INTO matches (id, seizoen, competitie, ronde, thuis, uit, kickoff, status,
@@ -110,10 +155,10 @@ def _sync_now() -> int:
                     "uit": m["uit"],
                     "kickoff": m["kickoff"],
                     "status": m["status"],
-                    "rust_thuis": (m.get("rust") or {}).get("thuis"),
-                    "rust_uit": (m.get("rust") or {}).get("uit"),
-                    "eind_thuis": (m.get("eind") or {}).get("thuis"),
-                    "eind_uit": (m.get("eind") or {}).get("uit"),
+                    "rust_thuis": nieuwe_rust.get("thuis"),
+                    "rust_uit": nieuwe_rust.get("uit"),
+                    "eind_thuis": nieuwe_eind.get("thuis"),
+                    "eind_uit": nieuwe_eind.get("uit"),
                 },
                 # NB: 'oefenwedstrijd' bewust NIET in deze upsert — dat is een
                 # handmatige vlag van de beheerder, geen data uit API-Football.
