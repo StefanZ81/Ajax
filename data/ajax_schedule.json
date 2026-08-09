@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-09T13:08:56.448082+00:00",
+  "bijgewerkt_op": "2026-08-09T13:36:20.688285+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -9,8 +9,11 @@
       "thuis": "PEC Zwolle",
       "uit": "AFC Ajax",
       "kickoff": "2026-08-09T12:30:00+00:00",
-      "status": "gepland",
-      "rust": null,
+      "status": "live",
+      "rust": {
+        "thuis": 0,
+        "uit": 0
+      },
       "eind": {
         "thuis": 0,
         "uit": 0
