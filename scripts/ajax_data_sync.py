@@ -118,6 +118,19 @@ def _seizoen_label(kickoff: datetime) -> str:
 
 def map_match(m: dict) -> dict:
     kickoff = datetime.fromisoformat(m["utcDate"].replace("Z", "+00:00"))
+    rust = _normaliseer_score(m["score"].get("halfTime"))
+    eind = _normaliseer_score(m["score"].get("fullTime"))
+
+    # Wiskundig harde controle: doelpunten lopen alleen op tijdens een
+    # wedstrijd, nooit terug -- de ruststand kan dus per definitie nooit
+    # hoger zijn dan de eindstand. Komt dit toch voor, dan is de brondata
+    # aantoonbaar corrupt; de ruststand wordt dan genegeerd (de eindstand,
+    # het belangrijkste gegeven, blijft gewoon staan).
+    if rust and eind and (rust["thuis"] > eind["thuis"] or rust["uit"] > eind["uit"]):
+        print(f"[map_match] Onmogelijke combinatie voor wedstrijd {m['id']}: "
+              f"ruststand {rust} hoger dan eindstand {eind} -- ruststand genegeerd.")
+        rust = None
+
     return {
         "id": m["id"],
         "seizoen": _seizoen_label(kickoff),
@@ -127,8 +140,8 @@ def map_match(m: dict) -> dict:
         "uit": m["awayTeam"]["name"],
         "kickoff": kickoff.isoformat(),
         "status": _map_status(m["status"], kickoff=kickoff),
-        "rust": _normaliseer_score(m["score"].get("halfTime")),
-        "eind": _normaliseer_score(m["score"].get("fullTime")),
+        "rust": rust,
+        "eind": eind,
     }
 
 
@@ -195,6 +208,23 @@ def fetch_standings() -> list[dict]:
 
     for groep in groepen:
         if groep.get("type") == "TOTAL":
+            tabel = groep["table"]
+
+            # Wiskundig harde controle: elke gespeelde wedstrijd resulteert
+            # in precies één van winst/gelijk/verlies -- die drie moeten dus
+            # altijd optellen tot het aantal gespeelde wedstrijden. Als ook
+            # maar één team hier niet aan voldoet, wijst dat op corrupte
+            # brondata (dezelfde instabiliteit die we al meermaals zagen bij
+            # deze endpoint) -- dan liever de HELE lijst afwijzen dan een
+            # deels betrouwbare, deels corrupte tabel gebruiken.
+            for rij in tabel:
+                verwacht = rij["won"] + rij["draw"] + rij["lost"]
+                if verwacht != rij["playedGames"]:
+                    print(f"[fetch_standings] Inconsistente data voor {rij['team']['name']}: "
+                          f"winst({rij['won']}) + gelijk({rij['draw']}) + verlies({rij['lost']}) = {verwacht}, "
+                          f"maar gespeeld={rij['playedGames']} -- hele standenlijst afgewezen.")
+                    return []
+
             return [
                 {
                     "positie": rij["position"],
