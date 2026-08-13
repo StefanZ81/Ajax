@@ -1,41 +1,50 @@
 """
 mail.py
 ------------------------------------------------------------------
-Verstuurt transactionele e-mail (op dit moment: wachtwoord-reset-links)
-via Resend (resend.com).
+Verstuurt transactionele e-mail (wachtwoord-reset-links) via Gmail SMTP
+-- hetzelfde adres en dezelfde methode als scripts/reminder_sync.py
+gebruikt voor de wedstrijdaankondigingen.
 
-LET OP — werkt niet op het gratis PythonAnywhere-plan: api.resend.com
-staat niet op de gratis outbound-whitelist. send_email() faalt dan met
-een verbindingsfout; de aanroepende code vangt dat af (zie app.py) zodat
-de gebruiker nooit een harde foutmelding krijgt — maar de e-mail komt
-dus niet aan totdat je account naar een betaald plan gaat (zie
-DEPLOY_GRATIS_PLAN.md, stap 7).
+In tegenstelling tot de eerder gebruikte Resend-aanpak werkt dit WEL op
+het gratis PythonAnywhere-plan: PythonAnywhere staat voor gratis
+accounts geen willekeurige SMTP-servers toe, maar maakt daar specifiek
+een uitzondering voor smtp.gmail.com (bevestigd door PythonAnywhere
+zelf, zie hun forum/documentatie).
 
-Vereist (op een betaald plan): env vars RESEND_API_KEY, EMAIL_FROM
+Vereist: dezelfde env vars als de GitHub Actions-workflow al gebruikt --
+GMAIL_ADRES, GMAIL_APP_WACHTWOORD -- maar dan ALS WSGI-omgevingsvariabele
+op PythonAnywhere zelf (naast de bestaande GitHub Actions-secrets, dit
+zijn twee aparte plekken waar dezelfde twee waarden moeten staan).
 ------------------------------------------------------------------
 """
 
 from __future__ import annotations
 
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
-import requests
-
-RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
-EMAIL_FROM = os.environ.get("EMAIL_FROM", "J-Poule <poule@jpoule.nl>")
+GMAIL_ADRES = os.environ.get("GMAIL_ADRES", "")
+GMAIL_APP_WACHTWOORD = os.environ.get("GMAIL_APP_WACHTWOORD", "")
 
 
 def send_email(to: str, subject: str, html: str) -> None:
-    if not RESEND_API_KEY:
-        raise RuntimeError("RESEND_API_KEY is niet ingesteld — e-mail kan niet verstuurd worden.")
-    res = requests.post(
-        "https://api.resend.com/emails",
-        headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"},
-        json={"from": EMAIL_FROM, "to": to, "subject": subject, "html": html},
-        timeout=10,
-    )
-    if not res.ok:
-        raise RuntimeError(f"Versturen e-mail mislukt ({res.status_code}): {res.text}")
+    if not GMAIL_ADRES or not GMAIL_APP_WACHTWOORD:
+        raise RuntimeError(
+            "GMAIL_ADRES/GMAIL_APP_WACHTWOORD zijn niet ingesteld — e-mail kan niet verstuurd worden."
+        )
+
+    bericht = MIMEMultipart("alternative")
+    bericht["Subject"] = subject
+    bericht["From"] = f"J-Poule <{GMAIL_ADRES}>"
+    bericht["To"] = to
+    bericht.attach(MIMEText(html, "html"))
+
+    with smtplib.SMTP("smtp.gmail.com", 587, timeout=15) as server:
+        server.starttls()
+        server.login(GMAIL_ADRES, GMAIL_APP_WACHTWOORD)
+        server.sendmail(GMAIL_ADRES, to, bericht.as_string())
 
 
 def wachtwoord_reset_email(naam: str, reset_link: str) -> tuple[str, str]:
