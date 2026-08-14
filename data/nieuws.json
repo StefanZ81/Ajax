@@ -1,6 +1,11 @@
 {
-  "bijgewerkt_op": "2026-08-14T16:34:11.614266+00:00",
+  "bijgewerkt_op": "2026-08-14T17:39:42.408637+00:00",
   "artikelen": [
+    {
+      "titel": "Het Parool signaleert probleem: 'Ajax doet verwoede pogingen om hem te lozen'",
+      "link": "https://www.voetbalprimeur.nl/nieuws/2123254/het-lukt-ajax-maar-niet-om-owen-wijndal-te-lozen-schrijft-het-parool.html",
+      "gepubliceerd_op": "2026-08-14T16:38:05+00:00"
+    },
     {
       "titel": "Mogelijke uitbreiding van ArenA besproken: 'Als vraag naar kaartjes hoog wordt...'",
       "link": "https://www.voetbalprimeur.nl/nieuws/2123235/update-over-mogelijke-uitbreiding-van-johan-cruijff-arena.html",
@@ -20,11 +25,6 @@
       "titel": "SPORT: 'volgende Ajax-aanwinst reist binnen enkele uren af naar Amsterdam'",
       "link": "https://www.voetbalprimeur.nl/nieuws/2123208/ajax-heeft-joffre-torrents-binnen.html",
       "gepubliceerd_op": "2026-08-14T14:46:00+00:00"
-    },
-    {
-      "titel": "Verweij heeft Ajax-transfernieuws: 'Jordi Cruijff kijkt ook naar alternatieven'",
-      "link": "https://www.voetbalprimeur.nl/nieuws/2123171/ajax-ziet-noa-lang-als-optie-voor-transfer-door-vertrek-mika-godts.html",
-      "gepubliceerd_op": "2026-08-14T13:43:00+00:00"
     }
   ]
 }
