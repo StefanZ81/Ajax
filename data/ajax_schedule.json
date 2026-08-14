@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-14T17:30:33.582726+00:00",
+  "bijgewerkt_op": "2026-08-14T19:32:40.800365+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -464,12 +464,12 @@
     },
     {
       "positie": 5,
-      "team": "Telstar 1963",
+      "team": "Sparta Rotterdam",
       "punten": 3,
-      "gespeeld": 1,
+      "gespeeld": 2,
       "winst": 1,
       "gelijk": 0,
-      "verlies": 0
+      "verlies": 1
     },
     {
       "positie": 7,
@@ -491,6 +491,15 @@
     },
     {
       "positie": 9,
+      "team": "Telstar 1963",
+      "punten": 3,
+      "gespeeld": 2,
+      "winst": 1,
+      "gelijk": 0,
+      "verlies": 1
+    },
+    {
+      "positie": 10,
       "team": "Fortuna Sittard",
       "punten": 1,
       "gespeeld": 1,
@@ -499,7 +508,7 @@
       "verlies": 0
     },
     {
-      "positie": 9,
+      "positie": 10,
       "team": "PSV",
       "punten": 1,
       "gespeeld": 1,
@@ -508,7 +517,7 @@
       "verlies": 0
     },
     {
-      "positie": 11,
+      "positie": 12,
       "team": "FC Utrecht",
       "punten": 0,
       "gespeeld": 1,
@@ -517,7 +526,7 @@
       "verlies": 1
     },
     {
-      "positie": 11,
+      "positie": 12,
       "team": "NEC",
       "punten": 0,
       "gespeeld": 1,
@@ -526,17 +535,8 @@
       "verlies": 1
     },
     {
-      "positie": 13,
+      "positie": 14,
       "team": "FC Twente '65",
-      "punten": 0,
-      "gespeeld": 1,
-      "winst": 0,
-      "gelijk": 0,
-      "verlies": 1
-    },
-    {
-      "positie": 13,
-      "team": "Sparta Rotterdam",
       "punten": 0,
       "gespeeld": 1,
       "winst": 0,
@@ -580,5 +580,5 @@
       "verlies": 1
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-14T17:30:33.582716+00:00"
+  "stand_bijgewerkt_op": "2026-08-14T19:32:40.800354+00:00"
 }
