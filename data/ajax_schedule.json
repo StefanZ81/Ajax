@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-15T13:39:30.218076+00:00",
+  "bijgewerkt_op": "2026-08-15T15:51:33.245845+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -455,6 +455,15 @@
     },
     {
       "positie": 5,
+      "team": "NEC",
+      "punten": 3,
+      "gespeeld": 2,
+      "winst": 1,
+      "gelijk": 0,
+      "verlies": 1
+    },
+    {
+      "positie": 5,
       "team": "Sparta Rotterdam",
       "punten": 3,
       "gespeeld": 2,
@@ -463,7 +472,7 @@
       "verlies": 1
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "FC Groningen",
       "punten": 3,
       "gespeeld": 1,
@@ -472,7 +481,7 @@
       "verlies": 0
     },
     {
-      "positie": 7,
+      "positie": 8,
       "team": "Feyenoord Rotterdam",
       "punten": 3,
       "gespeeld": 1,
@@ -481,7 +490,7 @@
       "verlies": 0
     },
     {
-      "positie": 7,
+      "positie": 8,
       "team": "SC Heerenveen",
       "punten": 3,
       "gespeeld": 1,
@@ -490,7 +499,7 @@
       "verlies": 0
     },
     {
-      "positie": 9,
+      "positie": 10,
       "team": "Telstar 1963",
       "punten": 3,
       "gespeeld": 2,
@@ -499,7 +508,7 @@
       "verlies": 1
     },
     {
-      "positie": 10,
+      "positie": 11,
       "team": "Fortuna Sittard",
       "punten": 1,
       "gespeeld": 1,
@@ -508,7 +517,7 @@
       "verlies": 0
     },
     {
-      "positie": 10,
+      "positie": 11,
       "team": "PSV",
       "punten": 1,
       "gespeeld": 1,
@@ -517,17 +526,8 @@
       "verlies": 0
     },
     {
-      "positie": 12,
+      "positie": 13,
       "team": "FC Utrecht",
-      "punten": 0,
-      "gespeeld": 1,
-      "winst": 0,
-      "gelijk": 0,
-      "verlies": 1
-    },
-    {
-      "positie": 12,
-      "team": "NEC",
       "punten": 0,
       "gespeeld": 1,
       "winst": 0,
@@ -563,7 +563,7 @@
     },
     {
       "positie": 17,
-      "team": "Willem II Tilburg",
+      "team": "SC Cambuur-Leeuwarden",
       "punten": 0,
       "gespeeld": 1,
       "winst": 0,
@@ -572,13 +572,13 @@
     },
     {
       "positie": 18,
-      "team": "SC Cambuur-Leeuwarden",
+      "team": "Willem II Tilburg",
       "punten": 0,
-      "gespeeld": 1,
+      "gespeeld": 2,
       "winst": 0,
       "gelijk": 0,
-      "verlies": 1
+      "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-15T13:39:30.218067+00:00"
+  "stand_bijgewerkt_op": "2026-08-15T15:51:33.245832+00:00"
 }
