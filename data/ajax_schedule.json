@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-15T15:51:33.245845+00:00",
+  "bijgewerkt_op": "2026-08-15T17:56:13.510599+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -419,6 +419,15 @@
   "stand": [
     {
       "positie": 1,
+      "team": "AZ",
+      "punten": 6,
+      "gespeeld": 2,
+      "winst": 2,
+      "gelijk": 0,
+      "verlies": 0
+    },
+    {
+      "positie": 2,
       "team": "SBV Excelsior",
       "punten": 3,
       "gespeeld": 1,
@@ -427,7 +436,7 @@
       "verlies": 0
     },
     {
-      "positie": 2,
+      "positie": 3,
       "team": "Go Ahead Eagles",
       "punten": 3,
       "gespeeld": 1,
@@ -436,25 +445,7 @@
       "verlies": 0
     },
     {
-      "positie": 3,
-      "team": "AFC Ajax",
-      "punten": 3,
-      "gespeeld": 1,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 0
-    },
-    {
-      "positie": 3,
-      "team": "AZ",
-      "punten": 3,
-      "gespeeld": 1,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 0
-    },
-    {
-      "positie": 5,
+      "positie": 4,
       "team": "NEC",
       "punten": 3,
       "gespeeld": 2,
@@ -464,6 +455,15 @@
     },
     {
       "positie": 5,
+      "team": "AFC Ajax",
+      "punten": 3,
+      "gespeeld": 1,
+      "winst": 1,
+      "gelijk": 0,
+      "verlies": 0
+    },
+    {
+      "positie": 6,
       "team": "Sparta Rotterdam",
       "punten": 3,
       "gespeeld": 2,
@@ -527,7 +527,7 @@
     },
     {
       "positie": 13,
-      "team": "FC Utrecht",
+      "team": "FC Twente '65",
       "punten": 0,
       "gespeeld": 1,
       "winst": 0,
@@ -536,12 +536,12 @@
     },
     {
       "positie": 14,
-      "team": "FC Twente '65",
+      "team": "FC Utrecht",
       "punten": 0,
-      "gespeeld": 1,
+      "gespeeld": 2,
       "winst": 0,
       "gelijk": 0,
-      "verlies": 1
+      "verlies": 2
     },
     {
       "positie": 15,
@@ -580,5 +580,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-15T15:51:33.245832+00:00"
+  "stand_bijgewerkt_op": "2026-08-15T17:56:13.510588+00:00"
 }
