@@ -1,6 +1,11 @@
 {
-  "bijgewerkt_op": "2026-08-15T17:00:57.351392+00:00",
+  "bijgewerkt_op": "2026-08-15T17:35:33.216929+00:00",
   "artikelen": [
+    {
+      "titel": "'Ajax staat optie tot koop toe in afgeronde onderhandelingen in België'",
+      "link": "https://www.voetbalprimeur.nl/nieuws/2123557/ajax-staat-optie-tot-koop-toe-voor-konadu.html",
+      "gepubliceerd_op": "2026-08-15T17:20:00+00:00"
+    },
     {
       "titel": "Nog meer Ajax-transfernieuws: 'Amsterdammers nemen verdediger over van Barça'",
       "link": "https://www.voetbalprimeur.nl/nieuws/2123494/barca-talent-naar-ajax-en-kan-bijna-zes-miljoen-kosten.html",
@@ -9,7 +14,7 @@
     {
       "titel": "'Ajax-spits maakt zich op voor vertrek en gaat op huurbasis naar Belgische Lommel'",
       "link": "https://www.voetbalprimeur.nl/nieuws/2123489/ajax-spits-konadu-vertrekt-op-huurbasis-naar-lommel.html",
-      "gepubliceerd_op": "2026-08-15T13:43:00+00:00"
+      "gepubliceerd_op": "2026-08-15T17:10:40+00:00"
     },
     {
       "titel": "Driessen ziet groot probleem bij Ajax: 'Dan wordt het heel moeilijk'",
@@ -20,11 +25,6 @@
       "titel": "'Ajax en NEC vinden elkaar uiteindelijk alsnog: transfer gaat tóch door'",
       "link": "https://www.voetbalprimeur.nl/nieuws/2123466/ahmetcan-kaplan-maakt-definitieve-transfer-van-ajax-naar-nec.html",
       "gepubliceerd_op": "2026-08-15T13:18:59+00:00"
-    },
-    {
-      "titel": "'Benfica kijkt verder dan Flamingo en Sutalo: bod van twintig miljoen afgewezen'",
-      "link": "https://www.voetbalprimeur.nl/nieuws/2123456/benfica-richt-pijlen-op-taylor-harwood-bellis-van-southampton.html",
-      "gepubliceerd_op": "2026-08-15T11:46:00+00:00"
     }
   ]
 }
