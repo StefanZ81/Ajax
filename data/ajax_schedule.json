@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-15T20:18:35.761095+00:00",
+  "bijgewerkt_op": "2026-08-15T22:22:54.263351+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -436,7 +436,7 @@
       "verlies": 0
     },
     {
-      "positie": 2,
+      "positie": 3,
       "team": "PSV",
       "punten": 4,
       "gespeeld": 2,
@@ -563,7 +563,7 @@
     },
     {
       "positie": 17,
-      "team": "SC Cambuur-Leeuwarden",
+      "team": "Willem II Tilburg",
       "punten": 0,
       "gespeeld": 2,
       "winst": 0,
@@ -572,7 +572,7 @@
     },
     {
       "positie": 18,
-      "team": "Willem II Tilburg",
+      "team": "SC Cambuur-Leeuwarden",
       "punten": 0,
       "gespeeld": 2,
       "winst": 0,
@@ -580,5 +580,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-15T20:18:35.761086+00:00"
+  "stand_bijgewerkt_op": "2026-08-15T22:22:54.263339+00:00"
 }
