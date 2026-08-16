@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-16T09:11:23.734532+00:00",
+  "bijgewerkt_op": "2026-08-16T11:29:56.043612+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -428,6 +428,15 @@
     },
     {
       "positie": 2,
+      "team": "FC Groningen",
+      "punten": 6,
+      "gespeeld": 2,
+      "winst": 2,
+      "gelijk": 0,
+      "verlies": 0
+    },
+    {
+      "positie": 3,
       "team": "Fortuna Sittard",
       "punten": 4,
       "gespeeld": 2,
@@ -436,7 +445,7 @@
       "verlies": 0
     },
     {
-      "positie": 3,
+      "positie": 4,
       "team": "PSV",
       "punten": 4,
       "gespeeld": 2,
@@ -445,7 +454,7 @@
       "verlies": 0
     },
     {
-      "positie": 4,
+      "positie": 5,
       "team": "SBV Excelsior",
       "punten": 3,
       "gespeeld": 2,
@@ -454,7 +463,7 @@
       "verlies": 1
     },
     {
-      "positie": 5,
+      "positie": 6,
       "team": "Go Ahead Eagles",
       "punten": 3,
       "gespeeld": 1,
@@ -463,7 +472,7 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "NEC",
       "punten": 3,
       "gespeeld": 2,
@@ -472,7 +481,7 @@
       "verlies": 1
     },
     {
-      "positie": 7,
+      "positie": 8,
       "team": "AFC Ajax",
       "punten": 3,
       "gespeeld": 1,
@@ -481,22 +490,13 @@
       "verlies": 0
     },
     {
-      "positie": 8,
+      "positie": 9,
       "team": "Sparta Rotterdam",
       "punten": 3,
       "gespeeld": 2,
       "winst": 1,
       "gelijk": 0,
       "verlies": 1
-    },
-    {
-      "positie": 9,
-      "team": "FC Groningen",
-      "punten": 3,
-      "gespeeld": 1,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 0
     },
     {
       "positie": 10,
@@ -536,15 +536,6 @@
     },
     {
       "positie": 14,
-      "team": "ADO Den Haag",
-      "punten": 0,
-      "gespeeld": 1,
-      "winst": 0,
-      "gelijk": 0,
-      "verlies": 1
-    },
-    {
-      "positie": 14,
       "team": "PEC Zwolle",
       "punten": 0,
       "gespeeld": 1,
@@ -553,8 +544,17 @@
       "verlies": 1
     },
     {
-      "positie": 16,
+      "positie": 15,
       "team": "FC Utrecht",
+      "punten": 0,
+      "gespeeld": 2,
+      "winst": 0,
+      "gelijk": 0,
+      "verlies": 2
+    },
+    {
+      "positie": 16,
+      "team": "ADO Den Haag",
       "punten": 0,
       "gespeeld": 2,
       "winst": 0,
@@ -580,5 +580,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-16T09:11:23.734523+00:00"
+  "stand_bijgewerkt_op": "2026-08-16T11:29:56.043604+00:00"
 }
