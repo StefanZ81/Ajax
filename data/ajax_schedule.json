@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-16T16:29:36.987622+00:00",
+  "bijgewerkt_op": "2026-08-16T16:54:55.804507+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -27,14 +27,14 @@
       "thuis": "AFC Ajax",
       "uit": "SC Heerenveen",
       "kickoff": "2026-08-16T14:45:00+00:00",
-      "status": "live",
+      "status": "afgelopen",
       "rust": {
         "thuis": 2,
         "uit": 1
       },
       "eind": {
         "thuis": 2,
-        "uit": 1
+        "uit": 2
       }
     },
     {
@@ -443,11 +443,11 @@
     },
     {
       "positie": 3,
-      "team": "Feyenoord Rotterdam",
-      "punten": 6,
+      "team": "Go Ahead Eagles",
+      "punten": 4,
       "gespeeld": 2,
-      "winst": 2,
-      "gelijk": 0,
+      "winst": 1,
+      "gelijk": 1,
       "verlies": 0
     },
     {
@@ -461,7 +461,7 @@
     },
     {
       "positie": 5,
-      "team": "PSV",
+      "team": "AFC Ajax",
       "punten": 4,
       "gespeeld": 2,
       "winst": 1,
@@ -470,6 +470,33 @@
     },
     {
       "positie": 6,
+      "team": "PSV",
+      "punten": 4,
+      "gespeeld": 2,
+      "winst": 1,
+      "gelijk": 1,
+      "verlies": 0
+    },
+    {
+      "positie": 7,
+      "team": "Feyenoord Rotterdam",
+      "punten": 4,
+      "gespeeld": 2,
+      "winst": 1,
+      "gelijk": 1,
+      "verlies": 0
+    },
+    {
+      "positie": 7,
+      "team": "SC Heerenveen",
+      "punten": 4,
+      "gespeeld": 2,
+      "winst": 1,
+      "gelijk": 1,
+      "verlies": 0
+    },
+    {
+      "positie": 9,
       "team": "SBV Excelsior",
       "punten": 3,
       "gespeeld": 2,
@@ -478,7 +505,7 @@
       "verlies": 1
     },
     {
-      "positie": 7,
+      "positie": 10,
       "team": "NEC",
       "punten": 3,
       "gespeeld": 2,
@@ -487,26 +514,8 @@
       "verlies": 1
     },
     {
-      "positie": 8,
-      "team": "AFC Ajax",
-      "punten": 3,
-      "gespeeld": 1,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 0
-    },
-    {
-      "positie": 9,
-      "team": "Go Ahead Eagles",
-      "punten": 3,
-      "gespeeld": 2,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 1
-    },
-    {
-      "positie": 10,
-      "team": "Sparta Rotterdam",
+      "positie": 11,
+      "team": "FC Twente '65",
       "punten": 3,
       "gespeeld": 2,
       "winst": 1,
@@ -515,16 +524,7 @@
     },
     {
       "positie": 11,
-      "team": "SC Heerenveen",
-      "punten": 3,
-      "gespeeld": 1,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 0
-    },
-    {
-      "positie": 12,
-      "team": "Telstar 1963",
+      "team": "Sparta Rotterdam",
       "punten": 3,
       "gespeeld": 2,
       "winst": 1,
@@ -533,25 +533,25 @@
     },
     {
       "positie": 13,
-      "team": "FC Twente '65",
-      "punten": 1,
+      "team": "Telstar 1963",
+      "punten": 3,
       "gespeeld": 2,
-      "winst": 0,
-      "gelijk": 1,
+      "winst": 1,
+      "gelijk": 0,
       "verlies": 1
     },
     {
       "positie": 14,
-      "team": "PEC Zwolle",
-      "punten": 1,
+      "team": "FC Utrecht",
+      "punten": 0,
       "gespeeld": 2,
       "winst": 0,
-      "gelijk": 1,
-      "verlies": 1
+      "gelijk": 0,
+      "verlies": 2
     },
     {
       "positie": 15,
-      "team": "FC Utrecht",
+      "team": "PEC Zwolle",
       "punten": 0,
       "gespeeld": 2,
       "winst": 0,
@@ -586,5 +586,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-16T13:48:45.778480+00:00"
+  "stand_bijgewerkt_op": "2026-08-16T16:54:55.804494+00:00"
 }
