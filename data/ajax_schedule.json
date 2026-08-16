@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-16T11:29:56.043612+00:00",
+  "bijgewerkt_op": "2026-08-16T13:48:45.778489+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -437,6 +437,15 @@
     },
     {
       "positie": 3,
+      "team": "Feyenoord Rotterdam",
+      "punten": 6,
+      "gespeeld": 2,
+      "winst": 2,
+      "gelijk": 0,
+      "verlies": 0
+    },
+    {
+      "positie": 4,
       "team": "Fortuna Sittard",
       "punten": 4,
       "gespeeld": 2,
@@ -445,7 +454,7 @@
       "verlies": 0
     },
     {
-      "positie": 4,
+      "positie": 5,
       "team": "PSV",
       "punten": 4,
       "gespeeld": 2,
@@ -454,22 +463,13 @@
       "verlies": 0
     },
     {
-      "positie": 5,
+      "positie": 6,
       "team": "SBV Excelsior",
       "punten": 3,
       "gespeeld": 2,
       "winst": 1,
       "gelijk": 0,
       "verlies": 1
-    },
-    {
-      "positie": 6,
-      "team": "Go Ahead Eagles",
-      "punten": 3,
-      "gespeeld": 1,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 0
     },
     {
       "positie": 7,
@@ -491,7 +491,7 @@
     },
     {
       "positie": 9,
-      "team": "Sparta Rotterdam",
+      "team": "Go Ahead Eagles",
       "punten": 3,
       "gespeeld": 2,
       "winst": 1,
@@ -500,15 +500,15 @@
     },
     {
       "positie": 10,
-      "team": "Feyenoord Rotterdam",
+      "team": "Sparta Rotterdam",
       "punten": 3,
-      "gespeeld": 1,
+      "gespeeld": 2,
       "winst": 1,
       "gelijk": 0,
-      "verlies": 0
+      "verlies": 1
     },
     {
-      "positie": 10,
+      "positie": 11,
       "team": "SC Heerenveen",
       "punten": 3,
       "gespeeld": 1,
@@ -528,19 +528,19 @@
     {
       "positie": 13,
       "team": "FC Twente '65",
-      "punten": 0,
-      "gespeeld": 1,
+      "punten": 1,
+      "gespeeld": 2,
       "winst": 0,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 1
     },
     {
       "positie": 14,
       "team": "PEC Zwolle",
-      "punten": 0,
-      "gespeeld": 1,
+      "punten": 1,
+      "gespeeld": 2,
       "winst": 0,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 1
     },
     {
@@ -580,5 +580,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-16T11:29:56.043604+00:00"
+  "stand_bijgewerkt_op": "2026-08-16T13:48:45.778480+00:00"
 }
