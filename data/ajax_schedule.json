@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-16T15:01:43.193224+00:00",
+  "bijgewerkt_op": "2026-08-16T15:32:36.080371+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -30,7 +30,7 @@
       "status": "gepland",
       "rust": null,
       "eind": {
-        "thuis": 1,
+        "thuis": 2,
         "uit": 0
       }
     },
