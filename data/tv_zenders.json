@@ -1,17 +1,24 @@
 {
   "wedstrijden": [
     {
-      "dag": 16,
+      "dag": 20,
       "maand": 8,
-      "tegenstander": "SC Heerenveen",
+      "tegenstander": "Sion",
       "zenders": [
         {
-          "naam": "ESPN Extra",
-          "logo": "https://sport-tv-gids.nl/sportzender/espn-extra-live-op-tv-zender-nederland.png"
-        },
+          "naam": "Ziggo Sport",
+          "logo": "https://sport-tv-gids.nl/sportzender/ziggo-voetbal-live-op-tv-zender-nederland.png"
+        }
+      ]
+    },
+    {
+      "dag": 27,
+      "maand": 8,
+      "tegenstander": "Sion",
+      "zenders": [
         {
-          "naam": "ESPN 2",
-          "logo": "https://sport-tv-gids.nl/sportzender/espn-2-live-op-tv-zender-nederland.png"
+          "naam": "Ziggo Sport",
+          "logo": "https://sport-tv-gids.nl/sportzender/ziggo-voetbal-live-op-tv-zender-nederland.png"
         }
       ]
     }
