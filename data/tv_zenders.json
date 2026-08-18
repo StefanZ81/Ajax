@@ -1,17 +1,6 @@
 {
   "wedstrijden": [
     {
-      "dag": 20,
-      "maand": 8,
-      "tegenstander": "Sion",
-      "zenders": [
-        {
-          "naam": "Ziggo Sport",
-          "logo": "https://sport-tv-gids.nl/sportzender/ziggo-voetbal-live-op-tv-zender-nederland.png"
-        }
-      ]
-    },
-    {
       "dag": 27,
       "maand": 8,
       "tegenstander": "Sion",
