@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-22T13:13:17.295257+00:00",
+  "bijgewerkt_op": "2026-08-22T15:30:43.528631+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -426,10 +426,10 @@
     {
       "positie": 1,
       "team": "AZ",
-      "punten": 6,
-      "gespeeld": 2,
+      "punten": 7,
+      "gespeeld": 3,
       "winst": 2,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 0
     },
     {
@@ -443,16 +443,16 @@
     },
     {
       "positie": 3,
-      "team": "Go Ahead Eagles",
-      "punten": 4,
-      "gespeeld": 2,
+      "team": "Fortuna Sittard",
+      "punten": 5,
+      "gespeeld": 3,
       "winst": 1,
-      "gelijk": 1,
+      "gelijk": 2,
       "verlies": 0
     },
     {
       "positie": 4,
-      "team": "Fortuna Sittard",
+      "team": "Go Ahead Eagles",
       "punten": 4,
       "gespeeld": 2,
       "winst": 1,
@@ -586,5 +586,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-22T13:13:17.295246+00:00"
+  "stand_bijgewerkt_op": "2026-08-22T15:30:43.528620+00:00"
 }
