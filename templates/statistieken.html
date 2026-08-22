@@ -26,6 +26,12 @@
 
 {% if stats.toon_sectie_2 %}
 <div class="card accent">
+  <div class="rij"><span style="font-size:12px;">Aantal punten in de Eredivisie</span><span class="regelpunten">{{ stats.punten_eredivisie }}</span></div>
+  <div class="rij"><span style="font-size:12px;">Aantal punten in de Conference League</span><span class="regelpunten">{{ stats.punten_conference_league }}</span></div>
+  <div class="rij"><span style="font-size:12px;">Aantal punten in de KNVB Beker</span><span class="regelpunten">{{ stats.punten_knvb_beker }}</span></div>
+</div>
+
+<div class="card accent">
   <div class="rij"><span style="font-size:12px;">Hoogste positie in de poule</span><span class="regelpunten">{{ stats.hoogste_positie }}</span></div>
   <div class="rij"><span style="font-size:12px;">Laagste positie in de poule</span><span class="regelpunten">{{ stats.laagste_positie }}</span></div>
 </div>
