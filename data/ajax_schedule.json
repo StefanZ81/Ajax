@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-22T15:30:43.528631+00:00",
+  "bijgewerkt_op": "2026-08-22T17:40:52.152408+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -426,10 +426,10 @@
     {
       "positie": 1,
       "team": "AZ",
-      "punten": 7,
+      "punten": 9,
       "gespeeld": 3,
-      "winst": 2,
-      "gelijk": 1,
+      "winst": 3,
+      "gelijk": 0,
       "verlies": 0
     },
     {
@@ -443,15 +443,6 @@
     },
     {
       "positie": 3,
-      "team": "Fortuna Sittard",
-      "punten": 5,
-      "gespeeld": 3,
-      "winst": 1,
-      "gelijk": 2,
-      "verlies": 0
-    },
-    {
-      "positie": 4,
       "team": "Go Ahead Eagles",
       "punten": 4,
       "gespeeld": 2,
@@ -460,7 +451,7 @@
       "verlies": 0
     },
     {
-      "positie": 5,
+      "positie": 4,
       "team": "AFC Ajax",
       "punten": 4,
       "gespeeld": 2,
@@ -469,13 +460,22 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 5,
       "team": "PSV",
       "punten": 4,
       "gespeeld": 2,
       "winst": 1,
       "gelijk": 1,
       "verlies": 0
+    },
+    {
+      "positie": 5,
+      "team": "Sparta Rotterdam",
+      "punten": 4,
+      "gespeeld": 3,
+      "winst": 1,
+      "gelijk": 1,
+      "verlies": 1
     },
     {
       "positie": 7,
@@ -497,6 +497,15 @@
     },
     {
       "positie": 9,
+      "team": "Fortuna Sittard",
+      "punten": 4,
+      "gespeeld": 3,
+      "winst": 1,
+      "gelijk": 1,
+      "verlies": 1
+    },
+    {
+      "positie": 10,
       "team": "SBV Excelsior",
       "punten": 3,
       "gespeeld": 2,
@@ -505,7 +514,7 @@
       "verlies": 1
     },
     {
-      "positie": 10,
+      "positie": 11,
       "team": "NEC",
       "punten": 3,
       "gespeeld": 2,
@@ -514,17 +523,8 @@
       "verlies": 1
     },
     {
-      "positie": 11,
+      "positie": 12,
       "team": "FC Twente '65",
-      "punten": 3,
-      "gespeeld": 2,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 1
-    },
-    {
-      "positie": 11,
-      "team": "Sparta Rotterdam",
       "punten": 3,
       "gespeeld": 2,
       "winst": 1,
@@ -543,10 +543,10 @@
     {
       "positie": 14,
       "team": "FC Utrecht",
-      "punten": 0,
-      "gespeeld": 2,
+      "punten": 1,
+      "gespeeld": 3,
       "winst": 0,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 2
     },
     {
@@ -586,5 +586,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-22T15:30:43.528620+00:00"
+  "stand_bijgewerkt_op": "2026-08-22T17:40:52.152398+00:00"
 }
