@@ -497,6 +497,45 @@ def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
 
     # ---------------- Sectie 2 ----------------
     alle_deelnemer_ids = [r["participant_id"] for r in klassement]
+
+    # Puntenverloop: cumulatief per gespeelde+voorspelde wedstrijd, jouw eigen
+    # lijn tegenover het poule-gemiddelde (alle goedgekeurde deelnemers, een
+    # gemiste voorspelling telt daarbij als 0 punten voor die wedstrijd).
+    match_ids = [m["id"] for m in gespeelde_met_voorspelling]
+    gemiddelden_per_match: dict[int, float] = {}
+    if match_ids:
+        placeholders = ",".join("?" * len(match_ids))
+        with get_connection() as conn:
+            gemiddelden_per_match = {
+                r["match_id"]: r["gem"]
+                for r in conn.execute(
+                    f"""
+                    SELECT m.id AS match_id, AVG(COALESCE(pr.punten, 0)) AS gem
+                    FROM participants p
+                    CROSS JOIN (SELECT id FROM matches WHERE id IN ({placeholders})) m
+                    LEFT JOIN predictions pr ON pr.participant_id = p.id AND pr.match_id = m.id
+                    WHERE p.status = 'goedgekeurd'
+                    GROUP BY m.id
+                    """,
+                    match_ids,
+                ).fetchall()
+            }
+
+    jouw_cumulatief: list[int] = []
+    gemiddeld_cumulatief: list[float] = []
+    lopend_jouw = lopend_gem = 0.0
+    for m in gespeelde_met_voorspelling:
+        lopend_jouw += eigen_voorspellingen[m["id"]]["punten"] or 0
+        lopend_gem += gemiddelden_per_match.get(m["id"], 0)
+        jouw_cumulatief.append(round(lopend_jouw))
+        gemiddeld_cumulatief.append(round(lopend_gem, 1))
+
+    resultaat["puntenverloop"] = {
+        "labels": [f"W{i + 1}" for i in range(len(gespeelde_met_voorspelling))],
+        "jouw_punten": jouw_cumulatief,
+        "gemiddeld": gemiddeld_cumulatief,
+    }
+
     resultaat["hoogste_positie"], resultaat["laagste_positie"] = _positie_hoogste_laagste(
         participant_id, gespeeld, alle_deelnemer_ids
     )
