@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-22T17:40:52.152408+00:00",
+  "bijgewerkt_op": "2026-08-22T19:56:54.910511+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -443,6 +443,15 @@
     },
     {
       "positie": 3,
+      "team": "SC Heerenveen",
+      "punten": 5,
+      "gespeeld": 3,
+      "winst": 1,
+      "gelijk": 2,
+      "verlies": 0
+    },
+    {
+      "positie": 4,
       "team": "Go Ahead Eagles",
       "punten": 4,
       "gespeeld": 2,
@@ -451,7 +460,7 @@
       "verlies": 0
     },
     {
-      "positie": 4,
+      "positie": 5,
       "team": "AFC Ajax",
       "punten": 4,
       "gespeeld": 2,
@@ -460,16 +469,7 @@
       "verlies": 0
     },
     {
-      "positie": 5,
-      "team": "PSV",
-      "punten": 4,
-      "gespeeld": 2,
-      "winst": 1,
-      "gelijk": 1,
-      "verlies": 0
-    },
-    {
-      "positie": 5,
+      "positie": 6,
       "team": "Sparta Rotterdam",
       "punten": 4,
       "gespeeld": 3,
@@ -479,7 +479,7 @@
     },
     {
       "positie": 7,
-      "team": "Feyenoord Rotterdam",
+      "team": "PSV",
       "punten": 4,
       "gespeeld": 2,
       "winst": 1,
@@ -487,8 +487,8 @@
       "verlies": 0
     },
     {
-      "positie": 7,
-      "team": "SC Heerenveen",
+      "positie": 8,
+      "team": "Feyenoord Rotterdam",
       "punten": 4,
       "gespeeld": 2,
       "winst": 1,
@@ -552,10 +552,10 @@
     {
       "positie": 15,
       "team": "PEC Zwolle",
-      "punten": 0,
-      "gespeeld": 2,
+      "punten": 1,
+      "gespeeld": 3,
       "winst": 0,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 2
     },
     {
@@ -586,5 +586,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-22T17:40:52.152398+00:00"
+  "stand_bijgewerkt_op": "2026-08-22T19:56:54.910499+00:00"
 }
