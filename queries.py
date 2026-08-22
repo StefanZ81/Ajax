@@ -514,11 +514,13 @@ def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
     top_wedstrijden = top_juist = 0
     links_wedstrijden = links_juist = 0
     rechts_wedstrijden = rechts_juist = 0
+    punten_per_competitie: dict[str, int] = {}
     beste = None  # (punten, wedstrijd)
     slechtste = None  # (afwijking, wedstrijd)
 
     for m in gespeelde_met_voorspelling:
         v = eigen_voorspellingen[m["id"]]
+        punten_per_competitie[m["competitie"]] = punten_per_competitie.get(m["competitie"], 0) + (v["punten"] or 0)
         werkelijke_uitkomst = _uitkomst(m["uitslag_eind_thuis"], m["uitslag_eind_uit"])
         voorspelde_uitkomst = _uitkomst(v["eind_thuis"], v["eind_uit"])
         if werkelijke_uitkomst == voorspelde_uitkomst:
@@ -560,6 +562,9 @@ def get_mijn_statistieken(participant_id: str, seizoen: str) -> dict:
         return round(100 * teller / noemer, 1) if noemer else None
 
     resultaat.update({
+        "punten_eredivisie": punten_per_competitie.get("Eredivisie", 0),
+        "punten_conference_league": punten_per_competitie.get("Conference League", 0),
+        "punten_knvb_beker": punten_per_competitie.get("KNVB Beker", 0),
         "pct_winnaar_juist": _pct(aantal_winnaar_juist, n),
         "pct_eindstand_juist": _pct(aantal_eind_juist, n),
         "pct_ruststand_juist": _pct(aantal_rust_juist, n),
