@@ -46,6 +46,19 @@ _DATUM_PATROON = re.compile(
     r"(\d{1,2})\.\s*(" + "|".join(_MAANDEN.keys()) + r")", re.IGNORECASE
 )
 
+# sport-tv-gids.nl gebruikt op sommige plekken nog een verouderde zendernaam
+# die niet meer overeenkomt met de huidige indeling. Handmatig bevestigde
+# correcties (naam + logo), toegepast ná het scrapen, vóórdat de data wordt
+# opgeslagen. "Ziggo Voetbal" was de oude naam van het huidige "Ziggo Sport 2",
+# maar de bron koppelt dat label nog aan uitzendingen die in werkelijkheid op
+# "Ziggo Sport 1" te zien zijn -- vandaar deze correctie op naam én logo.
+_ZENDER_CORRECTIES = {
+    "Ziggo Voetbal": {
+        "naam": "Ziggo Sport 1",
+        "logo": "https://sport-tv-gids.nl/sportzender/ziggo-sport-1-live-op-tv-zender-nederland.png",
+    },
+}
+
 
 def _is_zenderlogo(img) -> bool:
     """Onderscheidt een zenderlogo van een teamlogo/sport-icoon (die ook als
@@ -130,6 +143,16 @@ def haal_op() -> list[dict]:
                     src = "https:" + src
                 elif src.startswith("/"):
                     src = "https://sport-tv-gids.nl" + src
+
+                if zendernaam in _ZENDER_CORRECTIES:
+                    correctie = _ZENDER_CORRECTIES[zendernaam]
+                    zendernaam, src = correctie["naam"], correctie["logo"]
+                    # Kan na correctie alsnog een duplicaat zijn (bv. als de
+                    # juiste naam toevallig al apart in de lijst stond) --
+                    # dan niet nogmaals toevoegen.
+                    if zendernaam in [z["naam"] for z in huidige["zenders"]]:
+                        continue
+
                 huidige["zenders"].append({"naam": zendernaam, "logo": src})
 
     if huidige and huidige["tegenstander"] and huidige["zenders"]:
