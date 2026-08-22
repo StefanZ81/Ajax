@@ -105,4 +105,61 @@
 </div>
 {% endif %}
 
+{% if stats.toon_sectie_2 %}
+<div class="card accent">
+  <p style="font-weight:700; font-size:14px;">📈 Puntenverloop</p>
+  <div style="display:flex; gap:14px; margin-bottom:10px; font-size:11px; color:var(--grey);">
+    <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); margin-right:4px;"></span>Jij</span>
+    <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#C7C9D1; margin-right:4px;"></span>Poule-gemiddelde</span>
+  </div>
+  <div style="position:relative; width:100%; height:180px;">
+    <canvas id="puntenverloopChart" role="img" aria-label="Lijngrafiek van jouw cumulatieve puntenverloop vergeleken met het poule-gemiddelde, per gespeelde wedstrijd">Puntenverloop-grafiek: jouw punten vergeleken met het poule-gemiddelde.</canvas>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+new Chart(document.getElementById('puntenverloopChart'), {
+  type: 'line',
+  data: {
+    labels: {{ stats.puntenverloop.labels | tojson }},
+    datasets: [
+      {
+        data: {{ stats.puntenverloop.jouw_punten | tojson }},
+        borderColor: '#D2122E',
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: '#D2122E',
+        pointHoverBorderColor: '#fff',
+        pointHoverBorderWidth: 2,
+        tension: 0.35,
+        fill: false
+      },
+      {
+        data: {{ stats.puntenverloop.gemiddeld | tojson }},
+        borderColor: '#C7C9D1',
+        borderWidth: 2,
+        borderDash: [4, 3],
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        pointHoverBackgroundColor: '#C7C9D1',
+        tension: 0.35,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, border: { display: false }, ticks: { color: '#9296A3', font: { size: 10 } } },
+      y: { display: false, beginAtZero: true }
+    },
+    interaction: { intersect: false, mode: 'index' }
+  }
+});
+</script>
+{% endif %}
+
 {% endblock %}
