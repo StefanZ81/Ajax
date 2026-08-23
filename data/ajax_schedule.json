@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-23T13:54:29.852901+00:00",
+  "bijgewerkt_op": "2026-08-23T16:13:45.012962+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -452,6 +452,15 @@
     },
     {
       "positie": 4,
+      "team": "Feyenoord Rotterdam",
+      "punten": 7,
+      "gespeeld": 3,
+      "winst": 2,
+      "gelijk": 1,
+      "verlies": 0
+    },
+    {
+      "positie": 5,
       "team": "FC Groningen",
       "punten": 6,
       "gespeeld": 3,
@@ -460,7 +469,7 @@
       "verlies": 1
     },
     {
-      "positie": 5,
+      "positie": 6,
       "team": "AFC Ajax",
       "punten": 4,
       "gespeeld": 2,
@@ -469,22 +478,13 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "Sparta Rotterdam",
       "punten": 4,
       "gespeeld": 3,
       "winst": 1,
       "gelijk": 1,
       "verlies": 1
-    },
-    {
-      "positie": 7,
-      "team": "Feyenoord Rotterdam",
-      "punten": 4,
-      "gespeeld": 2,
-      "winst": 1,
-      "gelijk": 1,
-      "verlies": 0
     },
     {
       "positie": 8,
@@ -569,16 +569,16 @@
     },
     {
       "positie": 17,
-      "team": "SC Cambuur-Leeuwarden",
+      "team": "ADO Den Haag",
       "punten": 0,
-      "gespeeld": 2,
+      "gespeeld": 3,
       "winst": 0,
       "gelijk": 0,
-      "verlies": 2
+      "verlies": 3
     },
     {
       "positie": 18,
-      "team": "ADO Den Haag",
+      "team": "SC Cambuur-Leeuwarden",
       "punten": 0,
       "gespeeld": 3,
       "winst": 0,
@@ -586,5 +586,5 @@
       "verlies": 3
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-23T13:54:29.852889+00:00"
+  "stand_bijgewerkt_op": "2026-08-23T16:13:45.012952+00:00"
 }
