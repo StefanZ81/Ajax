@@ -55,7 +55,22 @@ _DATUM_PATROON = re.compile(
 _ZENDER_CORRECTIES = {
     "Ziggo Voetbal": {
         "naam": "Ziggo Sport 1",
-        "logo": "https://sport-tv-gids.nl/sportzender/ziggo-sport-1-live-op-tv-zender-nederland.png",
+        "logo": "/static/zenders/ziggo-sport-1.jpg",
+    },
+    # Ook als de bron het label zelf al correct "Ziggo Sport 1" noemt, toch
+    # ons eigen, geverifieerd actuele logo gebruiken -- het bijbehorende
+    # logo-bestand bij de bron bleek namelijk ook verouderd te zijn.
+    "Ziggo Sport 1": {
+        "naam": "Ziggo Sport 1",
+        "logo": "/static/zenders/ziggo-sport-1.jpg",
+    },
+    "Ziggo Sport 2": {
+        "naam": "Ziggo Sport 2",
+        "logo": "/static/zenders/ziggo-sport-2.jpg",
+    },
+    "Ziggo Sport 3": {
+        "naam": "Ziggo Sport 3",
+        "logo": "/static/zenders/ziggo-sport-3.jpg",
     },
 }
 
