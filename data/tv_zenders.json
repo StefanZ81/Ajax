@@ -6,8 +6,8 @@
       "tegenstander": "Sion",
       "zenders": [
         {
-          "naam": "Ziggo Sport",
-          "logo": "https://sport-tv-gids.nl/sportzender/ziggo-voetbal-live-op-tv-zender-nederland.png"
+          "naam": "Ziggo Sport 1",
+          "logo": "/static/zenders/ziggo-sport-1.jpg"
         }
       ]
     },
