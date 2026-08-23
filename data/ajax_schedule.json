@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-23T09:46:59.896115+00:00",
+  "bijgewerkt_op": "2026-08-23T11:54:25.778042+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -444,10 +444,10 @@
     {
       "positie": 3,
       "team": "Go Ahead Eagles",
-      "punten": 4,
-      "gespeeld": 2,
+      "punten": 5,
+      "gespeeld": 3,
       "winst": 1,
-      "gelijk": 1,
+      "gelijk": 2,
       "verlies": 0
     },
     {
@@ -561,10 +561,10 @@
     {
       "positie": 16,
       "team": "ADO Den Haag",
-      "punten": 0,
-      "gespeeld": 2,
+      "punten": 1,
+      "gespeeld": 3,
       "winst": 0,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 2
     },
     {
@@ -586,5 +586,5 @@
       "verlies": 2
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-23T09:46:59.896104+00:00"
+  "stand_bijgewerkt_op": "2026-08-23T11:54:25.778032+00:00"
 }
