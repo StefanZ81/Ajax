@@ -57,6 +57,12 @@ _ZENDER_CORRECTIES = {
         "naam": "Ziggo Sport 1",
         "logo": "/static/zenders/ziggo-sport-1.jpg",
     },
+    # "Ziggo Sport" zonder nummer is, net als "Ziggo Voetbal", een oudere/
+    # alternatieve aanduiding voor hetzelfde kanaal.
+    "Ziggo Sport": {
+        "naam": "Ziggo Sport 1",
+        "logo": "/static/zenders/ziggo-sport-1.jpg",
+    },
     # Ook als de bron het label zelf al correct "Ziggo Sport 1" noemt, toch
     # ons eigen, geverifieerd actuele logo gebruiken -- het bijbehorende
     # logo-bestand bij de bron bleek namelijk ook verouderd te zijn.
