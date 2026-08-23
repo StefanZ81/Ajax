@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-23T11:54:25.778042+00:00",
+  "bijgewerkt_op": "2026-08-23T13:54:29.852901+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -434,24 +434,33 @@
     },
     {
       "positie": 2,
-      "team": "FC Groningen",
-      "punten": 6,
-      "gespeeld": 2,
+      "team": "Go Ahead Eagles",
+      "punten": 7,
+      "gespeeld": 3,
       "winst": 2,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 0
     },
     {
-      "positie": 3,
-      "team": "Go Ahead Eagles",
-      "punten": 5,
+      "positie": 2,
+      "team": "PSV",
+      "punten": 7,
       "gespeeld": 3,
-      "winst": 1,
-      "gelijk": 2,
+      "winst": 2,
+      "gelijk": 1,
       "verlies": 0
     },
     {
       "positie": 4,
+      "team": "FC Groningen",
+      "punten": 6,
+      "gespeeld": 3,
+      "winst": 2,
+      "gelijk": 0,
+      "verlies": 1
+    },
+    {
+      "positie": 5,
       "team": "AFC Ajax",
       "punten": 4,
       "gespeeld": 2,
@@ -460,22 +469,13 @@
       "verlies": 0
     },
     {
-      "positie": 5,
+      "positie": 6,
       "team": "Sparta Rotterdam",
       "punten": 4,
       "gespeeld": 3,
       "winst": 1,
       "gelijk": 1,
       "verlies": 1
-    },
-    {
-      "positie": 6,
-      "team": "PSV",
-      "punten": 4,
-      "gespeeld": 2,
-      "winst": 1,
-      "gelijk": 1,
-      "verlies": 0
     },
     {
       "positie": 7,
@@ -560,15 +560,6 @@
     },
     {
       "positie": 16,
-      "team": "ADO Den Haag",
-      "punten": 1,
-      "gespeeld": 3,
-      "winst": 0,
-      "gelijk": 1,
-      "verlies": 2
-    },
-    {
-      "positie": 17,
       "team": "Willem II Tilburg",
       "punten": 0,
       "gespeeld": 2,
@@ -577,14 +568,23 @@
       "verlies": 2
     },
     {
-      "positie": 18,
+      "positie": 17,
       "team": "SC Cambuur-Leeuwarden",
       "punten": 0,
       "gespeeld": 2,
       "winst": 0,
       "gelijk": 0,
       "verlies": 2
+    },
+    {
+      "positie": 18,
+      "team": "ADO Den Haag",
+      "punten": 0,
+      "gespeeld": 3,
+      "winst": 0,
+      "gelijk": 0,
+      "verlies": 3
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-23T11:54:25.778032+00:00"
+  "stand_bijgewerkt_op": "2026-08-23T13:54:29.852889+00:00"
 }
