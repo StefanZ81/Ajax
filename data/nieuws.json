@@ -1,10 +1,20 @@
 {
-  "bijgewerkt_op": "2026-08-24T05:02:24.552871+00:00",
+  "bijgewerkt_op": "2026-08-24T05:53:57.382212+00:00",
   "artikelen": [
+    {
+      "titel": "'Nieuws uit Spanje: Ajax legt voorstel neer bij oude bekende van Míchel'",
+      "link": "https://www.voetbalprimeur.nl/nieuws/2126672/ajax-legt-bod-neer-bij-girona-aanvaller-tsygankov.html",
+      "gepubliceerd_op": "2026-08-24T05:26:00+00:00"
+    },
     {
       "titel": "'Ajax vindt nieuwe nummer 6 in Serie A: enkelvoudig international geldt als optie'",
       "link": "https://www.voetbalprimeur.nl/nieuws/2126657/ajax-identificeert-rolando-mandragora-als-nieuwe-nummer-6.html",
-      "gepubliceerd_op": "2026-08-23T22:17:14+00:00"
+      "gepubliceerd_op": "2026-08-24T05:45:09+00:00"
+    },
+    {
+      "titel": "VI: Ajax-huurling 'kan niet aarden' bij Eredivisie-club en gaat terugkeren",
+      "link": "https://www.voetbalprimeur.nl/nieuws/2126573/vi-ajax-huurling-mogelijk-na-twee-maanden-alweer-terug-naar-amsterdam.html",
+      "gepubliceerd_op": "2026-08-24T05:45:07+00:00"
     },
     {
       "titel": "Buitenspel: Ajax-keeper Ter Stegen deelt prachtig persoonlijk nieuws via Instagram",
@@ -12,19 +22,9 @@
       "gepubliceerd_op": "2026-08-23T21:44:01+00:00"
     },
     {
-      "titel": "VI: Ajax-huurling 'kan niet aarden' bij Eredivisie-club en gaat terugkeren",
-      "link": "https://www.voetbalprimeur.nl/nieuws/2126573/vi-ajax-huurling-mogelijk-na-twee-maanden-alweer-terug-naar-amsterdam.html",
-      "gepubliceerd_op": "2026-08-23T17:55:39+00:00"
-    },
-    {
       "titel": "Gesjeesd Ajax-talent: 'Ik was mentaal niet stabiel, gooide m'n kont tegen de krib'",
       "link": "https://www.voetbalprimeur.nl/nieuws/2126493/michael-kandhai-blikt-terug-op-zijn-mislukte-carriere-bij-ajax.html",
       "gepubliceerd_op": "2026-08-23T14:18:00+00:00"
-    },
-    {
-      "titel": "Leedvermaak na Ajax-fiasco: 'Gek genoeg ziet niemand het gevaar van Chris Woerts'",
-      "link": "https://www.voetbalprimeur.nl/nieuws/2126470/leedvermaak-om-mislukt-kijk-project-van-chris-woerts.html",
-      "gepubliceerd_op": "2026-08-23T13:27:00+00:00"
     }
   ]
 }
