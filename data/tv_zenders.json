@@ -23,6 +23,10 @@
         {
           "naam": "ESPN 2",
           "logo": "https://sport-tv-gids.nl/sportzender/espn-2-live-op-tv-zender-nederland.png"
+        },
+        {
+          "naam": "DAZN",
+          "logo": "https://sport-tv-gids.nl/sportzender/dazn-live-op-tv-zender-nederland.png"
         }
       ]
     }
