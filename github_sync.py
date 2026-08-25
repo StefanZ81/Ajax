@@ -96,11 +96,12 @@ def _sync_now() -> int:
 
             # Bescherming tegen een vreemde aanpassing achteraf: als deze
             # wedstrijd lokaal al een BEVESTIGDE uitslag heeft (status
-            # 'afgelopen', nog niet handmatig vergrendeld) en de bron meldt nu
-            # een ANDERE uitslag dan we al hadden, is dat op zijn minst
-            # verdacht -- een legitieme correctie door de bron zou zeldzaam
-            # moeten zijn en verdient bewuste controle, geen stille,
-            # automatische overschrijving. We wijzen de wijziging af en
+            # 'afgelopen', nog niet handmatig vergrendeld), is elke latere
+            # afwijking van de bron verdacht -- of dat nu een ANDERE uitslag
+            # is bij eenzelfde 'afgelopen'-status, óf de status die helemaal
+            # terugdraait naar bijvoorbeeld 'gepland' of 'live'. Beide zijn
+            # hoogstwaarschijnlijk een teken van instabiele brondata, geen
+            # legitieme correctie -- we wijzen de wijziging af en
             # vergrendelen de wedstrijd (net als 'Sync stopzetten'), zodat de
             # beheerder het bewust moet beoordelen via het beheerscherm.
             if (
@@ -108,8 +109,18 @@ def _sync_now() -> int:
                 and bestaand["status"] == "afgelopen"
                 and bestaand["uitslag_eind_thuis"] is not None
                 and not bestaand["handmatig_overschreven"]
-                and m["status"] == "afgelopen"
             ):
+                if m["status"] != "afgelopen":
+                    print(
+                        f"[github_sync] WAARSCHUWING: wedstrijd {m['id']} ({m['thuis']} - {m['uit']}) was al "
+                        f"afgelopen, maar de bron meldt nu status={m['status']!r} -- dit wordt NIET "
+                        f"automatisch overgenomen. Vergrendeld voor handmatige controle."
+                    )
+                    conn.execute(
+                        "UPDATE matches SET handmatig_overschreven = 1 WHERE id = ?", (m["id"],)
+                    )
+                    continue
+
                 bestaande_uitslag = (
                     bestaand["uitslag_rust_thuis"], bestaand["uitslag_rust_uit"],
                     bestaand["uitslag_eind_thuis"], bestaand["uitslag_eind_uit"],
