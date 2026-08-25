@@ -88,6 +88,13 @@
   ],
   "wedstrijden": [
     {
+      "id": 558231,
+      "competitie": "Eredivisie",
+      "thuis": "AFC Ajax",
+      "uit": "SC Heerenveen",
+      "kickoff": "2026-08-16T14:45:00+00:00"
+    },
+    {
       "id": -1,
       "competitie": "Conference League",
       "thuis": "AFC Ajax",
