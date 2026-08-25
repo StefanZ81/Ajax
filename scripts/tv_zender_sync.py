@@ -52,6 +52,13 @@ _DATUM_PATROON = re.compile(
 # opgeslagen. "Ziggo Voetbal" was de oude naam van het huidige "Ziggo Sport 2",
 # maar de bron koppelt dat label nog aan uitzendingen die in werkelijkheid op
 # "Ziggo Sport 1" te zien zijn -- vandaar deze correctie op naam én logo.
+# Zenders die de bron soms meeneemt, maar die voor dit doel niet relevant
+# zijn -- bv. buitenlandse zendgemachtigden zonder Nederlandse uitzending.
+# Worden volledig genegeerd, ongeacht wat er verder op de pagina staat.
+_ZENDER_UITSLUITINGEN = {
+    "DAZN",
+}
+
 _ZENDER_CORRECTIES = {
     "Ziggo Voetbal": {
         "naam": "Ziggo Sport 1",
@@ -158,7 +165,11 @@ def haal_op() -> list[dict]:
 
         elif naam_tag == "img" and _is_zenderlogo(node):
             zendernaam = node.get("title")
-            if zendernaam and zendernaam not in [z["naam"] for z in huidige["zenders"]]:
+            if (
+                zendernaam
+                and zendernaam not in _ZENDER_UITSLUITINGEN
+                and zendernaam not in [z["naam"] for z in huidige["zenders"]]
+            ):
                 src = node.get("src") or ""
                 if src.startswith("//"):
                     src = "https:" + src
