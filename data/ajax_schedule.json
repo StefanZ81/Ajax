@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-25T23:54:24.129187+00:00",
+  "bijgewerkt_op": "2026-08-26T01:38:28.245804+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -27,7 +27,7 @@
       "thuis": "AFC Ajax",
       "uit": "SC Heerenveen",
       "kickoff": "2026-08-16T14:45:00+00:00",
-      "status": "gepland",
+      "status": "afgelopen",
       "rust": {
         "thuis": 2,
         "uit": 1
@@ -586,5 +586,5 @@
       "verlies": 3
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-24T23:29:32.026430+00:00"
+  "stand_bijgewerkt_op": "2026-08-26T01:38:28.245795+00:00"
 }
