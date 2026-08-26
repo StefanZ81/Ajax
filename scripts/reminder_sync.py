@@ -50,8 +50,16 @@ APP_URL = os.environ.get("APP_URL", "https://ajaxpoule.pythonanywhere.com")
 
 # Marge rond het 24-uursmoment, om dezelfde reden als bij de scores-probe:
 # scheduled workflows draaien 'best effort', niet gegarandeerd op de minuut.
+# Niet langer een smal venster rond precies 24u vóór aftrap (dat bleek te
+# krap: GitHub Actions' planning is "best effort", niet gegarandeerd precies
+# op tijd -- eenzelfde soort onbetrouwbaarheid die we ook al bij het
+# wedstrijd-probevenster tegenkwamen). In plaats daarvan: een ruime periode
+# waarbinnen een reminder als "op tijd" geldt, met de deduplicatie via
+# verzonden.json (zie laad_verzonden/bewaar_verzonden) als vangnet tegen
+# dubbele verzending als een wedstrijd toevallig in meerdere cycli binnen
+# deze periode valt.
 VENSTER_UREN = 24
-VENSTER_MARGE = timedelta(minutes=10)
+VENSTER_MARGE = timedelta(hours=2)
 
 _DAGEN_VOL = ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag"]
 _MAANDEN_VOL = [
