@@ -100,6 +100,14 @@ def binnen_venster(kickoff: datetime, nu: datetime) -> bool:
     return moment - VENSTER_MARGE <= nu <= moment + VENSTER_MARGE
 
 
+def voornaam(volledige_naam: str) -> str:
+    """Geeft alleen het eerste deel van de naam terug, voor een persoonlijkere
+    aanhef ('Hoi Sander,' i.p.v. 'Hoi Sander Werger,'). Bij tussenvoegsels
+    ('van', 'de', ...) blijft dat gewoon achter de voornaam staan, want die
+    horen bij de achternaam, niet bij het eerste woord."""
+    return volledige_naam.strip().split()[0] if volledige_naam.strip() else volledige_naam
+
+
 def stel_mail_samen(deelnemer: dict, wedstrijd: dict) -> tuple[str, str]:
     thuis = wedstrijd["thuis"]
     uit = wedstrijd["uit"]
@@ -120,7 +128,7 @@ def stel_mail_samen(deelnemer: dict, wedstrijd: dict) -> tuple[str, str]:
         <span style="color:#fff; font-size:20px; font-weight:bold; letter-spacing:1px;">J-POULE</span>
       </div>
       <div style="padding:24px; color:#15161B;">
-        <p>Hoi {deelnemer['naam']},</p>
+        <p>Hoi {voornaam(deelnemer['naam'])},</p>
         <p>
           Ajax speelt op <b>{datum} om {tijd} uur {thuis_of_uit} tegen {tegenstander}</b>,
           in de {competitie}.
