@@ -88,13 +88,6 @@
   ],
   "wedstrijden": [
     {
-      "id": -1,
-      "competitie": "Conference League",
-      "thuis": "AFC Ajax",
-      "uit": "Sion",
-      "kickoff": "2026-08-27T18:00:00+00:00"
-    },
-    {
       "id": 558248,
       "competitie": "Eredivisie",
       "thuis": "Telstar 1963",
