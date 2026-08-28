@@ -1,17 +1,6 @@
 {
   "wedstrijden": [
     {
-      "dag": 27,
-      "maand": 8,
-      "tegenstander": "Sion",
-      "zenders": [
-        {
-          "naam": "Ziggo Sport 1",
-          "logo": "/static/zenders/ziggo-sport-1.jpg"
-        }
-      ]
-    },
-    {
       "dag": 30,
       "maand": 8,
       "tegenstander": "Telstar",
