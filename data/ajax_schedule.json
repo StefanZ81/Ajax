@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-29T19:48:46.842288+00:00",
+  "bijgewerkt_op": "2026-08-29T22:05:54.797620+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -470,7 +470,7 @@
     },
     {
       "positie": 6,
-      "team": "SBV Excelsior",
+      "team": "NEC",
       "punten": 6,
       "gespeeld": 3,
       "winst": 2,
@@ -479,7 +479,7 @@
     },
     {
       "positie": 7,
-      "team": "NEC",
+      "team": "SBV Excelsior",
       "punten": 6,
       "gespeeld": 3,
       "winst": 2,
@@ -586,5 +586,5 @@
       "verlies": 3
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-29T19:48:46.842274+00:00"
+  "stand_bijgewerkt_op": "2026-08-29T22:05:54.797611+00:00"
 }
