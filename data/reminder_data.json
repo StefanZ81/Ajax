@@ -130,11 +130,25 @@
       "kickoff": "2026-10-10T19:00:00+00:00"
     },
     {
+      "id": -2,
+      "competitie": "Conference League",
+      "thuis": "HKN Hajduk Split",
+      "uit": "AFC Ajax",
+      "kickoff": "2026-10-15T16:45:00+00:00"
+    },
+    {
       "id": 558864,
       "competitie": "Eredivisie",
       "thuis": "FC Groningen",
       "uit": "AFC Ajax",
       "kickoff": "2026-10-18T14:45:00+00:00"
+    },
+    {
+      "id": -3,
+      "competitie": "Conference League",
+      "thuis": "AFC Ajax",
+      "uit": "Atalanta BC",
+      "kickoff": "2026-10-22T19:00:00+00:00"
     },
     {
       "id": 558856,
@@ -151,6 +165,13 @@
       "kickoff": "2026-10-31T20:00:00+00:00"
     },
     {
+      "id": -4,
+      "competitie": "Conference League",
+      "thuis": "FC Midtjylland",
+      "uit": "AFC Ajax",
+      "kickoff": "2026-11-05T17:45:00+00:00"
+    },
+    {
       "id": 558839,
       "competitie": "Eredivisie",
       "thuis": "FC Twente '65",
@@ -163,6 +184,13 @@
       "thuis": "AFC Ajax",
       "uit": "ADO Den Haag",
       "kickoff": "2026-11-21T00:00:00+00:00"
+    },
+    {
+      "id": -5,
+      "competitie": "Conference League",
+      "thuis": "AFC Ajax",
+      "uit": "FC Thun",
+      "kickoff": "2026-11-26T17:45:00+00:00"
     },
     {
       "id": 558824,
@@ -179,11 +207,25 @@
       "kickoff": "2026-12-05T00:00:00+00:00"
     },
     {
+      "id": -6,
+      "competitie": "Conference League",
+      "thuis": "Sint-Truidense VV",
+      "uit": "AFC Ajax",
+      "kickoff": "2026-12-10T20:00:00+00:00"
+    },
+    {
       "id": 558801,
       "competitie": "Eredivisie",
       "thuis": "AFC Ajax",
       "uit": "SC Cambuur-Leeuwarden",
       "kickoff": "2026-12-12T00:00:00+00:00"
+    },
+    {
+      "id": -7,
+      "competitie": "Conference League",
+      "thuis": "AFC Ajax",
+      "uit": "Getafe CF",
+      "kickoff": "2026-12-17T20:00:00+00:00"
     },
     {
       "id": 558796,
