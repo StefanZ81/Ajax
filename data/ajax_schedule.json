@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-28T16:46:53.937742+00:00",
+  "bijgewerkt_op": "2026-08-29T00:45:46.444659+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -461,15 +461,24 @@
     },
     {
       "positie": 5,
-      "team": "FC Groningen",
-      "punten": 6,
-      "gespeeld": 3,
+      "team": "Fortuna Sittard",
+      "punten": 7,
+      "gespeeld": 4,
       "winst": 2,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 1
     },
     {
       "positie": 6,
+      "team": "FC Groningen",
+      "punten": 6,
+      "gespeeld": 4,
+      "winst": 2,
+      "gelijk": 0,
+      "verlies": 2
+    },
+    {
+      "positie": 7,
       "team": "AFC Ajax",
       "punten": 4,
       "gespeeld": 2,
@@ -478,17 +487,8 @@
       "verlies": 0
     },
     {
-      "positie": 7,
-      "team": "Sparta Rotterdam",
-      "punten": 4,
-      "gespeeld": 3,
-      "winst": 1,
-      "gelijk": 1,
-      "verlies": 1
-    },
-    {
       "positie": 8,
-      "team": "Fortuna Sittard",
+      "team": "Sparta Rotterdam",
       "punten": 4,
       "gespeeld": 3,
       "winst": 1,
@@ -586,5 +586,5 @@
       "verlies": 3
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-28T16:46:53.937732+00:00"
+  "stand_bijgewerkt_op": "2026-08-29T00:45:46.444649+00:00"
 }
