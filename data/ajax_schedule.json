@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-29T17:15:55.424753+00:00",
+  "bijgewerkt_op": "2026-08-29T19:48:46.842288+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -426,23 +426,14 @@
     {
       "positie": 1,
       "team": "AZ",
-      "punten": 10,
+      "punten": 12,
       "gespeeld": 4,
-      "winst": 3,
-      "gelijk": 1,
+      "winst": 4,
+      "gelijk": 0,
       "verlies": 0
     },
     {
       "positie": 2,
-      "team": "Go Ahead Eagles",
-      "punten": 8,
-      "gespeeld": 4,
-      "winst": 2,
-      "gelijk": 2,
-      "verlies": 0
-    },
-    {
-      "positie": 3,
       "team": "PSV",
       "punten": 7,
       "gespeeld": 3,
@@ -451,13 +442,22 @@
       "verlies": 0
     },
     {
-      "positie": 4,
+      "positie": 3,
       "team": "Feyenoord Rotterdam",
       "punten": 7,
       "gespeeld": 3,
       "winst": 2,
       "gelijk": 1,
       "verlies": 0
+    },
+    {
+      "positie": 4,
+      "team": "Go Ahead Eagles",
+      "punten": 7,
+      "gespeeld": 4,
+      "winst": 2,
+      "gelijk": 1,
+      "verlies": 1
     },
     {
       "positie": 5,
@@ -479,6 +479,15 @@
     },
     {
       "positie": 7,
+      "team": "NEC",
+      "punten": 6,
+      "gespeeld": 3,
+      "winst": 2,
+      "gelijk": 0,
+      "verlies": 1
+    },
+    {
+      "positie": 8,
       "team": "FC Groningen",
       "punten": 6,
       "gespeeld": 4,
@@ -487,7 +496,7 @@
       "verlies": 2
     },
     {
-      "positie": 8,
+      "positie": 9,
       "team": "AFC Ajax",
       "punten": 4,
       "gespeeld": 2,
@@ -496,7 +505,7 @@
       "verlies": 0
     },
     {
-      "positie": 9,
+      "positie": 10,
       "team": "Sparta Rotterdam",
       "punten": 4,
       "gespeeld": 4,
@@ -505,21 +514,12 @@
       "verlies": 2
     },
     {
-      "positie": 10,
+      "positie": 11,
       "team": "SC Heerenveen",
       "punten": 4,
       "gespeeld": 3,
       "winst": 1,
       "gelijk": 1,
-      "verlies": 1
-    },
-    {
-      "positie": 11,
-      "team": "NEC",
-      "punten": 3,
-      "gespeeld": 2,
-      "winst": 1,
-      "gelijk": 0,
       "verlies": 1
     },
     {
@@ -544,10 +544,10 @@
       "positie": 14,
       "team": "PEC Zwolle",
       "punten": 3,
-      "gespeeld": 3,
+      "gespeeld": 4,
       "winst": 1,
       "gelijk": 0,
-      "verlies": 2
+      "verlies": 3
     },
     {
       "positie": 15,
@@ -586,5 +586,5 @@
       "verlies": 3
     }
   ],
-  "stand_bijgewerkt_op": "2026-08-29T17:15:55.424739+00:00"
+  "stand_bijgewerkt_op": "2026-08-29T19:48:46.842274+00:00"
 }
