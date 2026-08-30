@@ -1,20 +1,27 @@
 name: Ajax-data synchroniseren
 
-# Draait elke 5 minuten (kortste praktische interval bij GitHub Actions),
-# en is ook handmatig te starten via "Run workflow".
+# Wordt periodiek getriggerd door een EXTERNE cron-dienst (cron-job.org),
+# die via de GitHub API workflow_dispatch aanroept -- niet langer via
+# GitHub's eigen 'schedule:'. Reden: GitHub's ingebouwde planning is
+# officieel "best effort" en bleek in de praktijk soms urenlang stil te
+# vallen (gedocumenteerd GitHub-platformgedrag, geen fout in deze workflow).
 #
-# LET OP — twee bekende GitHub-beperkingen om rekening mee te houden:
-#  1. Scheduled workflows zijn "best effort": GitHub garandeert niet dat ze
-#     precies op tijd draaien, vooral niet bij drukte. Vandaar de marge van
-#     5 minuten rond elk probe-moment in ajax_data_sync.py.
-#  2. GitHub schakelt scheduled workflows automatisch uit na 60 dagen
-#     zonder enige repository-activiteit (commits/PR's). Zolang je actief
-#     aan de site werkt is dat geen probleem; in de rustige zomerstop kan
-#     het zijn dat je de workflow handmatig weer moet aanzetten.
+# De 'force_refresh'-input maakt onderscheid tussen:
+#  - een bewuste handmatige klik op "Run workflow" in de GitHub-UI
+#    (standaard AAN: forceert altijd een volledige ververing)
+#  - de externe, routinematige cron-aanroep (stuurt expliciet UIT mee, zodat
+#    alleen ververst wordt wanneer dat ook daadwerkelijk nodig is)
+#
+# LET OP — nog steeds relevant ondanks de externe trigger: GitHub schakelt
+# workflows automatisch uit na 60 dagen zonder repository-activiteit
+# (commits/PR's). Zolang je actief aan de site werkt is dat geen probleem.
 on:
-  schedule:
-    - cron: '*/5 * * * *'
   workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: 'Forceer een volledige ververing (aan = handmatige controle, uit = routinematige cyclus)'
+        type: boolean
+        default: true
 
 permissions:
   contents: write   # nodig om data/ajax_schedule.json terug te committen
@@ -35,7 +42,7 @@ jobs:
       - name: Ajax-data ophalen en tabel bijwerken
         env:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
-          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' }}
+          FORCE_REFRESH: ${{ github.event.inputs.force_refresh }}
         run: python scripts/ajax_data_sync.py
 
       - name: Wijzigingen committen (alleen als er echt iets veranderde)
