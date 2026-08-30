@@ -88,13 +88,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558248,
-      "competitie": "Eredivisie",
-      "thuis": "Telstar 1963",
-      "uit": "AFC Ajax",
-      "kickoff": "2026-08-30T14:45:00+00:00"
-    },
-    {
       "id": 558253,
       "competitie": "Eredivisie",
       "thuis": "AFC Ajax",
