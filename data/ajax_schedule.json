@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-08-30T10:40:12.585162+00:00",
+  "bijgewerkt_op": "2026-08-30T15:02:18.189827+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -45,9 +45,12 @@
       "thuis": "Telstar 1963",
       "uit": "AFC Ajax",
       "kickoff": "2026-08-30T14:45:00+00:00",
-      "status": "gepland",
+      "status": "live",
       "rust": null,
-      "eind": null
+      "eind": {
+        "thuis": 0,
+        "uit": 0
+      }
     },
     {
       "id": 558253,
