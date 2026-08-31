@@ -1,21 +1,6 @@
 {
   "wedstrijden": [
     {
-      "dag": 30,
-      "maand": 8,
-      "tegenstander": "Telstar",
-      "zenders": [
-        {
-          "naam": "ESPN Extra",
-          "logo": "https://sport-tv-gids.nl/sportzender/espn-extra-live-op-tv-zender-nederland.png"
-        },
-        {
-          "naam": "ESPN 2",
-          "logo": "https://sport-tv-gids.nl/sportzender/espn-2-live-op-tv-zender-nederland.png"
-        }
-      ]
-    },
-    {
       "dag": 5,
       "maand": 9,
       "tegenstander": "PSV",
