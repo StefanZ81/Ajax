@@ -268,7 +268,7 @@ def programma():
         gepland=gepland,
         eerder_gespeeld=eerder_gespeeld,
         standings=queries.get_standings_widget(seizoen),
-        upcoming=[m for m in matches if m["status"] != "afgelopen"][:3],
+        upcoming=actuele[:3],
     )
 
 
@@ -286,12 +286,15 @@ def wedstrijd(match_id):
     kan_nog_voorspellen = datetime.now(timezone.utc) < match["kickoff"]
 
     if request.method == "POST" and kan_nog_voorspellen:
-        rust = (int(request.form["rust_thuis"]), int(request.form["rust_uit"]))
-        eind = (int(request.form["eind_thuis"]), int(request.form["eind_uit"]))
-        joker = "joker" in request.form
-        queries.upsert_prediction(match_id, gebruiker["id"], rust, eind, joker)
-        flash("Voorspelling opgeslagen.", "info")
-        return redirect(url_for("wedstrijd", match_id=match_id))
+        try:
+            rust = (int(request.form["rust_thuis"]), int(request.form["rust_uit"]))
+            eind = (int(request.form["eind_thuis"]), int(request.form["eind_uit"]))
+            joker = "joker" in request.form
+            queries.upsert_prediction(match_id, gebruiker["id"], rust, eind, joker)
+            flash("Voorspelling opgeslagen.", "info")
+            return redirect(url_for("wedstrijd", match_id=match_id))
+        except (KeyError, ValueError):
+            flash("Kon voorspelling niet opslaan: vul bij elk veld een geheel getal in.", "fout")
 
     mag_voorspellingen_zien = (
         match["status"] != "gepland"
@@ -328,11 +331,14 @@ def seizoen_voorspelling():
     gesloten = queries.eerste_competitiewedstrijd_gestart(seizoen)
 
     if request.method == "POST" and not gesloten:
-        na17 = (int(request.form["na17_positie"]), int(request.form["na17_punten"]))
-        na34 = (int(request.form["na34_positie"]), int(request.form["na34_punten"]))
-        queries.upsert_season_prediction(gebruiker["id"], seizoen, na17, na34)
-        flash("Seizoensvoorspelling opgeslagen.", "info")
-        return redirect(url_for("seizoen_voorspelling"))
+        try:
+            na17 = (int(request.form["na17_positie"]), int(request.form["na17_punten"]))
+            na34 = (int(request.form["na34_positie"]), int(request.form["na34_punten"]))
+            queries.upsert_season_prediction(gebruiker["id"], seizoen, na17, na34)
+            flash("Seizoensvoorspelling opgeslagen.", "info")
+            return redirect(url_for("seizoen_voorspelling"))
+        except (KeyError, ValueError):
+            flash("Kon seizoensvoorspelling niet opslaan: vul bij elk veld een geheel getal in.", "fout")
 
     return render_template(
         "seizoen.html",
@@ -551,15 +557,18 @@ def beheerder_degradeer(participant_id):
 @admin_required
 def beheerder_regels():
     seizoen = queries.get_active_season()
-    rules = {
-        "halftime_punten": int(request.form["halftime_punten"]),
-        "fulltime_punten": int(request.form["fulltime_punten"]),
-        "outcome_punten": int(request.form["outcome_punten"]),
-        "joker_kosten": int(request.form["joker_kosten"]),
-        "joker_vermenigvuldiger": int(request.form["joker_vermenigvuldiger"]),
-    }
-    queries.update_rules(seizoen, rules)
-    flash("Spelregels opgeslagen.", "info")
+    try:
+        rules = {
+            "halftime_punten": int(request.form["halftime_punten"]),
+            "fulltime_punten": int(request.form["fulltime_punten"]),
+            "outcome_punten": int(request.form["outcome_punten"]),
+            "joker_kosten": int(request.form["joker_kosten"]),
+            "joker_vermenigvuldiger": int(request.form["joker_vermenigvuldiger"]),
+        }
+        queries.update_rules(seizoen, rules)
+        flash("Spelregels opgeslagen.", "info")
+    except (KeyError, ValueError):
+        flash("Kon spelregels niet opslaan: vul bij elk veld een geheel getal in.", "fout")
     return redirect(url_for("beheerder"))
 
 
