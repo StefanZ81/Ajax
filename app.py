@@ -268,7 +268,7 @@ def programma():
         gepland=gepland,
         eerder_gespeeld=eerder_gespeeld,
         standings=queries.get_standings_widget(seizoen),
-        upcoming=actuele[:3],
+        upcoming=actuele + gepland[:max(0, 3 - len(actuele))],
     )
 
 
