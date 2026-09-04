@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-04T16:55:23.072891+00:00",
+  "bijgewerkt_op": "2026-09-04T19:00:43.855803+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -521,6 +521,15 @@
     },
     {
       "positie": 11,
+      "team": "Sparta Rotterdam",
+      "punten": 5,
+      "gespeeld": 5,
+      "winst": 1,
+      "gelijk": 2,
+      "verlies": 2
+    },
+    {
+      "positie": 12,
       "team": "SC Heerenveen",
       "punten": 5,
       "gespeeld": 4,
@@ -529,21 +538,12 @@
       "verlies": 1
     },
     {
-      "positie": 12,
-      "team": "Sparta Rotterdam",
-      "punten": 4,
-      "gespeeld": 4,
-      "winst": 1,
-      "gelijk": 1,
-      "verlies": 2
-    },
-    {
       "positie": 13,
       "team": "PEC Zwolle",
-      "punten": 3,
-      "gespeeld": 4,
+      "punten": 4,
+      "gespeeld": 5,
       "winst": 1,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 3
     },
     {
@@ -592,5 +592,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-04T16:55:23.072881+00:00"
+  "stand_bijgewerkt_op": "2026-09-04T19:00:43.855793+00:00"
 }
