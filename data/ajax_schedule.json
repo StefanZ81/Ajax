@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-05T13:25:26.515952+00:00",
+  "bijgewerkt_op": "2026-09-05T15:30:32.423228+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -450,10 +450,10 @@
     {
       "positie": 3,
       "team": "Feyenoord Rotterdam",
-      "punten": 8,
-      "gespeeld": 4,
+      "punten": 9,
+      "gespeeld": 5,
       "winst": 2,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 0
     },
     {
@@ -467,7 +467,7 @@
     },
     {
       "positie": 5,
-      "team": "Go Ahead Eagles",
+      "team": "NEC",
       "punten": 7,
       "gespeeld": 4,
       "winst": 2,
@@ -476,7 +476,7 @@
     },
     {
       "positie": 6,
-      "team": "Fortuna Sittard",
+      "team": "Go Ahead Eagles",
       "punten": 7,
       "gespeeld": 4,
       "winst": 2,
@@ -485,11 +485,11 @@
     },
     {
       "positie": 7,
-      "team": "NEC",
-      "punten": 6,
-      "gespeeld": 3,
+      "team": "Fortuna Sittard",
+      "punten": 7,
+      "gespeeld": 4,
       "winst": 2,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 1
     },
     {
@@ -592,5 +592,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-05T13:25:26.515942+00:00"
+  "stand_bijgewerkt_op": "2026-09-05T15:30:32.423220+00:00"
 }
