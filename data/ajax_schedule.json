@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-05T15:30:32.423228+00:00",
+  "bijgewerkt_op": "2026-09-05T17:35:23.392340+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -440,6 +440,15 @@
     },
     {
       "positie": 2,
+      "team": "Feyenoord Rotterdam",
+      "punten": 11,
+      "gespeeld": 5,
+      "winst": 3,
+      "gelijk": 2,
+      "verlies": 0
+    },
+    {
+      "positie": 3,
       "team": "PSV",
       "punten": 10,
       "gespeeld": 4,
@@ -448,16 +457,16 @@
       "verlies": 0
     },
     {
-      "positie": 3,
-      "team": "Feyenoord Rotterdam",
-      "punten": 9,
+      "positie": 4,
+      "team": "Go Ahead Eagles",
+      "punten": 10,
       "gespeeld": 5,
-      "winst": 2,
-      "gelijk": 3,
-      "verlies": 0
+      "winst": 3,
+      "gelijk": 1,
+      "verlies": 1
     },
     {
-      "positie": 4,
+      "positie": 5,
       "team": "AFC Ajax",
       "punten": 7,
       "gespeeld": 3,
@@ -466,25 +475,7 @@
       "verlies": 0
     },
     {
-      "positie": 5,
-      "team": "NEC",
-      "punten": 7,
-      "gespeeld": 4,
-      "winst": 2,
-      "gelijk": 1,
-      "verlies": 1
-    },
-    {
       "positie": 6,
-      "team": "Go Ahead Eagles",
-      "punten": 7,
-      "gespeeld": 4,
-      "winst": 2,
-      "gelijk": 1,
-      "verlies": 1
-    },
-    {
-      "positie": 7,
       "team": "Fortuna Sittard",
       "punten": 7,
       "gespeeld": 4,
@@ -493,7 +484,7 @@
       "verlies": 1
     },
     {
-      "positie": 8,
+      "positie": 7,
       "team": "FC Twente '65",
       "punten": 6,
       "gespeeld": 3,
@@ -502,13 +493,22 @@
       "verlies": 1
     },
     {
-      "positie": 8,
+      "positie": 7,
       "team": "SBV Excelsior",
       "punten": 6,
       "gespeeld": 3,
       "winst": 2,
       "gelijk": 0,
       "verlies": 1
+    },
+    {
+      "positie": 9,
+      "team": "NEC",
+      "punten": 6,
+      "gespeeld": 4,
+      "winst": 2,
+      "gelijk": 0,
+      "verlies": 2
     },
     {
       "positie": 10,
@@ -577,10 +577,10 @@
       "positie": 17,
       "team": "FC Utrecht",
       "punten": 1,
-      "gespeeld": 4,
+      "gespeeld": 5,
       "winst": 0,
       "gelijk": 1,
-      "verlies": 3
+      "verlies": 4
     },
     {
       "positie": 18,
@@ -592,5 +592,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-05T15:30:32.423220+00:00"
+  "stand_bijgewerkt_op": "2026-09-05T17:35:23.392332+00:00"
 }
