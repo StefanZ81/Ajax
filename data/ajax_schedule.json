@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-05T18:50:26.240874+00:00",
+  "bijgewerkt_op": "2026-09-05T18:55:22.310257+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -64,10 +64,13 @@
       "uit": "PSV",
       "kickoff": "2026-09-05T18:00:00+00:00",
       "status": "live",
-      "rust": null,
+      "rust": {
+        "thuis": 1,
+        "uit": 2
+      },
       "eind": {
         "thuis": 1,
-        "uit": 1
+        "uit": 2
       }
     },
     {
