@@ -88,13 +88,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558253,
-      "competitie": "Eredivisie",
-      "thuis": "AFC Ajax",
-      "uit": "PSV",
-      "kickoff": "2026-09-05T18:00:00+00:00"
-    },
-    {
       "id": 558896,
       "competitie": "Eredivisie",
       "thuis": "Fortuna Sittard",
