@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-05T18:05:20.541323+00:00",
+  "bijgewerkt_op": "2026-09-05T18:10:24.278469+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -63,9 +63,12 @@
       "thuis": "AFC Ajax",
       "uit": "PSV",
       "kickoff": "2026-09-05T18:00:00+00:00",
-      "status": "gepland",
+      "status": "live",
       "rust": null,
-      "eind": null
+      "eind": {
+        "thuis": 0,
+        "uit": 0
+      }
     },
     {
       "id": 558896,
