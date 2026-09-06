@@ -213,8 +213,8 @@ def logout():
 
 # ---------------- Deelnemer-routes ----------------
 
-def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict], list[dict]]:
-    """Verdeelt de wedstrijden van het seizoen in drie categorieën:
+def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+    """Verdeelt de wedstrijden van het seizoen in categorieën:
     - actuele: de netgespeelde wedstrijd (indien <24u na aftrap) bovenaan,
       gevolgd door de eerstvolgende nog te spelen (of lopende) wedstrijd,
       plus eventuele wedstrijden waarvan de sync is stopgezet maar die nog
@@ -225,6 +225,11 @@ def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict
     - gepland: alle overige, nog niet gespeelde wedstrijden.
     - eerder_gespeeld: alle afgelopen wedstrijden die niet (meer) in
       'actuele' staan, nieuwste eerst.
+    - niet_afgelopen: ALLE nog te spelen wedstrijden, puur chronologisch --
+      bewust ongefilterd door de 'netgespeeld'-logica hierboven, voor
+      widgets (zoals de Programma Ajax-widget) die alleen aankomende
+      wedstrijden met aanvangstijd moeten tonen, nooit een teruggeblikte,
+      al gespeelde wedstrijd.
     """
     nu = datetime.now(timezone.utc)
     niet_afgelopen = sorted((m for m in matches if m["status"] != "afgelopen"), key=lambda m: m["kickoff"])
@@ -249,7 +254,7 @@ def categoriseer_wedstrijden(matches: list[dict]) -> tuple[list[dict], list[dict
     gepland = [m for m in niet_afgelopen if m["id"] not in actuele_ids]
     eerder_gespeeld = [m for m in afgelopen if m["id"] not in actuele_ids]
 
-    return actuele, gepland, eerder_gespeeld
+    return actuele, gepland, eerder_gespeeld, niet_afgelopen
 
 
 @app.route("/")
@@ -261,14 +266,14 @@ def programma():
     matches = queries.get_matches(seizoen)
     for m in matches:
         m["tv_zenders"] = tv_sync.zoek_zenders_voor_wedstrijd(m)
-    actuele, gepland, eerder_gespeeld = categoriseer_wedstrijden(matches)
+    actuele, gepland, eerder_gespeeld, niet_afgelopen = categoriseer_wedstrijden(matches)
     return render_template(
         "programma.html",
         actuele=actuele,
         gepland=gepland,
         eerder_gespeeld=eerder_gespeeld,
         standings=queries.get_standings_widget(seizoen),
-        upcoming=actuele + gepland[:max(0, 3 - len(actuele))],
+        upcoming=niet_afgelopen[:3],
     )
 
 
