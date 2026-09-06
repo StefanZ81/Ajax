@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-06T00:00:46.217679+00:00",
+  "bijgewerkt_op": "2026-09-06T00:15:23.371622+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -464,15 +464,6 @@
     },
     {
       "positie": 4,
-      "team": "Go Ahead Eagles",
-      "punten": 10,
-      "gespeeld": 5,
-      "winst": 3,
-      "gelijk": 1,
-      "verlies": 1
-    },
-    {
-      "positie": 5,
       "team": "SBV Excelsior",
       "punten": 9,
       "gespeeld": 4,
@@ -481,8 +472,17 @@
       "verlies": 1
     },
     {
-      "positie": 6,
+      "positie": 5,
       "team": "AFC Ajax",
+      "punten": 7,
+      "gespeeld": 4,
+      "winst": 2,
+      "gelijk": 1,
+      "verlies": 1
+    },
+    {
+      "positie": 6,
+      "team": "Go Ahead Eagles",
       "punten": 7,
       "gespeeld": 4,
       "winst": 2,
@@ -572,7 +572,7 @@
     },
     {
       "positie": 16,
-      "team": "Willem II Tilburg",
+      "team": "FC Utrecht",
       "punten": 1,
       "gespeeld": 4,
       "winst": 0,
@@ -581,12 +581,12 @@
     },
     {
       "positie": 17,
-      "team": "FC Utrecht",
+      "team": "Willem II Tilburg",
       "punten": 1,
-      "gespeeld": 5,
+      "gespeeld": 4,
       "winst": 0,
       "gelijk": 1,
-      "verlies": 4
+      "verlies": 3
     },
     {
       "positie": 18,
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-05T22:10:31.078357+00:00"
+  "stand_bijgewerkt_op": "2026-09-06T00:15:23.371612+00:00"
 }
