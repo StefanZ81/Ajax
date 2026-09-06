@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-06T12:30:38.369785+00:00",
+  "bijgewerkt_op": "2026-09-06T14:35:21.496146+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -437,20 +437,20 @@
   "stand": [
     {
       "positie": 1,
+      "team": "AZ",
+      "punten": 15,
+      "gespeeld": 5,
+      "winst": 5,
+      "gelijk": 0,
+      "verlies": 0
+    },
+    {
+      "positie": 2,
       "team": "PSV",
       "punten": 13,
       "gespeeld": 5,
       "winst": 4,
       "gelijk": 1,
-      "verlies": 0
-    },
-    {
-      "positie": 2,
-      "team": "AZ",
-      "punten": 12,
-      "gespeeld": 4,
-      "winst": 4,
-      "gelijk": 0,
       "verlies": 0
     },
     {
@@ -538,10 +538,10 @@
       "positie": 12,
       "team": "SC Heerenveen",
       "punten": 5,
-      "gespeeld": 4,
+      "gespeeld": 5,
       "winst": 1,
       "gelijk": 2,
-      "verlies": 1
+      "verlies": 2
     },
     {
       "positie": 13,
@@ -556,13 +556,22 @@
       "positie": 14,
       "team": "Telstar 1963",
       "punten": 3,
-      "gespeeld": 3,
+      "gespeeld": 4,
       "winst": 1,
       "gelijk": 0,
-      "verlies": 2
+      "verlies": 3
     },
     {
       "positie": 15,
+      "team": "SC Cambuur-Leeuwarden",
+      "punten": 3,
+      "gespeeld": 5,
+      "winst": 1,
+      "gelijk": 0,
+      "verlies": 4
+    },
+    {
+      "positie": 16,
       "team": "ADO Den Haag",
       "punten": 1,
       "gespeeld": 4,
@@ -571,7 +580,7 @@
       "verlies": 3
     },
     {
-      "positie": 16,
+      "positie": 17,
       "team": "FC Utrecht",
       "punten": 1,
       "gespeeld": 4,
@@ -580,23 +589,14 @@
       "verlies": 3
     },
     {
-      "positie": 17,
+      "positie": 18,
       "team": "Willem II Tilburg",
       "punten": 1,
       "gespeeld": 4,
       "winst": 0,
       "gelijk": 1,
       "verlies": 3
-    },
-    {
-      "positie": 18,
-      "team": "SC Cambuur-Leeuwarden",
-      "punten": 0,
-      "gespeeld": 4,
-      "winst": 0,
-      "gelijk": 0,
-      "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-06T12:30:38.369774+00:00"
+  "stand_bijgewerkt_op": "2026-09-06T14:35:21.496137+00:00"
 }
