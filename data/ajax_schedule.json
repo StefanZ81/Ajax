@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-06T14:35:21.496146+00:00",
+  "bijgewerkt_op": "2026-09-06T16:40:28.490231+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -464,6 +464,15 @@
     },
     {
       "positie": 4,
+      "team": "Fortuna Sittard",
+      "punten": 10,
+      "gespeeld": 5,
+      "winst": 3,
+      "gelijk": 1,
+      "verlies": 1
+    },
+    {
+      "positie": 5,
       "team": "SBV Excelsior",
       "punten": 9,
       "gespeeld": 4,
@@ -472,7 +481,7 @@
       "verlies": 1
     },
     {
-      "positie": 5,
+      "positie": 6,
       "team": "AFC Ajax",
       "punten": 7,
       "gespeeld": 4,
@@ -481,7 +490,7 @@
       "verlies": 1
     },
     {
-      "positie": 5,
+      "positie": 6,
       "team": "FC Twente '65",
       "punten": 7,
       "gespeeld": 4,
@@ -490,17 +499,8 @@
       "verlies": 1
     },
     {
-      "positie": 7,
-      "team": "Go Ahead Eagles",
-      "punten": 7,
-      "gespeeld": 4,
-      "winst": 2,
-      "gelijk": 1,
-      "verlies": 1
-    },
-    {
       "positie": 8,
-      "team": "Fortuna Sittard",
+      "team": "Go Ahead Eagles",
       "punten": 7,
       "gespeeld": 4,
       "winst": 2,
@@ -555,32 +555,14 @@
     {
       "positie": 14,
       "team": "Telstar 1963",
-      "punten": 3,
+      "punten": 4,
       "gespeeld": 4,
       "winst": 1,
-      "gelijk": 0,
-      "verlies": 3
+      "gelijk": 1,
+      "verlies": 2
     },
     {
       "positie": 15,
-      "team": "SC Cambuur-Leeuwarden",
-      "punten": 3,
-      "gespeeld": 5,
-      "winst": 1,
-      "gelijk": 0,
-      "verlies": 4
-    },
-    {
-      "positie": 16,
-      "team": "ADO Den Haag",
-      "punten": 1,
-      "gespeeld": 4,
-      "winst": 0,
-      "gelijk": 1,
-      "verlies": 3
-    },
-    {
-      "positie": 17,
       "team": "FC Utrecht",
       "punten": 1,
       "gespeeld": 4,
@@ -589,14 +571,32 @@
       "verlies": 3
     },
     {
-      "positie": 18,
+      "positie": 16,
+      "team": "ADO Den Haag",
+      "punten": 1,
+      "gespeeld": 5,
+      "winst": 0,
+      "gelijk": 1,
+      "verlies": 4
+    },
+    {
+      "positie": 17,
       "team": "Willem II Tilburg",
       "punten": 1,
       "gespeeld": 4,
       "winst": 0,
       "gelijk": 1,
       "verlies": 3
+    },
+    {
+      "positie": 18,
+      "team": "SC Cambuur-Leeuwarden",
+      "punten": 1,
+      "gespeeld": 5,
+      "winst": 0,
+      "gelijk": 1,
+      "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-06T14:35:21.496137+00:00"
+  "stand_bijgewerkt_op": "2026-09-06T16:40:28.490223+00:00"
 }
