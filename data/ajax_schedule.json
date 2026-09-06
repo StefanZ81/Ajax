@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-06T10:25:22.108433+00:00",
+  "bijgewerkt_op": "2026-09-06T12:30:38.369785+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -481,7 +481,7 @@
       "verlies": 1
     },
     {
-      "positie": 6,
+      "positie": 5,
       "team": "FC Twente '65",
       "punten": 7,
       "gespeeld": 4,
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-06T10:25:22.108424+00:00"
+  "stand_bijgewerkt_op": "2026-09-06T12:30:38.369774+00:00"
 }
