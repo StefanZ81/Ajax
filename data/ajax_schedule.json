@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-06T16:40:28.490231+00:00",
+  "bijgewerkt_op": "2026-09-06T18:40:34.552369+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -563,21 +563,21 @@
     },
     {
       "positie": 15,
-      "team": "FC Utrecht",
-      "punten": 1,
-      "gespeeld": 4,
-      "winst": 0,
-      "gelijk": 1,
-      "verlies": 3
-    },
-    {
-      "positie": 16,
       "team": "ADO Den Haag",
       "punten": 1,
       "gespeeld": 5,
       "winst": 0,
       "gelijk": 1,
       "verlies": 4
+    },
+    {
+      "positie": 16,
+      "team": "FC Utrecht",
+      "punten": 1,
+      "gespeeld": 4,
+      "winst": 0,
+      "gelijk": 1,
+      "verlies": 3
     },
     {
       "positie": 17,
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-06T16:40:28.490223+00:00"
+  "stand_bijgewerkt_op": "2026-09-06T18:40:34.552359+00:00"
 }
