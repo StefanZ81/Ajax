@@ -1,21 +1,6 @@
 {
   "wedstrijden": [
     {
-      "dag": 5,
-      "maand": 9,
-      "tegenstander": "PSV",
-      "zenders": [
-        {
-          "naam": "ESPN Extra",
-          "logo": "https://sport-tv-gids.nl/sportzender/espn-extra-live-op-tv-zender-nederland.png"
-        },
-        {
-          "naam": "ESPN 1",
-          "logo": "https://sport-tv-gids.nl/sportzender/espn-1-live-op-tv-zender-nederland.png"
-        }
-      ]
-    },
-    {
       "dag": 12,
       "maand": 9,
       "tegenstander": "Sittard",
