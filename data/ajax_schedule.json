@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-08T16:05:26.354942+00:00",
+  "bijgewerkt_op": "2026-09-08T18:10:27.016049+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -464,7 +464,7 @@
     },
     {
       "positie": 4,
-      "team": "Fortuna Sittard",
+      "team": "SBV Excelsior",
       "punten": 10,
       "gespeeld": 5,
       "winst": 3,
@@ -473,11 +473,11 @@
     },
     {
       "positie": 5,
-      "team": "SBV Excelsior",
-      "punten": 9,
-      "gespeeld": 4,
+      "team": "Fortuna Sittard",
+      "punten": 10,
+      "gespeeld": 5,
       "winst": 3,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 1
     },
     {
@@ -509,7 +509,7 @@
     },
     {
       "positie": 9,
-      "team": "FC Groningen",
+      "team": "NEC",
       "punten": 7,
       "gespeeld": 5,
       "winst": 2,
@@ -518,11 +518,11 @@
     },
     {
       "positie": 10,
-      "team": "NEC",
-      "punten": 6,
-      "gespeeld": 4,
+      "team": "FC Groningen",
+      "punten": 7,
+      "gespeeld": 5,
       "winst": 2,
-      "gelijk": 0,
+      "gelijk": 1,
       "verlies": 2
     },
     {
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-08T16:05:26.354933+00:00"
+  "stand_bijgewerkt_op": "2026-09-08T18:10:27.016039+00:00"
 }
