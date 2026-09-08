@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-08T11:55:20.986216+00:00",
+  "bijgewerkt_op": "2026-09-08T14:00:47.691215+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -482,6 +482,15 @@
     },
     {
       "positie": 6,
+      "team": "Go Ahead Eagles",
+      "punten": 8,
+      "gespeeld": 5,
+      "winst": 2,
+      "gelijk": 2,
+      "verlies": 1
+    },
+    {
+      "positie": 7,
       "team": "AFC Ajax",
       "punten": 7,
       "gespeeld": 4,
@@ -490,17 +499,8 @@
       "verlies": 1
     },
     {
-      "positie": 6,
+      "positie": 7,
       "team": "FC Twente '65",
-      "punten": 7,
-      "gespeeld": 4,
-      "winst": 2,
-      "gelijk": 1,
-      "verlies": 1
-    },
-    {
-      "positie": 8,
-      "team": "Go Ahead Eagles",
       "punten": 7,
       "gespeeld": 4,
       "winst": 2,
@@ -563,21 +563,21 @@
     },
     {
       "positie": 15,
+      "team": "FC Utrecht",
+      "punten": 2,
+      "gespeeld": 5,
+      "winst": 0,
+      "gelijk": 2,
+      "verlies": 3
+    },
+    {
+      "positie": 16,
       "team": "ADO Den Haag",
       "punten": 1,
       "gespeeld": 5,
       "winst": 0,
       "gelijk": 1,
       "verlies": 4
-    },
-    {
-      "positie": 16,
-      "team": "FC Utrecht",
-      "punten": 1,
-      "gespeeld": 4,
-      "winst": 0,
-      "gelijk": 1,
-      "verlies": 3
     },
     {
       "positie": 17,
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-08T11:55:20.986204+00:00"
+  "stand_bijgewerkt_op": "2026-09-08T14:00:47.691202+00:00"
 }
