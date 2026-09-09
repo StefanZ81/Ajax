@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-09T16:55:27.746310+00:00",
+  "bijgewerkt_op": "2026-09-09T19:00:43.280523+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -473,7 +473,7 @@
     },
     {
       "positie": 5,
-      "team": "Fortuna Sittard",
+      "team": "FC Twente '65",
       "punten": 10,
       "gespeeld": 5,
       "winst": 3,
@@ -482,11 +482,11 @@
     },
     {
       "positie": 6,
-      "team": "FC Twente '65",
-      "punten": 8,
+      "team": "Fortuna Sittard",
+      "punten": 10,
       "gespeeld": 5,
-      "winst": 2,
-      "gelijk": 2,
+      "winst": 3,
+      "gelijk": 1,
       "verlies": 1
     },
     {
@@ -545,16 +545,16 @@
     },
     {
       "positie": 13,
-      "team": "Telstar 1963",
-      "punten": 5,
+      "team": "PEC Zwolle",
+      "punten": 4,
       "gespeeld": 5,
       "winst": 1,
-      "gelijk": 2,
-      "verlies": 2
+      "gelijk": 1,
+      "verlies": 3
     },
     {
       "positie": 14,
-      "team": "PEC Zwolle",
+      "team": "Telstar 1963",
       "punten": 4,
       "gespeeld": 5,
       "winst": 1,
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-09T16:55:27.746300+00:00"
+  "stand_bijgewerkt_op": "2026-09-09T19:00:43.280513+00:00"
 }
