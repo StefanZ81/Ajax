@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-09T23:00:55.021351+00:00",
+  "bijgewerkt_op": "2026-09-10T00:00:45.030275+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -200,7 +200,7 @@
       "ronde": "Speelronde 15",
       "thuis": "AFC Ajax",
       "uit": "FC Utrecht",
-      "kickoff": "2026-12-05T00:00:00+00:00",
+      "kickoff": "2026-12-06T13:30:00+00:00",
       "status": "gepland",
       "rust": null,
       "eind": null
@@ -212,7 +212,7 @@
       "ronde": "Speelronde 16",
       "thuis": "AFC Ajax",
       "uit": "SC Cambuur-Leeuwarden",
-      "kickoff": "2026-12-12T00:00:00+00:00",
+      "kickoff": "2026-12-13T19:00:00+00:00",
       "status": "gepland",
       "rust": null,
       "eind": null
@@ -224,7 +224,7 @@
       "ronde": "Speelronde 17",
       "thuis": "Go Ahead Eagles",
       "uit": "AFC Ajax",
-      "kickoff": "2026-12-19T00:00:00+00:00",
+      "kickoff": "2026-12-20T15:45:00+00:00",
       "status": "gepland",
       "rust": null,
       "eind": null
@@ -248,7 +248,7 @@
       "ronde": "Speelronde 19",
       "thuis": "AFC Ajax",
       "uit": "FC Groningen",
-      "kickoff": "2027-01-16T00:00:00+00:00",
+      "kickoff": "2027-01-17T13:30:00+00:00",
       "status": "gepland",
       "rust": null,
       "eind": null
@@ -260,7 +260,7 @@
       "ronde": "Speelronde 20",
       "thuis": "AFC Ajax",
       "uit": "Telstar 1963",
-      "kickoff": "2027-01-23T00:00:00+00:00",
+      "kickoff": "2027-01-23T15:30:00+00:00",
       "status": "gepland",
       "rust": null,
       "eind": null
@@ -272,7 +272,7 @@
       "ronde": "Speelronde 21",
       "thuis": "SC Heerenveen",
       "uit": "AFC Ajax",
-      "kickoff": "2027-01-30T00:00:00+00:00",
+      "kickoff": "2027-01-31T11:15:00+00:00",
       "status": "gepland",
       "rust": null,
       "eind": null
