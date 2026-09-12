@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-12T12:45:26.445565+00:00",
+  "bijgewerkt_op": "2026-09-12T14:50:27.165983+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -464,16 +464,16 @@
     },
     {
       "positie": 4,
-      "team": "SBV Excelsior",
-      "punten": 10,
-      "gespeeld": 5,
+      "team": "FC Twente '65",
+      "punten": 11,
+      "gespeeld": 6,
       "winst": 3,
-      "gelijk": 1,
+      "gelijk": 2,
       "verlies": 1
     },
     {
       "positie": 5,
-      "team": "FC Twente '65",
+      "team": "SBV Excelsior",
       "punten": 10,
       "gespeeld": 5,
       "winst": 3,
@@ -563,6 +563,15 @@
     },
     {
       "positie": 15,
+      "team": "ADO Den Haag",
+      "punten": 2,
+      "gespeeld": 6,
+      "winst": 0,
+      "gelijk": 2,
+      "verlies": 4
+    },
+    {
+      "positie": 16,
       "team": "FC Utrecht",
       "punten": 2,
       "gespeeld": 5,
@@ -571,22 +580,13 @@
       "verlies": 3
     },
     {
-      "positie": 16,
+      "positie": 17,
       "team": "Willem II Tilburg",
       "punten": 2,
       "gespeeld": 5,
       "winst": 0,
       "gelijk": 2,
       "verlies": 3
-    },
-    {
-      "positie": 17,
-      "team": "ADO Den Haag",
-      "punten": 1,
-      "gespeeld": 5,
-      "winst": 0,
-      "gelijk": 1,
-      "verlies": 4
     },
     {
       "positie": 18,
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-12T12:45:26.445557+00:00"
+  "stand_bijgewerkt_op": "2026-09-12T14:50:27.165974+00:00"
 }
