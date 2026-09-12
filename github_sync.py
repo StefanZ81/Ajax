@@ -81,7 +81,7 @@ def _sync_now() -> int:
     with get_connection() as conn:
         for m in wedstrijden:
             bestaand = conn.execute(
-                """SELECT status, uitslag_rust_thuis, uitslag_rust_uit,
+                """SELECT status, kickoff, uitslag_rust_thuis, uitslag_rust_uit,
                           uitslag_eind_thuis, uitslag_eind_uit, handmatig_overschreven
                    FROM matches WHERE id = ?""",
                 (m["id"],),
@@ -125,11 +125,16 @@ def _sync_now() -> int:
                     bestaand["uitslag_rust_thuis"], bestaand["uitslag_rust_uit"],
                     bestaand["uitslag_eind_thuis"], bestaand["uitslag_eind_uit"],
                 )
-                if nieuwe_uitslag != bestaande_uitslag:
+                # Ook de aftraptijd hoort bevroren te blijven zodra de uitslag
+                # eenmaal bevestigd is -- een AL GESPEELDE wedstrijd heeft een
+                # vast, historisch aftraptijdstip; elke wijziging daarin is
+                # dus net zo verdacht als een gewijzigde uitslag.
+                if nieuwe_uitslag != bestaande_uitslag or m["kickoff"] != bestaand["kickoff"]:
                     print(
                         f"[github_sync] WAARSCHUWING: wedstrijd {m['id']} ({m['thuis']} - {m['uit']}) had al "
-                        f"een bevestigde uitslag {bestaande_uitslag}, maar de bron meldt nu {nieuwe_uitslag}. "
-                        f"NIET automatisch overgenomen -- vergrendeld voor handmatige controle."
+                        f"een bevestigde uitslag {bestaande_uitslag} (aftrap {bestaand['kickoff']}), maar de "
+                        f"bron meldt nu {nieuwe_uitslag} (aftrap {m['kickoff']}). NIET automatisch "
+                        f"overgenomen -- vergrendeld voor handmatige controle."
                     )
                     conn.execute(
                         "UPDATE matches SET handmatig_overschreven = 1 WHERE id = ?", (m["id"],)
@@ -145,7 +150,13 @@ def _sync_now() -> int:
                 ON CONFLICT (id) DO UPDATE SET
                     competitie = excluded.competitie,
                     ronde = excluded.ronde,
-                    kickoff = excluded.kickoff,
+                    -- kickoff NIET overschrijven zodra de wedstrijd handmatig is
+                    -- bevroren (bv. na 'Sync stopzetten' bij een gestaakte
+                    -- wedstrijd) -- anders zou een latere, nieuwe aftraptijd
+                    -- (bv. voor het uitspelen van het restant) het voorspelvenster
+                    -- (kan_nog_voorspellen) onterecht kunnen heropenen voor een
+                    -- wedstrijd die al gedeeltelijk gespeeld is.
+                    kickoff = CASE WHEN matches.handmatig_overschreven = 1 THEN matches.kickoff ELSE excluded.kickoff END,
                     -- status en uitslag NIET overschrijven zodra de beheerder deze
                     -- wedstrijd handmatig heeft gecorrigeerd (zie queries.set_match_result) --
                     -- anders zou een volgende automatische sync die correctie stiekem
