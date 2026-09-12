@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-12T20:05:21.714871+00:00",
+  "bijgewerkt_op": "2026-09-12T20:15:34.808067+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -81,14 +81,14 @@
       "thuis": "Fortuna Sittard",
       "uit": "AFC Ajax",
       "kickoff": "2026-09-12T18:00:00+00:00",
-      "status": "live",
+      "status": "afgelopen",
       "rust": {
         "thuis": 0,
         "uit": 1
       },
       "eind": {
         "thuis": 1,
-        "uit": 4
+        "uit": 5
       }
     },
     {
@@ -479,7 +479,7 @@
     },
     {
       "positie": 5,
-      "team": "SBV Excelsior",
+      "team": "AFC Ajax",
       "punten": 10,
       "gespeeld": 5,
       "winst": 3,
@@ -488,7 +488,7 @@
     },
     {
       "positie": 6,
-      "team": "Fortuna Sittard",
+      "team": "SBV Excelsior",
       "punten": 10,
       "gespeeld": 5,
       "winst": 3,
@@ -497,39 +497,39 @@
     },
     {
       "positie": 7,
-      "team": "Go Ahead Eagles",
-      "punten": 8,
-      "gespeeld": 5,
-      "winst": 2,
-      "gelijk": 2,
-      "verlies": 1
+      "team": "Fortuna Sittard",
+      "punten": 10,
+      "gespeeld": 6,
+      "winst": 3,
+      "gelijk": 1,
+      "verlies": 2
     },
     {
       "positie": 8,
-      "team": "AFC Ajax",
-      "punten": 7,
-      "gespeeld": 4,
+      "team": "Go Ahead Eagles",
+      "punten": 9,
+      "gespeeld": 6,
       "winst": 2,
-      "gelijk": 1,
+      "gelijk": 3,
       "verlies": 1
     },
     {
       "positie": 9,
-      "team": "NEC",
-      "punten": 7,
-      "gespeeld": 5,
+      "team": "FC Groningen",
+      "punten": 8,
+      "gespeeld": 6,
       "winst": 2,
-      "gelijk": 1,
+      "gelijk": 2,
       "verlies": 2
     },
     {
       "positie": 10,
-      "team": "FC Groningen",
+      "team": "NEC",
       "punten": 7,
-      "gespeeld": 5,
+      "gespeeld": 6,
       "winst": 2,
       "gelijk": 1,
-      "verlies": 2
+      "verlies": 3
     },
     {
       "positie": 11,
@@ -569,6 +569,15 @@
     },
     {
       "positie": 15,
+      "team": "SC Cambuur-Leeuwarden",
+      "punten": 4,
+      "gespeeld": 6,
+      "winst": 1,
+      "gelijk": 1,
+      "verlies": 4
+    },
+    {
+      "positie": 16,
       "team": "FC Utrecht",
       "punten": 2,
       "gespeeld": 5,
@@ -577,7 +586,7 @@
       "verlies": 3
     },
     {
-      "positie": 16,
+      "positie": 17,
       "team": "Willem II Tilburg",
       "punten": 2,
       "gespeeld": 5,
@@ -586,23 +595,14 @@
       "verlies": 3
     },
     {
-      "positie": 17,
+      "positie": 18,
       "team": "ADO Den Haag",
       "punten": 1,
       "gespeeld": 6,
       "winst": 0,
       "gelijk": 1,
       "verlies": 5
-    },
-    {
-      "positie": 18,
-      "team": "SC Cambuur-Leeuwarden",
-      "punten": 1,
-      "gespeeld": 5,
-      "winst": 0,
-      "gelijk": 1,
-      "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-12T16:50:29.083044+00:00"
+  "stand_bijgewerkt_op": "2026-09-12T20:15:34.808054+00:00"
 }
