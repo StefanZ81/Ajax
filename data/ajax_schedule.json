@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-12T18:05:24.453895+00:00",
+  "bijgewerkt_op": "2026-09-12T18:10:24.891632+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -81,9 +81,12 @@
       "thuis": "Fortuna Sittard",
       "uit": "AFC Ajax",
       "kickoff": "2026-09-12T18:00:00+00:00",
-      "status": "gepland",
+      "status": "live",
       "rust": null,
-      "eind": null
+      "eind": {
+        "thuis": 0,
+        "uit": 0
+      }
     },
     {
       "id": 558240,
