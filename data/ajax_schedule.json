@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-12T14:50:27.165983+00:00",
+  "bijgewerkt_op": "2026-09-12T16:50:29.083054+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -455,21 +455,21 @@
     },
     {
       "positie": 3,
+      "team": "FC Twente '65",
+      "punten": 13,
+      "gespeeld": 6,
+      "winst": 4,
+      "gelijk": 1,
+      "verlies": 1
+    },
+    {
+      "positie": 4,
       "team": "Feyenoord Rotterdam",
       "punten": 11,
       "gespeeld": 5,
       "winst": 3,
       "gelijk": 2,
       "verlies": 0
-    },
-    {
-      "positie": 4,
-      "team": "FC Twente '65",
-      "punten": 11,
-      "gespeeld": 6,
-      "winst": 3,
-      "gelijk": 2,
-      "verlies": 1
     },
     {
       "positie": 5,
@@ -563,15 +563,6 @@
     },
     {
       "positie": 15,
-      "team": "ADO Den Haag",
-      "punten": 2,
-      "gespeeld": 6,
-      "winst": 0,
-      "gelijk": 2,
-      "verlies": 4
-    },
-    {
-      "positie": 16,
       "team": "FC Utrecht",
       "punten": 2,
       "gespeeld": 5,
@@ -580,13 +571,22 @@
       "verlies": 3
     },
     {
-      "positie": 17,
+      "positie": 16,
       "team": "Willem II Tilburg",
       "punten": 2,
       "gespeeld": 5,
       "winst": 0,
       "gelijk": 2,
       "verlies": 3
+    },
+    {
+      "positie": 17,
+      "team": "ADO Den Haag",
+      "punten": 1,
+      "gespeeld": 6,
+      "winst": 0,
+      "gelijk": 1,
+      "verlies": 5
     },
     {
       "positie": 18,
@@ -598,5 +598,5 @@
       "verlies": 4
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-12T14:50:27.165974+00:00"
+  "stand_bijgewerkt_op": "2026-09-12T16:50:29.083044+00:00"
 }
