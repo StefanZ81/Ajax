@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-12T18:55:22.552787+00:00",
+  "bijgewerkt_op": "2026-09-12T19:00:50.726929+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -82,7 +82,10 @@
       "uit": "AFC Ajax",
       "kickoff": "2026-09-12T18:00:00+00:00",
       "status": "live",
-      "rust": null,
+      "rust": {
+        "thuis": 0,
+        "uit": 1
+      },
       "eind": {
         "thuis": 0,
         "uit": 1
