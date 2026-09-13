@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-13T10:40:27.027742+00:00",
+  "bijgewerkt_op": "2026-09-13T12:45:24.397977+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -470,15 +470,6 @@
     },
     {
       "positie": 4,
-      "team": "SBV Excelsior",
-      "punten": 11,
-      "gespeeld": 6,
-      "winst": 3,
-      "gelijk": 2,
-      "verlies": 1
-    },
-    {
-      "positie": 5,
       "team": "Feyenoord Rotterdam",
       "punten": 11,
       "gespeeld": 5,
@@ -487,13 +478,22 @@
       "verlies": 0
     },
     {
-      "positie": 6,
+      "positie": 5,
       "team": "AFC Ajax",
       "punten": 10,
       "gespeeld": 5,
       "winst": 3,
       "gelijk": 1,
       "verlies": 1
+    },
+    {
+      "positie": 6,
+      "team": "SBV Excelsior",
+      "punten": 10,
+      "gespeeld": 6,
+      "winst": 3,
+      "gelijk": 1,
+      "verlies": 2
     },
     {
       "positie": 7,
@@ -533,6 +533,15 @@
     },
     {
       "positie": 11,
+      "team": "SC Heerenveen",
+      "punten": 6,
+      "gespeeld": 6,
+      "winst": 1,
+      "gelijk": 3,
+      "verlies": 2
+    },
+    {
+      "positie": 12,
       "team": "Sparta Rotterdam",
       "punten": 5,
       "gespeeld": 5,
@@ -541,16 +550,25 @@
       "verlies": 2
     },
     {
-      "positie": 12,
-      "team": "SC Heerenveen",
+      "positie": 13,
+      "team": "Telstar 1963",
       "punten": 5,
-      "gespeeld": 5,
+      "gespeeld": 6,
       "winst": 1,
       "gelijk": 2,
-      "verlies": 2
+      "verlies": 3
     },
     {
-      "positie": 13,
+      "positie": 14,
+      "team": "FC Utrecht",
+      "punten": 5,
+      "gespeeld": 6,
+      "winst": 1,
+      "gelijk": 2,
+      "verlies": 3
+    },
+    {
+      "positie": 15,
       "team": "PEC Zwolle",
       "punten": 4,
       "gespeeld": 5,
@@ -559,31 +577,13 @@
       "verlies": 3
     },
     {
-      "positie": 14,
-      "team": "Telstar 1963",
-      "punten": 4,
-      "gespeeld": 5,
-      "winst": 1,
-      "gelijk": 1,
-      "verlies": 3
-    },
-    {
-      "positie": 15,
+      "positie": 16,
       "team": "SC Cambuur-Leeuwarden",
       "punten": 4,
       "gespeeld": 6,
       "winst": 1,
       "gelijk": 1,
       "verlies": 4
-    },
-    {
-      "positie": 16,
-      "team": "FC Utrecht",
-      "punten": 3,
-      "gespeeld": 6,
-      "winst": 0,
-      "gelijk": 3,
-      "verlies": 3
     },
     {
       "positie": 17,
@@ -604,5 +604,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-13T10:40:27.027732+00:00"
+  "stand_bijgewerkt_op": "2026-09-13T12:45:24.397968+00:00"
 }
