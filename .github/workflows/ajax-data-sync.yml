@@ -26,6 +26,18 @@ on:
 permissions:
   contents: write   # nodig om data/ajax_schedule.json terug te committen
 
+# Voorkomt dat twee runs van DEZE workflow elkaar overlappen (bv. als de
+# externe cron-trigger een nieuwe cyclus start terwijl de vorige nog bezig
+# is). Zonder dit konden twee gelijktijdige runs allebei een net iets
+# andere databatch ophalen en om het hardst naar dezelfde
+# data/ajax_schedule.json proberen te pushen, met een samenvoegingsconflict
+# tot gevolg. cancel-in-progress: als een nieuwere cyclus al start, heeft
+# het geen zin om de oudere, inmiddels verouderde poging nog af te maken --
+# de nieuwere haalt toch verse data op.
+concurrency:
+  group: ajax-data-sync
+  cancel-in-progress: true
+
 jobs:
   sync:
     runs-on: ubuntu-latest
