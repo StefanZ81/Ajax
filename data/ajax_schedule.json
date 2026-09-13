@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-13T08:35:22.757780+00:00",
+  "bijgewerkt_op": "2026-09-13T10:40:27.027742+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -470,6 +470,15 @@
     },
     {
       "positie": 4,
+      "team": "SBV Excelsior",
+      "punten": 11,
+      "gespeeld": 6,
+      "winst": 3,
+      "gelijk": 2,
+      "verlies": 1
+    },
+    {
+      "positie": 5,
       "team": "Feyenoord Rotterdam",
       "punten": 11,
       "gespeeld": 5,
@@ -478,17 +487,8 @@
       "verlies": 0
     },
     {
-      "positie": 5,
-      "team": "AFC Ajax",
-      "punten": 10,
-      "gespeeld": 5,
-      "winst": 3,
-      "gelijk": 1,
-      "verlies": 1
-    },
-    {
       "positie": 6,
-      "team": "SBV Excelsior",
+      "team": "AFC Ajax",
       "punten": 10,
       "gespeeld": 5,
       "winst": 3,
@@ -579,10 +579,10 @@
     {
       "positie": 16,
       "team": "FC Utrecht",
-      "punten": 2,
-      "gespeeld": 5,
+      "punten": 3,
+      "gespeeld": 6,
       "winst": 0,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 3
     },
     {
@@ -604,5 +604,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-13T08:35:22.757770+00:00"
+  "stand_bijgewerkt_op": "2026-09-13T10:40:27.027732+00:00"
 }
