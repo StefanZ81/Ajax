@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-13T14:45:25.464390+00:00",
+  "bijgewerkt_op": "2026-09-13T16:50:28.164265+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -452,6 +452,15 @@
     },
     {
       "positie": 2,
+      "team": "Feyenoord Rotterdam",
+      "punten": 14,
+      "gespeeld": 6,
+      "winst": 4,
+      "gelijk": 2,
+      "verlies": 0
+    },
+    {
+      "positie": 3,
       "team": "PSV",
       "punten": 13,
       "gespeeld": 5,
@@ -460,22 +469,13 @@
       "verlies": 0
     },
     {
-      "positie": 3,
+      "positie": 4,
       "team": "FC Twente '65",
       "punten": 13,
       "gespeeld": 6,
       "winst": 4,
       "gelijk": 1,
       "verlies": 1
-    },
-    {
-      "positie": 4,
-      "team": "Feyenoord Rotterdam",
-      "punten": 11,
-      "gespeeld": 5,
-      "winst": 3,
-      "gelijk": 2,
-      "verlies": 0
     },
     {
       "positie": 5,
@@ -569,16 +569,16 @@
     },
     {
       "positie": 15,
-      "team": "PEC Zwolle",
+      "team": "SC Cambuur-Leeuwarden",
       "punten": 4,
-      "gespeeld": 5,
+      "gespeeld": 6,
       "winst": 1,
       "gelijk": 1,
-      "verlies": 3
+      "verlies": 4
     },
     {
       "positie": 16,
-      "team": "SC Cambuur-Leeuwarden",
+      "team": "PEC Zwolle",
       "punten": 4,
       "gespeeld": 6,
       "winst": 1,
@@ -604,5 +604,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-13T14:45:25.464380+00:00"
+  "stand_bijgewerkt_op": "2026-09-13T16:50:28.164255+00:00"
 }
