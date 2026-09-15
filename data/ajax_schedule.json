@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-15T19:55:20.267750+00:00",
+  "bijgewerkt_op": "2026-09-15T20:00:49.038739+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -99,7 +99,7 @@
       "thuis": "AFC Ajax",
       "uit": "Willem II Tilburg",
       "kickoff": "2026-09-15T18:00:00+00:00",
-      "status": "live",
+      "status": "afgelopen",
       "rust": {
         "thuis": 2,
         "uit": 0
@@ -476,7 +476,7 @@
     },
     {
       "positie": 4,
-      "team": "FC Twente '65",
+      "team": "AFC Ajax",
       "punten": 13,
       "gespeeld": 6,
       "winst": 4,
@@ -485,10 +485,10 @@
     },
     {
       "positie": 5,
-      "team": "AFC Ajax",
-      "punten": 10,
-      "gespeeld": 5,
-      "winst": 3,
+      "team": "FC Twente '65",
+      "punten": 13,
+      "gespeeld": 6,
+      "winst": 4,
       "gelijk": 1,
       "verlies": 1
     },
@@ -595,10 +595,10 @@
       "positie": 17,
       "team": "Willem II Tilburg",
       "punten": 2,
-      "gespeeld": 5,
+      "gespeeld": 6,
       "winst": 0,
       "gelijk": 2,
-      "verlies": 3
+      "verlies": 4
     },
     {
       "positie": 18,
@@ -610,5 +610,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-15T17:55:21.711306+00:00"
+  "stand_bijgewerkt_op": "2026-09-15T20:00:49.038726+00:00"
 }
