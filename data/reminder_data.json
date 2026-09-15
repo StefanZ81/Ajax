@@ -83,13 +83,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558240,
-      "competitie": "Eredivisie",
-      "thuis": "AFC Ajax",
-      "uit": "Willem II Tilburg",
-      "kickoff": "2026-09-15T18:00:00+00:00"
-    },
-    {
       "id": 558887,
       "competitie": "Eredivisie",
       "thuis": "AFC Ajax",
