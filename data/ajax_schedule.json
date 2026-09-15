@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-15T18:50:25.598046+00:00",
+  "bijgewerkt_op": "2026-09-15T18:55:21.171685+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -100,9 +100,12 @@
       "uit": "Willem II Tilburg",
       "kickoff": "2026-09-15T18:00:00+00:00",
       "status": "live",
-      "rust": null,
+      "rust": {
+        "thuis": 2,
+        "uit": 0
+      },
       "eind": {
-        "thuis": 1,
+        "thuis": 2,
         "uit": 0
       }
     },
