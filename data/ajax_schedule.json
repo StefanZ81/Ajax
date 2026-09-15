@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-15T18:05:21.341144+00:00",
+  "bijgewerkt_op": "2026-09-15T18:10:26.171949+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -99,9 +99,12 @@
       "thuis": "AFC Ajax",
       "uit": "Willem II Tilburg",
       "kickoff": "2026-09-15T18:00:00+00:00",
-      "status": "gepland",
+      "status": "live",
       "rust": null,
-      "eind": null
+      "eind": {
+        "thuis": 0,
+        "uit": 0
+      }
     },
     {
       "id": 558887,
