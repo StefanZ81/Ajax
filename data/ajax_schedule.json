@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-19T20:05:21.388742+00:00",
+  "bijgewerkt_op": "2026-09-19T22:10:24.160353+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -500,6 +500,15 @@
     },
     {
       "positie": 6,
+      "team": "Fortuna Sittard",
+      "punten": 13,
+      "gespeeld": 7,
+      "winst": 4,
+      "gelijk": 1,
+      "verlies": 2
+    },
+    {
+      "positie": 7,
       "team": "SBV Excelsior",
       "punten": 11,
       "gespeeld": 7,
@@ -508,17 +517,8 @@
       "verlies": 2
     },
     {
-      "positie": 7,
-      "team": "FC Groningen",
-      "punten": 11,
-      "gespeeld": 7,
-      "winst": 3,
-      "gelijk": 2,
-      "verlies": 2
-    },
-    {
       "positie": 8,
-      "team": "Fortuna Sittard",
+      "team": "FC Groningen",
       "punten": 11,
       "gespeeld": 7,
       "winst": 3,
@@ -599,16 +599,16 @@
     },
     {
       "positie": 17,
-      "team": "Willem II Tilburg",
-      "punten": 3,
+      "team": "ADO Den Haag",
+      "punten": 2,
       "gespeeld": 7,
       "winst": 0,
-      "gelijk": 3,
-      "verlies": 4
+      "gelijk": 2,
+      "verlies": 5
     },
     {
       "positie": 18,
-      "team": "ADO Den Haag",
+      "team": "Willem II Tilburg",
       "punten": 2,
       "gespeeld": 7,
       "winst": 0,
@@ -616,5 +616,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-19T20:05:21.388729+00:00"
+  "stand_bijgewerkt_op": "2026-09-19T22:10:24.160346+00:00"
 }
