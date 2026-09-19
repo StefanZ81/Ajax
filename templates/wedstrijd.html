@@ -38,7 +38,7 @@
     </div>
     <div class="veld">
       <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-        <input type="checkbox" name="joker" style="width:auto;" {{ 'checked' if mijn_voorspelling and mijn_voorspelling.joker }}>
+        <input type="checkbox" name="joker" autocomplete="off" style="width:auto;" {{ 'checked' if mijn_voorspelling and mijn_voorspelling.joker }}>
         ★ Joker inzetten (kost 1 punt, levert dubbele punten op)
       </label>
     </div>
@@ -120,5 +120,22 @@
 </div>
 {% else %}
 <p style="font-size:13px; color:var(--grey);">🔒 Voorspellingen van andere deelnemers zijn zichtbaar zodra de wedstrijd is begonnen.</p>
+{% endif %}
+
+{% if kan_nog_voorspellen %}
+<script>
+// Sommige browsers (met name Safari op iOS) herstellen bij terug/vooruit-
+// navigatie een eerder geopende versie van de pagina uit hun eigen cache
+// (bfcache), inclusief toen aangevinkte formuliervelden -- onafhankelijk van
+// wat de server nu daadwerkelijk stuurt. 'pageshow' vuurt, in tegenstelling
+// tot een gewone load, OOK af bij zo'n herstel (event.persisted), waardoor
+// we de jokerstatus alsnog bewust kunnen forceren naar wat de server bedoelt.
+window.addEventListener('pageshow', function () {
+  var jokerVeld = document.querySelector('input[name="joker"]');
+  if (jokerVeld) {
+    jokerVeld.checked = {{ 'true' if mijn_voorspelling and mijn_voorspelling.joker else 'false' }};
+  }
+});
+</script>
 {% endif %}
 {% endblock %}
