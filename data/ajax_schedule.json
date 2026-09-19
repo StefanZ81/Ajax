@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-19T18:55:20.449909+00:00",
+  "bijgewerkt_op": "2026-09-19T19:00:44.437108+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -119,8 +119,8 @@
       "kickoff": "2026-09-19T18:00:00+00:00",
       "status": "live",
       "rust": {
-        "thuis": 0,
-        "uit": 0
+        "thuis": 1,
+        "uit": 1
       },
       "eind": {
         "thuis": 1,
