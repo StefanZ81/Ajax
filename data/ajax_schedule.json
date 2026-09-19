@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-19T18:50:26.380863+00:00",
+  "bijgewerkt_op": "2026-09-19T18:55:20.449909+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -118,10 +118,13 @@
       "uit": "SBV Excelsior",
       "kickoff": "2026-09-19T18:00:00+00:00",
       "status": "live",
-      "rust": null,
+      "rust": {
+        "thuis": 0,
+        "uit": 0
+      },
       "eind": {
         "thuis": 1,
-        "uit": 0
+        "uit": 1
       }
     },
     {
