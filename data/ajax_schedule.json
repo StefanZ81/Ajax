@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-20T08:25:22.714852+00:00",
+  "bijgewerkt_op": "2026-09-20T10:30:36.389127+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -474,10 +474,10 @@
     {
       "positie": 3,
       "team": "Feyenoord Rotterdam",
-      "punten": 14,
-      "gespeeld": 6,
+      "punten": 15,
+      "gespeeld": 7,
       "winst": 4,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 0
     },
     {
@@ -554,6 +554,15 @@
     },
     {
       "positie": 12,
+      "team": "FC Utrecht",
+      "punten": 6,
+      "gespeeld": 7,
+      "winst": 1,
+      "gelijk": 3,
+      "verlies": 3
+    },
+    {
+      "positie": 13,
       "team": "Telstar 1963",
       "punten": 5,
       "gespeeld": 6,
@@ -562,22 +571,13 @@
       "verlies": 3
     },
     {
-      "positie": 13,
+      "positie": 14,
       "team": "Sparta Rotterdam",
       "punten": 5,
       "gespeeld": 7,
       "winst": 1,
       "gelijk": 2,
       "verlies": 4
-    },
-    {
-      "positie": 14,
-      "team": "FC Utrecht",
-      "punten": 5,
-      "gespeeld": 6,
-      "winst": 1,
-      "gelijk": 2,
-      "verlies": 3
     },
     {
       "positie": 15,
@@ -616,5 +616,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-20T08:25:22.714843+00:00"
+  "stand_bijgewerkt_op": "2026-09-20T10:30:36.389117+00:00"
 }
