@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-09-20T12:35:20.855172+00:00",
+  "bijgewerkt_op": "2026-09-20T14:35:22.819410+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -455,6 +455,15 @@
   "stand": [
     {
       "positie": 1,
+      "team": "AZ",
+      "punten": 19,
+      "gespeeld": 7,
+      "winst": 6,
+      "gelijk": 1,
+      "verlies": 0
+    },
+    {
+      "positie": 2,
       "team": "Feyenoord Rotterdam",
       "punten": 17,
       "gespeeld": 7,
@@ -463,35 +472,26 @@
       "verlies": 0
     },
     {
-      "positie": 2,
-      "team": "PSV",
-      "punten": 17,
-      "gespeeld": 7,
-      "winst": 5,
-      "gelijk": 2,
-      "verlies": 0
-    },
-    {
       "positie": 3,
-      "team": "AZ",
-      "punten": 17,
+      "team": "PSV",
+      "punten": 16,
       "gespeeld": 7,
       "winst": 5,
-      "gelijk": 2,
-      "verlies": 0
+      "gelijk": 1,
+      "verlies": 1
     },
     {
       "positie": 4,
-      "team": "AFC Ajax",
-      "punten": 14,
+      "team": "FC Twente '65",
+      "punten": 16,
       "gespeeld": 7,
-      "winst": 4,
-      "gelijk": 2,
+      "winst": 5,
+      "gelijk": 1,
       "verlies": 1
     },
     {
       "positie": 5,
-      "team": "FC Twente '65",
+      "team": "AFC Ajax",
       "punten": 14,
       "gespeeld": 7,
       "winst": 4,
@@ -554,16 +554,16 @@
     },
     {
       "positie": 12,
-      "team": "Telstar 1963",
-      "punten": 6,
+      "team": "Sparta Rotterdam",
+      "punten": 5,
       "gespeeld": 7,
       "winst": 1,
-      "gelijk": 3,
-      "verlies": 3
+      "gelijk": 2,
+      "verlies": 4
     },
     {
       "positie": 13,
-      "team": "Sparta Rotterdam",
+      "team": "Telstar 1963",
       "punten": 5,
       "gespeeld": 7,
       "winst": 1,
@@ -616,5 +616,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-09-20T12:35:20.855163+00:00"
+  "stand_bijgewerkt_op": "2026-09-20T14:35:22.819401+00:00"
 }
