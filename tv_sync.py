@@ -27,6 +27,22 @@ CACHE_DUUR_S = 5 * 60
 
 _cache: dict = {"data": [], "opgehaald_op": 0.0}
 
+# sport-tv-gids.nl gebruikt voor sommige clubs een andere naam dan onze
+# eigen (van football-data.org afkomstige) naam waarmee de wedstrijd in de
+# app wordt getoond. Deze tabel is UITSLUITEND bedoeld om de tv-zender aan
+# de juiste wedstrijd te koppelen -- de clubnaam zoals die in de app wordt
+# weergegeven, blijft hierdoor altijd ongewijzigd.
+_NAAM_ALIASSEN = {
+    "Nijmegen": "NEC",
+}
+
+
+def _namen_komen_overeen(scraped_naam: str, eigen_naam: str) -> bool:
+    if scraped_naam in eigen_naam or eigen_naam in scraped_naam:
+        return True
+    alias = _NAAM_ALIASSEN.get(scraped_naam)
+    return bool(alias) and (alias in eigen_naam or eigen_naam in alias)
+
 
 def _ververs_cache_indien_nodig() -> None:
     nu = time.time()
@@ -61,7 +77,6 @@ def zoek_zenders_voor_wedstrijd(match: dict) -> list[dict]:
     tegenstander = match["uit"] if is_thuis else match["thuis"]
 
     for w in _cache["data"]:
-        naam_komt_overeen = w["tegenstander"] in tegenstander or tegenstander in w["tegenstander"]
-        if w["dag"] == kickoff.day and w["maand"] == kickoff.month and naam_komt_overeen:
+        if w["dag"] == kickoff.day and w["maand"] == kickoff.month and _namen_komen_overeen(w["tegenstander"], tegenstander):
             return w["zenders"]
     return []
