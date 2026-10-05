@@ -14,6 +14,21 @@
           "logo": "https://sport-tv-gids.nl/sportzender/espn-1-live-op-tv-zender-nederland.png"
         }
       ]
+    },
+    {
+      "dag": 15,
+      "maand": 10,
+      "tegenstander": "Hajduk Split",
+      "zenders": [
+        {
+          "naam": "Ziggo Sport 1",
+          "logo": "/static/zenders/ziggo-sport-1.jpg"
+        },
+        {
+          "naam": "Ziggo Sport 14",
+          "logo": "https://sport-tv-gids.nl/sportzender/ziggo-sport-14-live-op-tv-zender-nederland.png"
+        }
+      ]
     }
   ]
 }
