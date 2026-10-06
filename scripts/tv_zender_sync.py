@@ -41,6 +41,11 @@ OUTPUT_PATH = "data/tv_zenders.json"
 _MAANDEN = {
     "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
     "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+    # Nederlandse schrijfwijzen die afwijken van de Engelse (de overige
+    # maanden zijn in beide talen hetzelfde). Zonder deze werd een datum
+    # als "10. Okt" niet als nieuwe wedstrijd herkend: die wedstrijd
+    # verdween, en de zender ervan lekte door naar de vorige wedstrijd.
+    "okt": 10, "mrt": 3, "maa": 3, "mei": 5,
 }
 _DATUM_PATROON = re.compile(
     r"(\d{1,2})\.\s*(" + "|".join(_MAANDEN.keys()) + r")", re.IGNORECASE
