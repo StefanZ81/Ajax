@@ -62,7 +62,14 @@ _DATUM_PATROON = re.compile(
 # Worden volledig genegeerd, ongeacht wat er verder op de pagina staat.
 _ZENDER_UITSLUITINGEN = {
     "DAZN",
+    "Ziggo Sport 14",
 }
+
+
+def _is_uitgesloten(naam: str) -> bool:
+    """Exacte vergelijking (dus 'Ziggo Sport 1' valt níet onder 'Ziggo Sport 14'),
+    maar ongevoelig voor hoofdletters en omringende spaties."""
+    return naam.strip().lower() in {n.lower() for n in _ZENDER_UITSLUITINGEN}
 
 _ZENDER_CORRECTIES = {
     "Ziggo Voetbal": {
@@ -172,7 +179,7 @@ def haal_op() -> list[dict]:
             zendernaam = node.get("title")
             if (
                 zendernaam
-                and zendernaam not in _ZENDER_UITSLUITINGEN
+                and not _is_uitgesloten(zendernaam)
                 and zendernaam not in [z["naam"] for z in huidige["zenders"]]
             ):
                 src = node.get("src") or ""
