@@ -33,7 +33,7 @@ _cache: dict = {"data": [], "opgehaald_op": 0.0}
 # de juiste wedstrijd te koppelen -- de clubnaam zoals die in de app wordt
 # weergegeven, blijft hierdoor altijd ongewijzigd.
 _NAAM_ALIASSEN = {
-    "Nijmegen": "NEC", "N.e.c.", "N.E.C.", "N.E.C"
+    "Nijmegen": "NEC","N.e.c.","N.E.C.","N.E.C"
 }
 
 
