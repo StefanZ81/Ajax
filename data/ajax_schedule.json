@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-09T16:20:25.016166+00:00",
+  "bijgewerkt_op": "2026-10-09T18:20:25.791855+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -474,10 +474,10 @@
     {
       "positie": 3,
       "team": "PSV",
-      "punten": 16,
-      "gespeeld": 7,
+      "punten": 17,
+      "gespeeld": 8,
       "winst": 5,
-      "gelijk": 1,
+      "gelijk": 2,
       "verlies": 1
     },
     {
@@ -537,10 +537,10 @@
     {
       "positie": 10,
       "team": "SC Heerenveen",
-      "punten": 9,
-      "gespeeld": 7,
+      "punten": 10,
+      "gespeeld": 8,
       "winst": 2,
-      "gelijk": 3,
+      "gelijk": 4,
       "verlies": 2
     },
     {
@@ -616,5 +616,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-09T16:20:25.016154+00:00"
+  "stand_bijgewerkt_op": "2026-10-09T18:20:25.791844+00:00"
 }
