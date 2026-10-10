@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-10T14:50:25.800126+00:00",
+  "bijgewerkt_op": "2026-10-10T16:50:27.140823+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -455,6 +455,15 @@
   "stand": [
     {
       "positie": 1,
+      "team": "AZ",
+      "punten": 20,
+      "gespeeld": 8,
+      "winst": 6,
+      "gelijk": 2,
+      "verlies": 0
+    },
+    {
+      "positie": 2,
       "team": "PSV",
       "punten": 19,
       "gespeeld": 8,
@@ -463,21 +472,12 @@
       "verlies": 1
     },
     {
-      "positie": 2,
-      "team": "AZ",
-      "punten": 19,
-      "gespeeld": 7,
-      "winst": 6,
-      "gelijk": 1,
-      "verlies": 0
-    },
-    {
       "positie": 3,
       "team": "Feyenoord Rotterdam",
-      "punten": 17,
-      "gespeeld": 7,
+      "punten": 18,
+      "gespeeld": 8,
       "winst": 5,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 0
     },
     {
@@ -616,5 +616,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-10T14:50:25.800118+00:00"
+  "stand_bijgewerkt_op": "2026-10-10T16:50:27.140809+00:00"
 }
