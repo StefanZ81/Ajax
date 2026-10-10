@@ -78,13 +78,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558878,
-      "competitie": "Eredivisie",
-      "thuis": "AFC Ajax",
-      "uit": "NEC",
-      "kickoff": "2026-10-10T19:00:00+00:00"
-    },
-    {
       "id": -2,
       "competitie": "Conference League",
       "thuis": "HKN Hajduk Split",
