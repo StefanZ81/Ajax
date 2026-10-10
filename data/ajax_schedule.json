@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-10T12:50:23.284259+00:00",
+  "bijgewerkt_op": "2026-10-10T14:50:25.800126+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -518,21 +518,21 @@
     },
     {
       "positie": 8,
+      "team": "Go Ahead Eagles",
+      "punten": 11,
+      "gespeeld": 8,
+      "winst": 2,
+      "gelijk": 5,
+      "verlies": 1
+    },
+    {
+      "positie": 9,
       "team": "FC Groningen",
       "punten": 11,
       "gespeeld": 7,
       "winst": 3,
       "gelijk": 2,
       "verlies": 2
-    },
-    {
-      "positie": 9,
-      "team": "Go Ahead Eagles",
-      "punten": 10,
-      "gespeeld": 7,
-      "winst": 2,
-      "gelijk": 4,
-      "verlies": 1
     },
     {
       "positie": 10,
@@ -555,10 +555,10 @@
     {
       "positie": 12,
       "team": "Sparta Rotterdam",
-      "punten": 5,
-      "gespeeld": 7,
+      "punten": 6,
+      "gespeeld": 8,
       "winst": 1,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 4
     },
     {
@@ -616,5 +616,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-10T12:50:23.284251+00:00"
+  "stand_bijgewerkt_op": "2026-10-10T14:50:25.800118+00:00"
 }
