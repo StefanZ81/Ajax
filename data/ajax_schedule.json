@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-10T18:50:26.485948+00:00",
+  "bijgewerkt_op": "2026-10-10T18:55:18.933544+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -455,7 +455,7 @@
   "stand": [
     {
       "positie": 1,
-      "team": "AZ",
+      "team": "Feyenoord Rotterdam",
       "punten": 20,
       "gespeeld": 8,
       "winst": 6,
@@ -473,20 +473,20 @@
     },
     {
       "positie": 3,
-      "team": "Feyenoord Rotterdam",
-      "punten": 18,
+      "team": "AZ",
+      "punten": 19,
       "gespeeld": 8,
-      "winst": 5,
-      "gelijk": 3,
-      "verlies": 0
+      "winst": 6,
+      "gelijk": 1,
+      "verlies": 1
     },
     {
       "positie": 4,
       "team": "FC Twente '65",
-      "punten": 16,
-      "gespeeld": 7,
+      "punten": 17,
+      "gespeeld": 8,
       "winst": 5,
-      "gelijk": 1,
+      "gelijk": 2,
       "verlies": 1
     },
     {
@@ -501,10 +501,10 @@
     {
       "positie": 6,
       "team": "Fortuna Sittard",
-      "punten": 13,
-      "gespeeld": 7,
+      "punten": 14,
+      "gespeeld": 8,
       "winst": 4,
-      "gelijk": 1,
+      "gelijk": 2,
       "verlies": 2
     },
     {
@@ -616,5 +616,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-10T16:50:27.140809+00:00"
+  "stand_bijgewerkt_op": "2026-10-10T18:55:18.395132+00:00"
 }
