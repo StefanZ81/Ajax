@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-10T21:00:46.786783+00:00",
+  "bijgewerkt_op": "2026-10-10T21:05:19.271555+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -135,7 +135,7 @@
       "thuis": "AFC Ajax",
       "uit": "NEC",
       "kickoff": "2026-10-10T19:00:00+00:00",
-      "status": "live",
+      "status": "afgelopen",
       "rust": null,
       "eind": {
         "thuis": 1,
@@ -495,10 +495,10 @@
     {
       "positie": 5,
       "team": "AFC Ajax",
-      "punten": 14,
-      "gespeeld": 7,
+      "punten": 15,
+      "gespeeld": 8,
       "winst": 4,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 1
     },
     {
@@ -549,10 +549,10 @@
     {
       "positie": 11,
       "team": "NEC",
-      "punten": 8,
-      "gespeeld": 7,
+      "punten": 9,
+      "gespeeld": 8,
       "winst": 2,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 3
     },
     {
@@ -619,5 +619,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-10T18:55:18.395132+00:00"
+  "stand_bijgewerkt_op": "2026-10-10T21:05:19.271545+00:00"
 }
