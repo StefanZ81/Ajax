@@ -26,9 +26,8 @@ import requests
 GITHUB_OWNER = os.environ.get("GITHUB_OWNER", "<jouwgebruikersnaam>")
 GITHUB_REPO = os.environ.get("GITHUB_REPO", "j-poule-web")
 GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main")
-NIEUWS_DATA_URL = os.environ.get(
-    "NIEUWS_DATA_URL",
-    f"https://raw.githubusercontent.com/{GITHUB_OWNER}/{GITHUB_REPO}/{GITHUB_BRANCH}/data/nieuws.json",
+NIEUWS_DATA_URL = os.environ.get("NIEUWS_DATA_URL") or (
+    f"https://raw.githubusercontent.com/{GITHUB_OWNER}/{GITHUB_REPO}/{GITHUB_BRANCH}/data/nieuws.json"
 )
 NIEUWS_MIN_INTERVAL_S = int(os.environ.get("NIEUWS_SYNC_MIN_INTERVAL_S", "300"))  # 5 minuten
 
