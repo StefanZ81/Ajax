@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-11T09:25:19.964537+00:00",
+  "bijgewerkt_op": "2026-10-11T11:25:22.062940+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -569,6 +569,15 @@
     },
     {
       "positie": 13,
+      "team": "FC Utrecht",
+      "punten": 6,
+      "gespeeld": 8,
+      "winst": 1,
+      "gelijk": 3,
+      "verlies": 4
+    },
+    {
+      "positie": 14,
       "team": "Telstar 1963",
       "punten": 5,
       "gespeeld": 7,
@@ -577,17 +586,8 @@
       "verlies": 4
     },
     {
-      "positie": 14,
-      "team": "SC Cambuur-Leeuwarden",
-      "punten": 5,
-      "gespeeld": 7,
-      "winst": 1,
-      "gelijk": 2,
-      "verlies": 4
-    },
-    {
       "positie": 15,
-      "team": "FC Utrecht",
+      "team": "SC Cambuur-Leeuwarden",
       "punten": 5,
       "gespeeld": 7,
       "winst": 1,
@@ -605,16 +605,16 @@
     },
     {
       "positie": 17,
-      "team": "ADO Den Haag",
-      "punten": 2,
-      "gespeeld": 7,
+      "team": "Willem II Tilburg",
+      "punten": 3,
+      "gespeeld": 8,
       "winst": 0,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 5
     },
     {
       "positie": 18,
-      "team": "Willem II Tilburg",
+      "team": "ADO Den Haag",
       "punten": 2,
       "gespeeld": 7,
       "winst": 0,
@@ -622,5 +622,5 @@
       "verlies": 5
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-11T09:25:19.964527+00:00"
+  "stand_bijgewerkt_op": "2026-10-11T11:25:22.062931+00:00"
 }
