@@ -132,7 +132,28 @@ def map_match(m: dict) -> dict:
               f"ruststand {rust} hoger dan eindstand {eind} -- ruststand genegeerd.")
         rust = None
 
-    return {
+    status = _map_status(m["status"], kickoff=kickoff)
+
+    # Een wedstrijd geldt pas als 'afgelopen' (en wordt dus pas verwerkt:
+    # punten, standen, vergrendeling) als er ZOWEL een eindstand ALS een
+    # ruststand is. Meldt de bron 'afgelopen' met een lege ruststand, dan
+    # wachten we: de status blijft 'live' en de wedstrijd wordt bij de
+    # volgende sync-cyclus opnieuw opgehaald. 'wacht_op_rust' markeert dat
+    # de bron de wedstrijd wel al als beëindigd meldt (nodig voor de
+    # kruiscontrole met de standen en voor het langer blijven proberen).
+    wacht_op_rust = False
+    if status == "afgelopen" and (rust is None or eind is None):
+        wacht_op_rust = True
+        status = "live"
+        wachttijd_min = (datetime.now(timezone.utc) - kickoff).total_seconds() / 60
+        print(f"[map_match] Wedstrijd {m['id']} is volgens de bron afgelopen, maar "
+              f"{'de ruststand' if rust is None else 'de eindstand'} ontbreekt -- verwerking wacht "
+              f"(aftrap {wachttijd_min:.0f} min geleden).")
+        if wachttijd_min > 360:
+            print(f"[map_match] LET OP: wedstrijd {m['id']} wacht al >6 uur op een ruststand -- "
+                  f"overweeg handmatige invoer via het beheerscherm.")
+
+    resultaat = {
         "id": m["id"],
         "seizoen": _seizoen_label(kickoff),
         "competitie": "Eredivisie",
@@ -140,10 +161,13 @@ def map_match(m: dict) -> dict:
         "thuis": m["homeTeam"]["name"],
         "uit": m["awayTeam"]["name"],
         "kickoff": kickoff.isoformat(),
-        "status": _map_status(m["status"], kickoff=kickoff),
+        "status": status,
         "rust": rust,
         "eind": eind,
     }
+    if wacht_op_rust:
+        resultaat["wacht_op_rust"] = True
+    return resultaat
 
 
 def is_ajax_wedstrijd(m: dict) -> bool:
@@ -174,6 +198,11 @@ def wedstrijden_binnen_probe_venster(matches: list[dict]) -> list[int]:
             continue
         kickoff = datetime.fromisoformat(m["kickoff"])
         venster_einde = kickoff + timedelta(minutes=PROBE_VENSTER_MINUTEN)
+        # Een wedstrijd die de bron al als beëindigd meldt maar waarvan de
+        # ruststand nog ontbreekt, blijft tot 24 uur na aftrap geprobeerd
+        # worden (ook na het gewone probe-venster).
+        if m.get("wacht_op_rust"):
+            venster_einde = kickoff + timedelta(hours=24)
         if kickoff - PROBE_START_MARGE <= nu <= venster_einde:
             te_proben.append(m["id"])
     return te_proben
@@ -250,7 +279,9 @@ def fetch_standings(matches: list[dict] | None = None) -> list[dict]:
             # de hele standenlijst afwijzen.
             if matches is not None:
                 ajax_rij = next((r for r in resultaat if "ajax" in r["team"].lower()), None)
-                eigen_afgeronde_aantal = sum(1 for m in matches if m["status"] == "afgelopen")
+                eigen_afgeronde_aantal = sum(
+                    1 for m in matches if m["status"] == "afgelopen" or m.get("wacht_op_rust")
+                )
                 if ajax_rij and ajax_rij["gespeeld"] != eigen_afgeronde_aantal:
                     print(
                         f"[fetch_standings] Inconsistentie: standenlijst meldt Ajax heeft "
@@ -416,6 +447,7 @@ def main() -> None:
     standen_verversen = False
     for fixture_id in te_proben:
         was_al_afgelopen = by_id.get(fixture_id, {}).get("status") == "afgelopen"
+        was_al_wachtend = bool(by_id.get(fixture_id, {}).get("wacht_op_rust"))
         print(f"[main] Probe fixture {fixture_id}...")
         bijgewerkt = probe_fixture(fixture_id)
         if bijgewerkt:
@@ -425,6 +457,10 @@ def main() -> None:
             # gezien ook net gewijzigd -- niet wachten tot de eerstvolgende
             # dagelijkse verversing (die kan tot bijna 24 uur later zijn).
             if not was_al_afgelopen and bijgewerkt.get("status") == "afgelopen":
+                standen_verversen = True
+            elif not was_al_wachtend and bijgewerkt.get("wacht_op_rust"):
+                # Bron meldt de wedstrijd als beëindigd (alleen de ruststand
+                # ontbreekt nog): de competitiestand is dan ook al gewijzigd.
                 standen_verversen = True
 
     if standen_verversen:
