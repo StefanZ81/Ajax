@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-10T23:05:23.657356+00:00",
+  "bijgewerkt_op": "2026-10-11T00:00:44.554106+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -136,7 +136,10 @@
       "uit": "NEC",
       "kickoff": "2026-10-10T19:00:00+00:00",
       "status": "afgelopen",
-      "rust": null,
+      "rust": {
+        "thuis": 1,
+        "uit": 1
+      },
       "eind": {
         "thuis": 1,
         "uit": 1
