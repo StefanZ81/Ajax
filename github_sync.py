@@ -21,12 +21,16 @@ from __future__ import annotations
 import os
 import time
 
-import github_data
+import requests
+
 from db import get_connection
 
-# Bron-locatie en eventuele authenticatie (privé-repo) worden geregeld in
-# github_data.py. GITHUB_DATA_URL blijft werken als expliciete override.
-GITHUB_DATA_URL_OVERRIDE = os.environ.get("GITHUB_DATA_URL") or None
+GITHUB_OWNER = os.environ.get("GITHUB_OWNER", "<jouwgebruikersnaam>")
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "j-poule-web")
+GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main")
+GITHUB_DATA_URL = os.environ.get("GITHUB_DATA_URL") or (
+    f"https://raw.githubusercontent.com/{GITHUB_OWNER}/{GITHUB_REPO}/{GITHUB_BRANCH}/data/ajax_schedule.json"
+)
 MIN_INTERVAL_S = int(os.environ.get("GITHUB_SYNC_MIN_INTERVAL_S", "60"))
 
 _laatste_poging = 0.0  # per proces; op PythonAnywhere is dat meestal 1 worker
@@ -48,9 +52,9 @@ def sync_if_needed(force: bool = False) -> None:
 
 
 def _sync_now() -> int:
-    payload = github_data.haal_json(
-        "data/ajax_schedule.json", timeout=10, override_url=GITHUB_DATA_URL_OVERRIDE
-    )
+    resp = requests.get(GITHUB_DATA_URL, timeout=10)
+    resp.raise_for_status()
+    payload = resp.json()
     wedstrijden = payload.get("wedstrijden") or []
     stand = payload.get("stand") or []
 
