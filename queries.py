@@ -676,7 +676,13 @@ def bereken_en_bewaar_punten(match_id: int) -> int:
     via github_sync.py (automatische Eredivisie-uitslagen) als via set_match_match_result()
     hierboven (handmatig ingevoerde Europese wedstrijden)."""
     match = get_match(match_id)
-    if not match or not match["status"] == "afgelopen" or match["uitslag_eind_thuis"] is None:
+    if (
+        not match
+        or not match["status"] == "afgelopen"
+        or match["uitslag_eind_thuis"] is None
+        or match["uitslag_rust_thuis"] is None
+    ):
+        # Pas punten uitdelen als ZOWEL de eind- ALS de ruststand bekend is.
         return 0
 
     rules = get_rules(match["seizoen"])
