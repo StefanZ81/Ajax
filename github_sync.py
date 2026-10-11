@@ -21,17 +21,12 @@ from __future__ import annotations
 import os
 import time
 
-import requests
-
+import github_data
 from db import get_connection
 
-GITHUB_OWNER = os.environ.get("GITHUB_OWNER", "<jouwgebruikersnaam>")
-GITHUB_REPO = os.environ.get("GITHUB_REPO", "j-poule-web")
-GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main")
-GITHUB_DATA_URL = os.environ.get(
-    "GITHUB_DATA_URL",
-    f"https://raw.githubusercontent.com/{GITHUB_OWNER}/{GITHUB_REPO}/{GITHUB_BRANCH}/data/ajax_schedule.json",
-)
+# Bron-locatie en eventuele authenticatie (privé-repo) worden geregeld in
+# github_data.py. GITHUB_DATA_URL blijft werken als expliciete override.
+GITHUB_DATA_URL_OVERRIDE = os.environ.get("GITHUB_DATA_URL") or None
 MIN_INTERVAL_S = int(os.environ.get("GITHUB_SYNC_MIN_INTERVAL_S", "60"))
 
 _laatste_poging = 0.0  # per proces; op PythonAnywhere is dat meestal 1 worker
@@ -53,9 +48,9 @@ def sync_if_needed(force: bool = False) -> None:
 
 
 def _sync_now() -> int:
-    resp = requests.get(GITHUB_DATA_URL, timeout=10)
-    resp.raise_for_status()
-    payload = resp.json()
+    payload = github_data.haal_json(
+        "data/ajax_schedule.json", timeout=10, override_url=GITHUB_DATA_URL_OVERRIDE
+    )
     wedstrijden = payload.get("wedstrijden") or []
     stand = payload.get("stand") or []
 
@@ -77,6 +72,22 @@ def _sync_now() -> int:
 
     if not wedstrijden:
         return 0
+
+    # Tweede vangnet (naast scripts/ajax_data_sync.py): een wedstrijd wordt
+    # pas als 'afgelopen' verwerkt als er ZOWEL een eind- ALS een ruststand
+    # is. Staat een wedstrijd in de bron als 'afgelopen' zonder een van
+    # beide (bv. een oudere JSON of een andere bron), dan blijft hij hier
+    # 'live' en worden er nog geen punten uitgedeeld.
+    genormaliseerd = []
+    for m in wedstrijden:
+        if m.get("status") == "afgelopen" and (
+            (m.get("rust") or {}).get("thuis") is None or (m.get("eind") or {}).get("thuis") is None
+        ):
+            print(f"[github_sync] Wedstrijd {m['id']} ({m['thuis']} - {m['uit']}) is in de bron 'afgelopen' "
+                  f"maar mist rust- of eindstand -- blijft 'live' tot beide bekend zijn.")
+            m = {**m, "status": "live"}
+        genormaliseerd.append(m)
+    wedstrijden = genormaliseerd
 
     with get_connection() as conn:
         for m in wedstrijden:
