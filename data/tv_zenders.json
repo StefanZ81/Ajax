@@ -1,17 +1,6 @@
 {
   "wedstrijden": [
     {
-      "dag": 15,
-      "maand": 10,
-      "tegenstander": "Hajduk Split",
-      "zenders": [
-        {
-          "naam": "Ziggo Sport 1",
-          "logo": "/static/zenders/ziggo-sport-1.jpg"
-        }
-      ]
-    },
-    {
       "dag": 18,
       "maand": 10,
       "tegenstander": "FC Groningen",
@@ -34,6 +23,21 @@
         {
           "naam": "Ziggo Sport 1",
           "logo": "/static/zenders/ziggo-sport-1.jpg"
+        }
+      ]
+    },
+    {
+      "dag": 25,
+      "maand": 10,
+      "tegenstander": "Sparta Rotterdam",
+      "zenders": [
+        {
+          "naam": "ESPN Extra",
+          "logo": "https://sport-tv-gids.nl/sportzender/espn-extra-live-op-tv-zender-nederland.png"
+        },
+        {
+          "naam": "ESPN 3",
+          "logo": "https://sport-tv-gids.nl/sportzender/espn-3-live-op-tv-zender-nederland.png"
         }
       ]
     }
