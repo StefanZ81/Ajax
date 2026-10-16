@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-16T17:00:47.407443+00:00",
+  "bijgewerkt_op": "2026-10-16T19:05:22.108104+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -524,6 +524,15 @@
     },
     {
       "positie": 8,
+      "team": "SC Heerenveen",
+      "punten": 12,
+      "gespeeld": 9,
+      "winst": 3,
+      "gelijk": 3,
+      "verlies": 3
+    },
+    {
+      "positie": 9,
       "team": "Go Ahead Eagles",
       "punten": 11,
       "gespeeld": 8,
@@ -532,22 +541,13 @@
       "verlies": 1
     },
     {
-      "positie": 9,
+      "positie": 10,
       "team": "SBV Excelsior",
       "punten": 11,
-      "gespeeld": 8,
+      "gespeeld": 9,
       "winst": 3,
       "gelijk": 2,
-      "verlies": 3
-    },
-    {
-      "positie": 10,
-      "team": "SC Heerenveen",
-      "punten": 9,
-      "gespeeld": 8,
-      "winst": 2,
-      "gelijk": 3,
-      "verlies": 3
+      "verlies": 4
     },
     {
       "positie": 11,
@@ -622,5 +622,5 @@
       "verlies": 6
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-16T17:00:47.407434+00:00"
+  "stand_bijgewerkt_op": "2026-10-16T19:05:22.108094+00:00"
 }
