@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-18T10:05:19.618084+00:00",
+  "bijgewerkt_op": "2026-10-18T12:10:26.799389+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -535,10 +535,10 @@
       "positie": 9,
       "team": "Go Ahead Eagles",
       "punten": 11,
-      "gespeeld": 8,
+      "gespeeld": 9,
       "winst": 2,
       "gelijk": 5,
-      "verlies": 1
+      "verlies": 2
     },
     {
       "positie": 10,
@@ -587,6 +587,15 @@
     },
     {
       "positie": 15,
+      "team": "PEC Zwolle",
+      "punten": 7,
+      "gespeeld": 9,
+      "winst": 2,
+      "gelijk": 1,
+      "verlies": 6
+    },
+    {
+      "positie": 16,
       "team": "Telstar 1963",
       "punten": 6,
       "gespeeld": 9,
@@ -595,22 +604,13 @@
       "verlies": 5
     },
     {
-      "positie": 16,
+      "positie": 17,
       "team": "ADO Den Haag",
       "punten": 6,
       "gespeeld": 9,
       "winst": 1,
       "gelijk": 3,
       "verlies": 5
-    },
-    {
-      "positie": 17,
-      "team": "PEC Zwolle",
-      "punten": 4,
-      "gespeeld": 8,
-      "winst": 1,
-      "gelijk": 1,
-      "verlies": 6
     },
     {
       "positie": 18,
@@ -622,5 +622,5 @@
       "verlies": 7
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-18T10:05:19.618075+00:00"
+  "stand_bijgewerkt_op": "2026-10-18T12:10:26.799381+00:00"
 }
