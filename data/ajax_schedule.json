@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-18T18:50:25.946222+00:00",
+  "bijgewerkt_op": "2026-10-18T20:55:18.915844+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -485,15 +485,6 @@
     },
     {
       "positie": 3,
-      "team": "FC Twente '65",
-      "punten": 20,
-      "gespeeld": 9,
-      "winst": 6,
-      "gelijk": 2,
-      "verlies": 1
-    },
-    {
-      "positie": 4,
       "team": "PSV",
       "punten": 19,
       "gespeeld": 9,
@@ -502,13 +493,22 @@
       "verlies": 2
     },
     {
-      "positie": 5,
+      "positie": 4,
       "team": "AFC Ajax",
       "punten": 18,
       "gespeeld": 9,
       "winst": 5,
       "gelijk": 3,
       "verlies": 1
+    },
+    {
+      "positie": 5,
+      "team": "FC Twente '65",
+      "punten": 17,
+      "gespeeld": 9,
+      "winst": 5,
+      "gelijk": 2,
+      "verlies": 2
     },
     {
       "positie": 6,
@@ -557,6 +557,15 @@
     },
     {
       "positie": 11,
+      "team": "FC Utrecht",
+      "punten": 11,
+      "gespeeld": 9,
+      "winst": 3,
+      "gelijk": 2,
+      "verlies": 4
+    },
+    {
+      "positie": 12,
       "team": "NEC",
       "punten": 10,
       "gespeeld": 9,
@@ -565,7 +574,7 @@
       "verlies": 3
     },
     {
-      "positie": 12,
+      "positie": 13,
       "team": "Sparta Rotterdam",
       "punten": 9,
       "gespeeld": 9,
@@ -574,22 +583,13 @@
       "verlies": 4
     },
     {
-      "positie": 13,
+      "positie": 14,
       "team": "SC Cambuur-Leeuwarden",
       "punten": 9,
       "gespeeld": 9,
       "winst": 2,
       "gelijk": 3,
       "verlies": 4
-    },
-    {
-      "positie": 14,
-      "team": "FC Utrecht",
-      "punten": 8,
-      "gespeeld": 9,
-      "winst": 2,
-      "gelijk": 2,
-      "verlies": 5
     },
     {
       "positie": 15,
@@ -628,5 +628,5 @@
       "verlies": 7
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-18T18:50:25.946214+00:00"
+  "stand_bijgewerkt_op": "2026-10-18T20:55:18.915834+00:00"
 }
