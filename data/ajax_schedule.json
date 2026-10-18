@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-18T14:50:23.042499+00:00",
+  "bijgewerkt_op": "2026-10-18T14:55:23.337738+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -153,9 +153,12 @@
       "thuis": "FC Groningen",
       "uit": "AFC Ajax",
       "kickoff": "2026-10-18T14:45:00+00:00",
-      "status": "gepland",
+      "status": "live",
       "rust": null,
-      "eind": null
+      "eind": {
+        "thuis": 0,
+        "uit": 0
+      }
     },
     {
       "id": 558856,
