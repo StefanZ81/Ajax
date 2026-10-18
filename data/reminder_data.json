@@ -78,13 +78,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558864,
-      "competitie": "Eredivisie",
-      "thuis": "FC Groningen",
-      "uit": "AFC Ajax",
-      "kickoff": "2026-10-18T14:45:00+00:00"
-    },
-    {
       "id": -3,
       "competitie": "Conference League",
       "thuis": "AFC Ajax",
