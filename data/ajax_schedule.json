@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-18T12:10:26.799389+00:00",
+  "bijgewerkt_op": "2026-10-18T14:15:25.606909+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -481,10 +481,10 @@
       "positie": 3,
       "team": "AZ",
       "punten": 19,
-      "gespeeld": 8,
+      "gespeeld": 9,
       "winst": 6,
       "gelijk": 1,
-      "verlies": 1
+      "verlies": 2
     },
     {
       "positie": 4,
@@ -551,6 +551,15 @@
     },
     {
       "positie": 11,
+      "team": "SC Cambuur-Leeuwarden",
+      "punten": 11,
+      "gespeeld": 9,
+      "winst": 3,
+      "gelijk": 2,
+      "verlies": 4
+    },
+    {
+      "positie": 12,
       "team": "NEC",
       "punten": 9,
       "gespeeld": 8,
@@ -559,21 +568,12 @@
       "verlies": 3
     },
     {
-      "positie": 12,
+      "positie": 13,
       "team": "Sparta Rotterdam",
       "punten": 9,
       "gespeeld": 9,
       "winst": 2,
       "gelijk": 3,
-      "verlies": 4
-    },
-    {
-      "positie": 13,
-      "team": "SC Cambuur-Leeuwarden",
-      "punten": 8,
-      "gespeeld": 8,
-      "winst": 2,
-      "gelijk": 2,
       "verlies": 4
     },
     {
@@ -622,5 +622,5 @@
       "verlies": 7
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-18T12:10:26.799381+00:00"
+  "stand_bijgewerkt_op": "2026-10-18T14:15:25.606900+00:00"
 }
