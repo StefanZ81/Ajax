@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-18T16:45:26.545810+00:00",
+  "bijgewerkt_op": "2026-10-18T16:50:24.676091+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -153,7 +153,7 @@
       "thuis": "FC Groningen",
       "uit": "AFC Ajax",
       "kickoff": "2026-10-18T14:45:00+00:00",
-      "status": "live",
+      "status": "afgelopen",
       "rust": {
         "thuis": 0,
         "uit": 2
@@ -476,6 +476,15 @@
     },
     {
       "positie": 2,
+      "team": "AZ",
+      "punten": 20,
+      "gespeeld": 9,
+      "winst": 6,
+      "gelijk": 2,
+      "verlies": 1
+    },
+    {
+      "positie": 3,
       "team": "PSV",
       "punten": 19,
       "gespeeld": 9,
@@ -484,16 +493,16 @@
       "verlies": 2
     },
     {
-      "positie": 3,
-      "team": "AZ",
-      "punten": 19,
+      "positie": 4,
+      "team": "AFC Ajax",
+      "punten": 18,
       "gespeeld": 9,
-      "winst": 6,
-      "gelijk": 1,
-      "verlies": 2
+      "winst": 5,
+      "gelijk": 3,
+      "verlies": 1
     },
     {
-      "positie": 4,
+      "positie": 5,
       "team": "FC Twente '65",
       "punten": 17,
       "gespeeld": 8,
@@ -502,22 +511,13 @@
       "verlies": 1
     },
     {
-      "positie": 5,
-      "team": "AFC Ajax",
-      "punten": 15,
-      "gespeeld": 8,
-      "winst": 4,
-      "gelijk": 3,
-      "verlies": 1
-    },
-    {
       "positie": 6,
       "team": "FC Groningen",
       "punten": 14,
-      "gespeeld": 8,
+      "gespeeld": 9,
       "winst": 4,
       "gelijk": 2,
-      "verlies": 2
+      "verlies": 3
     },
     {
       "positie": 7,
@@ -557,15 +557,6 @@
     },
     {
       "positie": 11,
-      "team": "SC Cambuur-Leeuwarden",
-      "punten": 11,
-      "gespeeld": 9,
-      "winst": 3,
-      "gelijk": 2,
-      "verlies": 4
-    },
-    {
-      "positie": 12,
       "team": "NEC",
       "punten": 9,
       "gespeeld": 8,
@@ -574,8 +565,17 @@
       "verlies": 3
     },
     {
-      "positie": 13,
+      "positie": 12,
       "team": "Sparta Rotterdam",
+      "punten": 9,
+      "gespeeld": 9,
+      "winst": 2,
+      "gelijk": 3,
+      "verlies": 4
+    },
+    {
+      "positie": 13,
+      "team": "SC Cambuur-Leeuwarden",
       "punten": 9,
       "gespeeld": 9,
       "winst": 2,
@@ -628,5 +628,5 @@
       "verlies": 7
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-18T14:15:25.606900+00:00"
+  "stand_bijgewerkt_op": "2026-10-18T16:50:24.676081+00:00"
 }
