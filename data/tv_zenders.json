@@ -17,12 +17,12 @@
       "tegenstander": "Sparta Rotterdam",
       "zenders": [
         {
-          "naam": "ESPN Extra",
-          "logo": "https://sport-tv-gids.nl/sportzender/espn-extra-live-op-tv-zender-nederland.png"
-        },
-        {
           "naam": "ESPN 3",
           "logo": "https://sport-tv-gids.nl/sportzender/espn-3-live-op-tv-zender-nederland.png"
+        },
+        {
+          "naam": "ESPN Extra",
+          "logo": "https://sport-tv-gids.nl/sportzender/espn-extra-live-op-tv-zender-nederland.png"
         }
       ]
     }
