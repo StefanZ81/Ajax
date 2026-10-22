@@ -78,13 +78,6 @@
   ],
   "wedstrijden": [
     {
-      "id": -3,
-      "competitie": "Conference League",
-      "thuis": "AFC Ajax",
-      "uit": "Atalanta BC",
-      "kickoff": "2026-10-22T19:00:00+00:00"
-    },
-    {
       "id": 558856,
       "competitie": "Eredivisie",
       "thuis": "Sparta Rotterdam",
