@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-24T16:35:18.915113+00:00",
+  "bijgewerkt_op": "2026-10-24T18:35:21.283158+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -548,7 +548,7 @@
     },
     {
       "positie": 10,
-      "team": "FC Utrecht",
+      "team": "SC Cambuur-Leeuwarden",
       "punten": 12,
       "gespeeld": 10,
       "winst": 3,
@@ -557,6 +557,15 @@
     },
     {
       "positie": 11,
+      "team": "FC Utrecht",
+      "punten": 12,
+      "gespeeld": 10,
+      "winst": 3,
+      "gelijk": 3,
+      "verlies": 4
+    },
+    {
+      "positie": 12,
       "team": "SBV Excelsior",
       "punten": 11,
       "gespeeld": 9,
@@ -565,7 +574,7 @@
       "verlies": 4
     },
     {
-      "positie": 12,
+      "positie": 13,
       "team": "NEC",
       "punten": 10,
       "gespeeld": 9,
@@ -574,17 +583,8 @@
       "verlies": 3
     },
     {
-      "positie": 13,
-      "team": "Sparta Rotterdam",
-      "punten": 9,
-      "gespeeld": 9,
-      "winst": 2,
-      "gelijk": 3,
-      "verlies": 4
-    },
-    {
       "positie": 14,
-      "team": "SC Cambuur-Leeuwarden",
+      "team": "Sparta Rotterdam",
       "punten": 9,
       "gespeeld": 9,
       "winst": 2,
@@ -622,11 +622,11 @@
       "positie": 18,
       "team": "Willem II Tilburg",
       "punten": 2,
-      "gespeeld": 9,
+      "gespeeld": 10,
       "winst": 0,
       "gelijk": 2,
-      "verlies": 7
+      "verlies": 8
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-24T16:35:18.915105+00:00"
+  "stand_bijgewerkt_op": "2026-10-24T18:35:21.283152+00:00"
 }
