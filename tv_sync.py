@@ -39,6 +39,7 @@ _NAAM_ALIASSEN = {
     "N.e.c.": "NEC",
     "N.E.C.": "NEC",
     "N.E.C": "NEC",
+    "Alkmaar": "AZ",
 }
 
 
