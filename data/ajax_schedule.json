@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-24T18:35:21.283158+00:00",
+  "bijgewerkt_op": "2026-10-24T20:40:25.735213+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -512,6 +512,15 @@
     },
     {
       "positie": 6,
+      "team": "SC Heerenveen",
+      "punten": 15,
+      "gespeeld": 10,
+      "winst": 4,
+      "gelijk": 3,
+      "verlies": 3
+    },
+    {
+      "positie": 7,
       "team": "Fortuna Sittard",
       "punten": 15,
       "gespeeld": 9,
@@ -520,7 +529,7 @@
       "verlies": 2
     },
     {
-      "positie": 7,
+      "positie": 8,
       "team": "FC Groningen",
       "punten": 14,
       "gespeeld": 9,
@@ -529,22 +538,13 @@
       "verlies": 3
     },
     {
-      "positie": 8,
+      "positie": 9,
       "team": "Go Ahead Eagles",
       "punten": 14,
       "gespeeld": 10,
       "winst": 3,
       "gelijk": 5,
       "verlies": 2
-    },
-    {
-      "positie": 9,
-      "team": "SC Heerenveen",
-      "punten": 12,
-      "gespeeld": 9,
-      "winst": 3,
-      "gelijk": 3,
-      "verlies": 3
     },
     {
       "positie": 10,
@@ -613,10 +613,10 @@
       "positie": 17,
       "team": "ADO Den Haag",
       "punten": 6,
-      "gespeeld": 9,
+      "gespeeld": 10,
       "winst": 1,
       "gelijk": 3,
-      "verlies": 5
+      "verlies": 6
     },
     {
       "positie": 18,
@@ -628,5 +628,5 @@
       "verlies": 8
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-24T18:35:21.283152+00:00"
+  "stand_bijgewerkt_op": "2026-10-24T20:40:25.735205+00:00"
 }
