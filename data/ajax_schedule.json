@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-25T13:10:26.549110+00:00",
+  "bijgewerkt_op": "2026-10-25T15:15:25.704090+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -468,29 +468,29 @@
     {
       "positie": 1,
       "team": "Feyenoord Rotterdam",
-      "punten": 23,
-      "gespeeld": 9,
+      "punten": 24,
+      "gespeeld": 10,
       "winst": 7,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 0
     },
     {
       "positie": 2,
+      "team": "PSV",
+      "punten": 20,
+      "gespeeld": 10,
+      "winst": 6,
+      "gelijk": 2,
+      "verlies": 2
+    },
+    {
+      "positie": 3,
       "team": "AZ",
       "punten": 20,
       "gespeeld": 9,
       "winst": 6,
       "gelijk": 2,
       "verlies": 1
-    },
-    {
-      "positie": 3,
-      "team": "PSV",
-      "punten": 19,
-      "gespeeld": 9,
-      "winst": 6,
-      "gelijk": 1,
-      "verlies": 2
     },
     {
       "positie": 4,
@@ -531,10 +531,10 @@
     {
       "positie": 8,
       "team": "FC Groningen",
-      "punten": 14,
-      "gespeeld": 9,
+      "punten": 15,
+      "gespeeld": 10,
       "winst": 4,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 3
     },
     {
@@ -566,21 +566,21 @@
     },
     {
       "positie": 12,
+      "team": "NEC",
+      "punten": 11,
+      "gespeeld": 10,
+      "winst": 2,
+      "gelijk": 5,
+      "verlies": 3
+    },
+    {
+      "positie": 13,
       "team": "SBV Excelsior",
       "punten": 11,
       "gespeeld": 10,
       "winst": 3,
       "gelijk": 2,
       "verlies": 5
-    },
-    {
-      "positie": 13,
-      "team": "NEC",
-      "punten": 10,
-      "gespeeld": 9,
-      "winst": 2,
-      "gelijk": 4,
-      "verlies": 3
     },
     {
       "positie": 14,
@@ -628,5 +628,5 @@
       "verlies": 8
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-25T13:10:26.549104+00:00"
+  "stand_bijgewerkt_op": "2026-10-25T15:15:25.704080+00:00"
 }
