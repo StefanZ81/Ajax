@@ -78,13 +78,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558856,
-      "competitie": "Eredivisie",
-      "thuis": "Sparta Rotterdam",
-      "uit": "AFC Ajax",
-      "kickoff": "2026-10-25T15:45:00+00:00"
-    },
-    {
       "id": 558851,
       "competitie": "Eredivisie",
       "thuis": "AFC Ajax",
