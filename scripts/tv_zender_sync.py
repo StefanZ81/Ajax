@@ -107,6 +107,22 @@ def _is_zenderlogo(img) -> bool:
     return "/sportzender/" in src and img.get("title")
 
 
+def _sluit_af(huidige: dict | None, resultaat: list[dict]) -> None:
+    """Voegt een gescrapete wedstrijd toe als hij bruikbaar is, en logt in
+    BEIDE gevallen wat er is gevonden -- zodat in het workflow-log altijd te
+    zien is waarom een wedstrijd (niet) in tv_zenders.json terechtkwam."""
+    if not huidige:
+        return
+    beschrijving = (f"{huidige['dag']}/{huidige['maand']} tegenstander={huidige['tegenstander']!r} "
+                    f"teams={huidige['_teams']} zenders={[z['naam'] for z in huidige['zenders']]}")
+    if huidige["tegenstander"] and huidige["zenders"]:
+        print(f"[tv_zender_sync] gevonden: {beschrijving}")
+        resultaat.append(huidige)
+    else:
+        print(f"[tv_zender_sync] AFGEVALLEN (geen tegenstander of geen herkende zender): {beschrijving} "
+              f"niet-herkende plaatjes={huidige['_plaatjes']}")
+
+
 def haal_op() -> list[dict]:
     resp = requests.get(TEAM_PAGINA, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
     resp.raise_for_status()
@@ -155,14 +171,14 @@ def haal_op() -> list[dict]:
             # datum die toevallig ergens middenin een langere zin voorkomt
             # verkeerd als nieuwe wedstrijd wordt gezien.
             if datum_match and len(tekst) <= len(datum_match.group(0)) + 15:
-                if huidige and huidige["tegenstander"] and huidige["zenders"]:
-                    resultaat.append(huidige)
+                _sluit_af(huidige, resultaat)
                 huidige = {
                     "dag": int(datum_match.group(1)),
                     "maand": _MAANDEN[datum_match.group(2).lower()],
                     "tegenstander": None,
                     "_teams": [],
                     "zenders": [],
+                    "_plaatjes": [],
                 }
             continue
 
@@ -174,6 +190,13 @@ def haal_op() -> list[dict]:
             if tekst and tekst.lower() != "ajax" and tekst not in huidige["_teams"]:
                 huidige["_teams"].append(tekst)
                 huidige["tegenstander"] = huidige["_teams"][0]
+
+        elif naam_tag == "img" and not _is_zenderlogo(node):
+            # Voor de diagnose: welke plaatjes zijn NIET als zenderlogo herkend?
+            # (Een nieuwe zender met een andere logo-map zou anders ongezien
+            # blijven en de hele wedstrijd laten wegvallen.)
+            if len(huidige["_plaatjes"]) < 8:
+                huidige["_plaatjes"].append(f"{node.get('title')!r} <{node.get('src')}>")
 
         elif naam_tag == "img" and _is_zenderlogo(node):
             zendernaam = node.get("title")
@@ -199,11 +222,11 @@ def haal_op() -> list[dict]:
 
                 huidige["zenders"].append({"naam": zendernaam, "logo": src})
 
-    if huidige and huidige["tegenstander"] and huidige["zenders"]:
-        resultaat.append(huidige)
+    _sluit_af(huidige, resultaat)
 
     for w in resultaat:
         del w["_teams"]
+        del w["_plaatjes"]
 
     return resultaat
 
