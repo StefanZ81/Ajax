@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-25T17:50:24.972920+00:00",
+  "bijgewerkt_op": "2026-10-25T19:55:21.845335+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -491,6 +491,15 @@
     },
     {
       "positie": 3,
+      "team": "AZ",
+      "punten": 21,
+      "gespeeld": 10,
+      "winst": 6,
+      "gelijk": 3,
+      "verlies": 1
+    },
+    {
+      "positie": 4,
       "team": "PSV",
       "punten": 20,
       "gespeeld": 10,
@@ -499,17 +508,8 @@
       "verlies": 2
     },
     {
-      "positie": 4,
-      "team": "AZ",
-      "punten": 20,
-      "gespeeld": 9,
-      "winst": 6,
-      "gelijk": 2,
-      "verlies": 1
-    },
-    {
       "positie": 5,
-      "team": "Fortuna Sittard",
+      "team": "FC Twente '65",
       "punten": 18,
       "gespeeld": 10,
       "winst": 5,
@@ -518,11 +518,11 @@
     },
     {
       "positie": 6,
-      "team": "FC Twente '65",
-      "punten": 17,
-      "gespeeld": 9,
+      "team": "Fortuna Sittard",
+      "punten": 18,
+      "gespeeld": 10,
       "winst": 5,
-      "gelijk": 2,
+      "gelijk": 3,
       "verlies": 2
     },
     {
@@ -634,5 +634,5 @@
       "verlies": 8
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-25T17:50:24.972909+00:00"
+  "stand_bijgewerkt_op": "2026-10-25T19:55:21.845327+00:00"
 }
