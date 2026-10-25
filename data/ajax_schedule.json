@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-25T17:45:24.378430+00:00",
+  "bijgewerkt_op": "2026-10-25T17:50:24.972920+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -171,7 +171,7 @@
       "thuis": "Sparta Rotterdam",
       "uit": "AFC Ajax",
       "kickoff": "2026-10-25T15:45:00+00:00",
-      "status": "live",
+      "status": "afgelopen",
       "rust": {
         "thuis": 1,
         "uit": 2
@@ -482,6 +482,15 @@
     },
     {
       "positie": 2,
+      "team": "AFC Ajax",
+      "punten": 21,
+      "gespeeld": 10,
+      "winst": 6,
+      "gelijk": 3,
+      "verlies": 1
+    },
+    {
+      "positie": 3,
       "team": "PSV",
       "punten": 20,
       "gespeeld": 10,
@@ -490,21 +499,12 @@
       "verlies": 2
     },
     {
-      "positie": 3,
+      "positie": 4,
       "team": "AZ",
       "punten": 20,
       "gespeeld": 9,
       "winst": 6,
       "gelijk": 2,
-      "verlies": 1
-    },
-    {
-      "positie": 4,
-      "team": "AFC Ajax",
-      "punten": 18,
-      "gespeeld": 9,
-      "winst": 5,
-      "gelijk": 3,
       "verlies": 1
     },
     {
@@ -592,10 +592,10 @@
       "positie": 14,
       "team": "Sparta Rotterdam",
       "punten": 9,
-      "gespeeld": 9,
+      "gespeeld": 10,
       "winst": 2,
       "gelijk": 3,
-      "verlies": 4
+      "verlies": 5
     },
     {
       "positie": 15,
@@ -634,5 +634,5 @@
       "verlies": 8
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-25T15:15:25.704080+00:00"
+  "stand_bijgewerkt_op": "2026-10-25T17:50:24.972909+00:00"
 }
