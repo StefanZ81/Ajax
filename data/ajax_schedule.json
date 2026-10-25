@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-25T15:50:25.251710+00:00",
+  "bijgewerkt_op": "2026-10-25T15:55:20.967846+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -171,9 +171,12 @@
       "thuis": "Sparta Rotterdam",
       "uit": "AFC Ajax",
       "kickoff": "2026-10-25T15:45:00+00:00",
-      "status": "gepland",
+      "status": "live",
       "rust": null,
-      "eind": null
+      "eind": {
+        "thuis": 0,
+        "uit": 0
+      }
     },
     {
       "id": 558851,
