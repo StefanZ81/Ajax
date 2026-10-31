@@ -2,7 +2,11 @@
 scripts/tv_zender_sync.py
 ------------------------------------------------------------------
 Haalt op welke tv-zender aankomende Ajax-wedstrijden uitzendt, via
-sport-tv-gids.nl/team/ajax, en schrijft dit naar data/tv_zenders.json.
+sport-tv-gids.nl/team/ajax EN aanvullend via de zeven dagpagina's
+(sport-tv-gids.nl/kijk-live-sport/zat, zon, maa, din, woe, don, vri),
+en schrijft dit naar data/tv_zenders.json. De teampagina meldt een
+wedstrijd soms nog als "Tv-gids niet beschikbaar" terwijl de zender op
+de dagpagina al wel staat.
 Draait in GitHub Actions (waar wél internettoegang is), zie
 .github/workflows/tv-zender-sync.yml.
 
@@ -31,6 +35,8 @@ import os
 import re
 import subprocess
 import sys
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
@@ -250,6 +256,126 @@ def haal_op() -> list[dict]:
 
     return resultaat
 
+
+# ---------------- Aanvullende bron: de zeven dagpagina's ----------------
+
+DAGPAGINA_BASIS = "https://sport-tv-gids.nl/kijk-live-sport/"
+# slug -> weekdagnummer (maandag = 0). Elke dagpagina toont de eerstvolgende
+# keer dat die weekdag voorkomt (vandaag meegerekend).
+DAGPAGINA_SLUGS = {"maa": 0, "din": 1, "woe": 2, "don": 3, "vri": 4, "zat": 5, "zon": 6}
+
+
+def _datum_voor_weekdag(slug: str, nu: datetime | None = None):
+    vandaag = (nu or datetime.now(ZoneInfo("Europe/Amsterdam"))).date()
+    return vandaag + timedelta(days=(DAGPAGINA_SLUGS[slug] - vandaag.weekday()) % 7)
+
+
+def _is_ajax_team(naam: str) -> bool:
+    # Exacte vergelijking: 'Jong Ajax', 'Ajax Vrouwen', 'Ajax O21' enz. horen er niet bij.
+    return naam.strip().lower() in {"ajax", "afc ajax"}
+
+
+def _zender_uit_img(img) -> dict | None:
+    """Zelfde zendernaam-/logoverwerking als op de teampagina (uitsluitingen,
+    correcties), maar voor een los <img>-element. None = niet gebruiken."""
+    if not _is_zenderlogo(img):
+        return None
+    naam = img.get("title")
+    if not naam or _is_uitgesloten(naam):
+        return None
+    src = img.get("src") or ""
+    if src.startswith("//"):
+        src = "https:" + src
+    elif src.startswith("/"):
+        src = "https://sport-tv-gids.nl" + src
+    if naam in _ZENDER_CORRECTIES:
+        c = _ZENDER_CORRECTIES[naam]
+        naam, src = c["naam"], c["logo"]
+    return {"naam": naam, "logo": src}
+
+
+def haal_op_dagpagina(slug: str, nu: datetime | None = None) -> list[dict]:
+    datum = _datum_voor_weekdag(slug, nu)
+    url = DAGPAGINA_BASIS + slug
+    resp = requests.get(url, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+
+    rijen = soup.select("div.list-group-item")
+    resultaat = []
+    ajax_rijen = 0
+    for rij in rijen:
+        teams = [h.get_text(strip=True) for h in rij.find_all("h6")]
+        if not any(_is_ajax_team(t) for t in teams):
+            continue
+        ajax_rijen += 1
+        tegenstanders = [t for t in teams if not _is_ajax_team(t)]
+        competitie_el = rij.select_one(".listedLeague")
+        competitie = competitie_el.get_text(strip=True) if competitie_el else "?"
+        if not tegenstanders:
+            print(f"[tv_zender_sync] dagpagina {slug}: Ajax-rij zonder tegenstander overgeslagen ({teams}).")
+            continue
+        zenders, uitgesloten = [], []
+        for img in rij.find_all("img"):
+            if _is_zenderlogo(img) and _is_uitgesloten(img.get("title")):
+                uitgesloten.append(img.get("title"))
+            z = _zender_uit_img(img)
+            if z and z["naam"] not in [x["naam"] for x in zenders]:
+                zenders.append(z)
+        beschrijving = (f"{datum.day}/{datum.month} ({slug}) tegenstander={tegenstanders[0]!r} "
+                        f"competitie={competitie!r} zenders={[z['naam'] for z in zenders]} "
+                        f"uitgesloten_zenders={uitgesloten}")
+        if zenders:
+            print(f"[tv_zender_sync] dagpagina gevonden: {beschrijving}")
+            resultaat.append({"dag": datum.day, "maand": datum.month,
+                              "tegenstander": tegenstanders[0], "zenders": zenders})
+        else:
+            tekst = rij.get_text(" ", strip=True)[:120]
+            print(f"[tv_zender_sync] dagpagina AFGEVALLEN (geen zender): {beschrijving} rijtekst={tekst!r}")
+
+    if not rijen:
+        print(f"[tv_zender_sync] dagpagina {slug}: GEEN rijen (div.list-group-item) gevonden -- "
+              f"opmaak anders dan verwacht? Aantal <img>: {len(soup.find_all('img'))}, "
+              f"'Ajax' in tekst: {'Ajax' in soup.get_text()}.")
+    else:
+        print(f"[tv_zender_sync] dagpagina {slug} ({datum}): {len(rijen)} rijen, {ajax_rijen} met Ajax.")
+    return resultaat
+
+
+def _zelfde_tegenstander(a: str, b: str) -> bool:
+    a, b = a.lower().strip(), b.lower().strip()
+    return bool(a and b) and (a in b or b in a)
+
+
+def haal_op_dagpaginas(nu: datetime | None = None) -> list[dict]:
+    """Alle zeven dagpagina's; een mislukte pagina wordt gelogd en overgeslagen."""
+    alles = []
+    for slug in DAGPAGINA_SLUGS:
+        try:
+            alles.extend(haal_op_dagpagina(slug, nu))
+        except Exception as e:
+            print(f"[tv_zender_sync] dagpagina {slug} mislukt: {e}")
+    return alles
+
+
+def voeg_samen(basis: list[dict], extra: list[dict]) -> list[dict]:
+    """Teampagina heeft voorrang; een wedstrijd van de dagpagina's komt er
+    alleen bij als dezelfde dag+maand+tegenstander er nog niet in staat."""
+    resultaat = list(basis)
+    for e in extra:
+        bestaat = any(
+            b["dag"] == e["dag"] and b["maand"] == e["maand"]
+            and _zelfde_tegenstander(b["tegenstander"], e["tegenstander"])
+            for b in resultaat
+        )
+        if bestaat:
+            continue
+        print(f"[tv_zender_sync] aangevuld vanaf dagpagina: {e['dag']}/{e['maand']} {e['tegenstander']} "
+              f"{[z['naam'] for z in e['zenders']]}")
+        resultaat.append(e)
+    return resultaat
+
+
 def bewaar(wedstrijden: list[dict]) -> None:
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
@@ -279,7 +405,7 @@ def git_commit_en_push() -> bool:
 
 if __name__ == "__main__":
     try:
-        wedstrijden = haal_op()
+        wedstrijden = voeg_samen(haal_op(), haal_op_dagpaginas())
     except Exception as e:
         print(f"[tv_zender_sync] Ophalen mislukt: {e}", file=sys.stderr)
         sys.exit(1)  # laat de workflow duidelijk rood zien -- niet stil doorlopen
