@@ -122,6 +122,9 @@ def _sluit_af(huidige: dict | None, resultaat: list[dict]) -> None:
     else:
         print(f"[tv_zender_sync] AFGEVALLEN (geen tegenstander of geen herkende zender): {beschrijving} "
               f"niet-herkende plaatjes={huidige['_plaatjes']}")
+        print(f"[tv_zender_sync] STRUCTUUR van afgevallen wedstrijd {huidige['dag']}/{huidige['maand']}:")
+        for regel in huidige["_structuur"]:
+            print(f"    {regel}")
 
 
 def haal_op() -> list[dict]:
@@ -171,6 +174,8 @@ def haal_op() -> list[dict]:
             # telt als een nieuw wedstrijd-startpunt -- dat voorkomt dat een
             # datum die toevallig ergens middenin een langere zin voorkomt
             # verkeerd als nieuwe wedstrijd wordt gezien.
+            if huidige is not None and tekst and not datum_match and len(huidige["_structuur"]) < 60:
+                huidige["_structuur"].append(f"tekst:{tekst[:40]!r}")
             if datum_match and len(tekst) <= len(datum_match.group(0)) + 15:
                 _sluit_af(huidige, resultaat)
                 huidige = {
@@ -181,11 +186,20 @@ def haal_op() -> list[dict]:
                     "zenders": [],
                     "_plaatjes": [],
                     "_uitgesloten": [],
+                    "_structuur": [],
                 }
             continue
 
         if huidige is None:
             continue
+
+        # Diagnose: leg de structuur tussen deze datum en de volgende vast,
+        # zodat bij een afgevallen wedstrijd te zien is waar de zender staat.
+        if naam_tag and len(huidige["_structuur"]) < 60:
+            attrs = {k: (v if isinstance(v, str) else " ".join(v))[:60]
+                     for k, v in (node.attrs or {}).items()
+                     if k in ("class", "src", "data-src", "data-lazy-src", "srcset", "alt", "title", "href", "style", "aria-label")}
+            huidige["_structuur"].append(f"<{naam_tag} {attrs}>" if attrs else f"<{naam_tag}>")
 
         if naam_tag in ("h6", "h5", "b", "strong"):
             tekst = node.get_text(strip=True)
@@ -232,6 +246,7 @@ def haal_op() -> list[dict]:
         del w["_teams"]
         del w["_plaatjes"]
         del w["_uitgesloten"]
+        del w["_structuur"]
 
     return resultaat
 
