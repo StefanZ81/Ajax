@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-31T13:45:27.714419+00:00",
+  "bijgewerkt_op": "2026-10-31T15:50:26.295735+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -474,10 +474,10 @@
     {
       "positie": 1,
       "team": "Feyenoord Rotterdam",
-      "punten": 24,
-      "gespeeld": 10,
+      "punten": 25,
+      "gespeeld": 11,
       "winst": 7,
-      "gelijk": 3,
+      "gelijk": 4,
       "verlies": 0
     },
     {
@@ -519,10 +519,10 @@
     {
       "positie": 6,
       "team": "Fortuna Sittard",
-      "punten": 18,
-      "gespeeld": 10,
+      "punten": 19,
+      "gespeeld": 11,
       "winst": 5,
-      "gelijk": 3,
+      "gelijk": 4,
       "verlies": 2
     },
     {
@@ -634,5 +634,5 @@
       "verlies": 8
     }
   ],
-  "stand_bijgewerkt_op": "2026-10-31T13:45:27.714410+00:00"
+  "stand_bijgewerkt_op": "2026-10-31T15:50:26.295726+00:00"
 }
