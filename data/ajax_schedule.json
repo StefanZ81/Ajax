@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-10-31T20:55:21.447713+00:00",
+  "bijgewerkt_op": "2026-10-31T21:00:41.354689+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -190,7 +190,10 @@
       "uit": "AZ",
       "kickoff": "2026-10-31T20:00:00+00:00",
       "status": "live",
-      "rust": null,
+      "rust": {
+        "thuis": 1,
+        "uit": 0
+      },
       "eind": {
         "thuis": 1,
         "uit": 0
