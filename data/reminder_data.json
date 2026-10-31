@@ -78,13 +78,6 @@
   ],
   "wedstrijden": [
     {
-      "id": 558851,
-      "competitie": "Eredivisie",
-      "thuis": "AFC Ajax",
-      "uit": "AZ",
-      "kickoff": "2026-10-31T20:00:00+00:00"
-    },
-    {
       "id": -4,
       "competitie": "Conference League",
       "thuis": "FC Midtjylland",
