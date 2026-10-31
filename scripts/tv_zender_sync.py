@@ -114,7 +114,8 @@ def _sluit_af(huidige: dict | None, resultaat: list[dict]) -> None:
     if not huidige:
         return
     beschrijving = (f"{huidige['dag']}/{huidige['maand']} tegenstander={huidige['tegenstander']!r} "
-                    f"teams={huidige['_teams']} zenders={[z['naam'] for z in huidige['zenders']]}")
+                    f"teams={huidige['_teams']} zenders={[z['naam'] for z in huidige['zenders']]} "
+                    f"uitgesloten_zenders={huidige['_uitgesloten']}")
     if huidige["tegenstander"] and huidige["zenders"]:
         print(f"[tv_zender_sync] gevonden: {beschrijving}")
         resultaat.append(huidige)
@@ -179,6 +180,7 @@ def haal_op() -> list[dict]:
                     "_teams": [],
                     "zenders": [],
                     "_plaatjes": [],
+                    "_uitgesloten": [],
                 }
             continue
 
@@ -200,6 +202,8 @@ def haal_op() -> list[dict]:
 
         elif naam_tag == "img" and _is_zenderlogo(node):
             zendernaam = node.get("title")
+            if zendernaam and _is_uitgesloten(zendernaam) and zendernaam not in huidige["_uitgesloten"]:
+                huidige["_uitgesloten"].append(zendernaam)
             if (
                 zendernaam
                 and not _is_uitgesloten(zendernaam)
@@ -227,6 +231,7 @@ def haal_op() -> list[dict]:
     for w in resultaat:
         del w["_teams"]
         del w["_plaatjes"]
+        del w["_uitgesloten"]
 
     return resultaat
 
