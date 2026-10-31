@@ -275,12 +275,18 @@ def _is_ajax_team(naam: str) -> bool:
     return naam.strip().lower() in {"ajax", "afc ajax"}
 
 
+def _schone_zendernaam(titel: str | None) -> str:
+    """Op de dagpagina's heet een zender in de title 'Live ESPN 2' / 'Live
+    Ziggo Sport' -- het voorvoegsel 'Live ' hoort niet bij de zendernaam."""
+    return re.sub(r"^\s*live\s+", "", (titel or ""), flags=re.IGNORECASE).strip()
+
+
 def _zender_uit_img(img) -> dict | None:
     """Zelfde zendernaam-/logoverwerking als op de teampagina (uitsluitingen,
     correcties), maar voor een los <img>-element. None = niet gebruiken."""
     if not _is_zenderlogo(img):
         return None
-    naam = img.get("title")
+    naam = _schone_zendernaam(img.get("title"))
     if not naam or _is_uitgesloten(naam):
         return None
     src = img.get("src") or ""
@@ -314,8 +320,42 @@ def _structuur_van(element, maxn: int = 40) -> list[str]:
     return regels
 
 
+_MAAND_NAAR_NUMMER = {
+    "jan": 1, "feb": 2, "mrt": 3, "mar": 3, "maa": 3, "apr": 4, "mei": 5, "may": 5,
+    "jun": 6, "jul": 7, "aug": 8, "sep": 9, "okt": 10, "oct": 10, "nov": 11, "dec": 12,
+}
+_DATUM_IN_RIJ = re.compile(r"(\d{1,2})\s*\.?\s*(" + "|".join(_MAAND_NAAR_NUMMER) + r")", re.IGNORECASE)
+
+
+def _datum_uit_rij(tekst: str, nu: datetime | None = None):
+    """Leest de datum uit de tijdregel van een dagpagina-rij: 'Vandaag vanaf
+    21:00', 'Morgen vanaf 20:00' of 'Don. 5 Nov vanaf 18:45'. None = onbekend."""
+    vandaag = (nu or datetime.now(ZoneInfo("Europe/Amsterdam"))).date()
+    laag = tekst.strip().lower()
+    if laag.startswith("vandaag"):
+        return vandaag
+    if laag.startswith("morgen"):
+        return vandaag + timedelta(days=1)
+    m = _DATUM_IN_RIJ.search(tekst)
+    if m:
+        try:
+            return vandaag.replace(month=_MAAND_NAAR_NUMMER[m.group(2).lower()], day=int(m.group(1)))
+        except ValueError:  # bv. 29 februari in een jaar zonder schrikkeldag
+            return None
+    return None
+
+
+def _wedstrijd_uit_rij(rij) -> tuple[str, str] | None:
+    """Zoekt in de tekst van de rij naar '| Thuis - Uit' en geeft (thuis, uit)."""
+    for t in rij.stripped_strings:
+        m = re.match(r"^\|?\s*(.+?)\s+-\s+(.+)$", t)
+        if m and "vanaf" not in t.lower():
+            return m.group(1).strip(), m.group(2).strip()
+    return None
+
+
 def haal_op_dagpagina(slug: str, nu: datetime | None = None) -> list[dict]:
-    datum = _datum_voor_weekdag(slug, nu)
+    fallback_datum = _datum_voor_weekdag(slug, nu)
     url = DAGPAGINA_BASIS + slug
     resp = requests.get(url, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
     resp.raise_for_status()
@@ -325,53 +365,52 @@ def haal_op_dagpagina(slug: str, nu: datetime | None = None) -> list[dict]:
     resultaat = []
     ajax_rijen = 0
     for rij in rijen:
-        teams = [h.get_text(strip=True) for h in rij.find_all("h6")]
-        if not any(_is_ajax_team(t) for t in teams):
+        wedstrijd = _wedstrijd_uit_rij(rij)
+        if not wedstrijd or not any(_is_ajax_team(t) for t in wedstrijd):
             continue
         ajax_rijen += 1
-        tegenstanders = [t for t in teams if not _is_ajax_team(t)]
-        competitie_el = rij.select_one(".listedLeague")
-        competitie = competitie_el.get_text(strip=True) if competitie_el else "?"
-        if not tegenstanders:
-            print(f"[tv_zender_sync] dagpagina {slug}: Ajax-rij zonder tegenstander overgeslagen ({teams}).")
+        tegenstander = next(t for t in wedstrijd if not _is_ajax_team(t)) \
+            if not all(_is_ajax_team(t) for t in wedstrijd) else None
+        if not tegenstander:
             continue
+
+        tijdregel = next((t for t in rij.stripped_strings if "vanaf" in t.lower()), "")
+        datum = _datum_uit_rij(tijdregel, nu)
+        competitie_el = rij.find("i")
+        competitie = competitie_el.get_text(strip=True) if competitie_el else "?"
+
         zenders, uitgesloten = [], []
         for img in rij.find_all("img"):
-            if _is_zenderlogo(img) and _is_uitgesloten(img.get("title")):
-                uitgesloten.append(img.get("title"))
+            if _is_zenderlogo(img) and _is_uitgesloten(_schone_zendernaam(img.get("title"))):
+                uitgesloten.append(_schone_zendernaam(img.get("title")))
             z = _zender_uit_img(img)
             if z and z["naam"] not in [x["naam"] for x in zenders]:
                 zenders.append(z)
-        beschrijving = (f"{datum.day}/{datum.month} ({slug}) tegenstander={tegenstanders[0]!r} "
-                        f"competitie={competitie!r} zenders={[z['naam'] for z in zenders]} "
-                        f"uitgesloten_zenders={uitgesloten}")
-        if zenders:
+
+        beschrijving = (f"{datum.day if datum else '?'}/{datum.month if datum else '?'} ({slug}) "
+                        f"tijdregel={tijdregel!r} wedstrijd={wedstrijd} competitie={competitie!r} "
+                        f"zenders={[z['naam'] for z in zenders]} uitgesloten_zenders={uitgesloten}")
+        if not datum:
+            print(f"[tv_zender_sync] dagpagina AFGEVALLEN (datum niet te bepalen): {beschrijving}")
+        elif not zenders:
+            print(f"[tv_zender_sync] dagpagina AFGEVALLEN (geen zender): {beschrijving}")
+        else:
             print(f"[tv_zender_sync] dagpagina gevonden: {beschrijving}")
             resultaat.append({"dag": datum.day, "maand": datum.month,
-                              "tegenstander": tegenstanders[0], "zenders": zenders})
-        else:
-            tekst = rij.get_text(" ", strip=True)[:120]
-            print(f"[tv_zender_sync] dagpagina AFGEVALLEN (geen zender): {beschrijving} rijtekst={tekst!r}")
+                              "tegenstander": tegenstander, "zenders": zenders})
 
     if rijen and ajax_rijen == 0:
-        # Geen enkele rij herkend als Ajax-wedstrijd: laat zien waarom, zodat
-        # de herkenning op de echte opmaak kan worden afgestemd.
         met_ajax_tekst = [r for r in rijen if "ajax" in r.get_text(" ").lower()]
-        print(f"[tv_zender_sync] dagpagina {slug}: {len(met_ajax_tekst)} rij(en) bevatten de tekst 'ajax' "
-              f"(maar zijn niet als Ajax-wedstrijd herkend); 'ajax' komt {resp.text.lower().count('ajax')}x in de HTML voor.")
-        voorbeelden = met_ajax_tekst[:2] or rijen[:1]
-        for nr, r in enumerate(voorbeelden, 1):
-            soort = "rij met 'ajax'" if met_ajax_tekst else "voorbeeldrij (geen rij met 'ajax' gevonden)"
-            print(f"[tv_zender_sync]   STRUCTUUR {soort} {nr}:")
+        print(f"[tv_zender_sync] dagpagina {slug}: {len(met_ajax_tekst)} rij(en) bevatten 'ajax' maar zijn niet als "
+              f"Ajax-wedstrijd herkend.")
+        for nr, r in enumerate(met_ajax_tekst[:2], 1):
+            print(f"[tv_zender_sync]   STRUCTUUR rij {nr}:")
             for regel in _structuur_van(r):
                 print(f"      {regel}")
-
-    if not rijen:
+    elif not rijen:
         print(f"[tv_zender_sync] dagpagina {slug}: GEEN rijen (div.list-group-item) gevonden -- "
-              f"opmaak anders dan verwacht? Aantal <img>: {len(soup.find_all('img'))}, "
-              f"'Ajax' in tekst: {'Ajax' in soup.get_text()}.")
-    else:
-        print(f"[tv_zender_sync] dagpagina {slug} ({datum}): {len(rijen)} rijen, {ajax_rijen} met Ajax.")
+              f"opmaak anders dan verwacht? Aantal <img>: {len(soup.find_all('img'))}.")
+    print(f"[tv_zender_sync] dagpagina {slug} ({fallback_datum}): {len(rijen)} rijen, {ajax_rijen} Ajax-wedstrijd(en) herkend.")
     return resultaat
 
 
