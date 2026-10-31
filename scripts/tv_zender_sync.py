@@ -294,6 +294,26 @@ def _zender_uit_img(img) -> dict | None:
     return {"naam": naam, "logo": src}
 
 
+def _structuur_van(element, maxn: int = 40) -> list[str]:
+    """Compacte weergave van de opbouw van een element (tags, belangrijkste
+    attributen, tekst) voor diagnose in het workflow-log."""
+    regels = []
+    for node in element.descendants:
+        if len(regels) >= maxn:
+            regels.append("...")
+            break
+        if isinstance(node, str):
+            tekst = node.strip()
+            if tekst:
+                regels.append(f"tekst:{tekst[:50]!r}")
+            continue
+        attrs = {k: (v if isinstance(v, str) else " ".join(v))[:70]
+                 for k, v in (node.attrs or {}).items()
+                 if k in ("class", "src", "data-src", "alt", "title", "href", "aria-label", "data-team", "data-name")}
+        regels.append(f"<{node.name} {attrs}>" if attrs else f"<{node.name}>")
+    return regels
+
+
 def haal_op_dagpagina(slug: str, nu: datetime | None = None) -> list[dict]:
     datum = _datum_voor_weekdag(slug, nu)
     url = DAGPAGINA_BASIS + slug
@@ -332,6 +352,19 @@ def haal_op_dagpagina(slug: str, nu: datetime | None = None) -> list[dict]:
         else:
             tekst = rij.get_text(" ", strip=True)[:120]
             print(f"[tv_zender_sync] dagpagina AFGEVALLEN (geen zender): {beschrijving} rijtekst={tekst!r}")
+
+    if rijen and ajax_rijen == 0:
+        # Geen enkele rij herkend als Ajax-wedstrijd: laat zien waarom, zodat
+        # de herkenning op de echte opmaak kan worden afgestemd.
+        met_ajax_tekst = [r for r in rijen if "ajax" in r.get_text(" ").lower()]
+        print(f"[tv_zender_sync] dagpagina {slug}: {len(met_ajax_tekst)} rij(en) bevatten de tekst 'ajax' "
+              f"(maar zijn niet als Ajax-wedstrijd herkend); 'ajax' komt {resp.text.lower().count('ajax')}x in de HTML voor.")
+        voorbeelden = met_ajax_tekst[:2] or rijen[:1]
+        for nr, r in enumerate(voorbeelden, 1):
+            soort = "rij met 'ajax'" if met_ajax_tekst else "voorbeeldrij (geen rij met 'ajax' gevonden)"
+            print(f"[tv_zender_sync]   STRUCTUUR {soort} {nr}:")
+            for regel in _structuur_van(r):
+                print(f"      {regel}")
 
     if not rijen:
         print(f"[tv_zender_sync] dagpagina {slug}: GEEN rijen (div.list-group-item) gevonden -- "
