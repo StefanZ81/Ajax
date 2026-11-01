@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-11-01T14:30:34.562070+00:00",
+  "bijgewerkt_op": "2026-11-01T16:35:20.412421+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -543,10 +543,10 @@
     {
       "positie": 8,
       "team": "FC Groningen",
-      "punten": 15,
-      "gespeeld": 10,
+      "punten": 16,
+      "gespeeld": 11,
       "winst": 4,
-      "gelijk": 3,
+      "gelijk": 4,
       "verlies": 3
     },
     {
@@ -587,7 +587,7 @@
     },
     {
       "positie": 13,
-      "team": "SBV Excelsior",
+      "team": "PEC Zwolle",
       "punten": 11,
       "gespeeld": 11,
       "winst": 3,
@@ -596,7 +596,7 @@
     },
     {
       "positie": 14,
-      "team": "PEC Zwolle",
+      "team": "SBV Excelsior",
       "punten": 11,
       "gespeeld": 11,
       "winst": 3,
@@ -606,10 +606,10 @@
     {
       "positie": 15,
       "team": "Sparta Rotterdam",
-      "punten": 9,
-      "gespeeld": 10,
+      "punten": 10,
+      "gespeeld": 11,
       "winst": 2,
-      "gelijk": 3,
+      "gelijk": 4,
       "verlies": 5
     },
     {
@@ -640,5 +640,5 @@
       "verlies": 9
     }
   ],
-  "stand_bijgewerkt_op": "2026-11-01T14:30:34.562061+00:00"
+  "stand_bijgewerkt_op": "2026-11-01T16:35:20.412414+00:00"
 }
