@@ -78,13 +78,6 @@
   ],
   "wedstrijden": [
     {
-      "id": -4,
-      "competitie": "Conference League",
-      "thuis": "FC Midtjylland",
-      "uit": "AFC Ajax",
-      "kickoff": "2026-11-05T17:45:00+00:00"
-    },
-    {
       "id": 558839,
       "competitie": "Eredivisie",
       "thuis": "FC Twente '65",
@@ -111,6 +104,13 @@
       "thuis": "Feyenoord Rotterdam",
       "uit": "AFC Ajax",
       "kickoff": "2026-11-29T13:30:00+00:00"
+    },
+    {
+      "id": -8,
+      "competitie": "KNVB Beker",
+      "thuis": "AFC Ajax",
+      "uit": "FC Den Bosch",
+      "kickoff": "2026-12-03T20:00:00+00:00"
     },
     {
       "id": 558811,
