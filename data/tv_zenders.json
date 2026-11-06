@@ -1,15 +1,3 @@
 {
-  "wedstrijden": [
-    {
-      "dag": 6,
-      "maand": 11,
-      "tegenstander": "Midtjylland",
-      "zenders": [
-        {
-          "naam": "Ziggo Sport 1",
-          "logo": "/static/zenders/ziggo-sport-1.jpg"
-        }
-      ]
-    }
-  ]
+  "wedstrijden": []
 }
