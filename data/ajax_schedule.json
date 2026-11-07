@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-11-07T14:15:29.189080+00:00",
+  "bijgewerkt_op": "2026-11-07T16:20:25.474624+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -525,10 +525,10 @@
     {
       "positie": 6,
       "team": "Fortuna Sittard",
-      "punten": 19,
-      "gespeeld": 11,
+      "punten": 20,
+      "gespeeld": 12,
       "winst": 5,
-      "gelijk": 4,
+      "gelijk": 5,
       "verlies": 2
     },
     {
@@ -615,10 +615,10 @@
     {
       "positie": 16,
       "team": "Telstar 1963",
-      "punten": 9,
-      "gespeeld": 11,
+      "punten": 10,
+      "gespeeld": 12,
       "winst": 2,
-      "gelijk": 3,
+      "gelijk": 4,
       "verlies": 6
     },
     {
@@ -640,5 +640,5 @@
       "verlies": 9
     }
   ],
-  "stand_bijgewerkt_op": "2026-11-07T14:15:29.189071+00:00"
+  "stand_bijgewerkt_op": "2026-11-07T16:20:25.474615+00:00"
 }
