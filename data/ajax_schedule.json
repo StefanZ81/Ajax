@@ -1,5 +1,5 @@
 {
-  "bijgewerkt_op": "2026-11-07T16:20:25.474624+00:00",
+  "bijgewerkt_op": "2026-11-07T18:25:22.666122+00:00",
   "wedstrijden": [
     {
       "id": 558221,
@@ -571,10 +571,10 @@
       "positie": 11,
       "team": "Sparta Rotterdam",
       "punten": 12,
-      "gespeeld": 11,
+      "gespeeld": 12,
       "winst": 3,
       "gelijk": 3,
-      "verlies": 5
+      "verlies": 6
     },
     {
       "positie": 12,
@@ -624,9 +624,9 @@
     {
       "positie": 17,
       "team": "ADO Den Haag",
-      "punten": 6,
-      "gespeeld": 11,
-      "winst": 1,
+      "punten": 9,
+      "gespeeld": 12,
+      "winst": 2,
       "gelijk": 3,
       "verlies": 7
     },
@@ -640,5 +640,5 @@
       "verlies": 9
     }
   ],
-  "stand_bijgewerkt_op": "2026-11-07T16:20:25.474615+00:00"
+  "stand_bijgewerkt_op": "2026-11-07T18:25:22.666111+00:00"
 }
